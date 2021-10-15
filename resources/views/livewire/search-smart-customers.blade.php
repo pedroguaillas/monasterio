@@ -9,24 +9,19 @@
     </div>
 
     <div class="card-body">
-    @if($customers !== null && $customers->count())
+        @if($customers !== null && $customers->count())
         <table class="table table-sm">
             <thead>
                 <tr>
-                    <th style="width: 10px">#</th>
-                    <th>Identificacion</th>
+                    <th>Identificación</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
                     <th style="width: 40px">Opciones</th>
                 </tr>
             </thead>
             <tbody>
-                @php
-                $i=1;
-                @endphp
                 @foreach($customers as $customer)
                 <tr>
-                    <td>{{$i. '.'}}</td>
                     <td>{{$customer->identification}}</td>
                     <td>{{$customer->first_name}}</td>
                     <td>{{$customer->last_name}}</td>
@@ -37,6 +32,6 @@
                 @endforeach
             </tbody>
         </table>
-    @endif
+        @endif
     </div>
 </div>
