@@ -258,7 +258,7 @@ return [
         ],
         [
             'text'        => 'Contabilidad',
-            'url'         => '#',
+            'url'         => 'admin/contabilidad',
             'icon'        => 'fas fa-fw fa-book',
         ],
         [

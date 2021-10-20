@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Lista de usuarios')
+@section('title', 'Libro Diario')
 
 @section('css')
 @livewireStyles
@@ -9,7 +9,7 @@
 @section('content')
 <br />
 <div class="card">
-    @livewire('search-smart-customers')
+    @livewire('diary-book')
 </div>
 @endsection
 

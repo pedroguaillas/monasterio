@@ -142,19 +142,6 @@
         <!-- right column -->
         <div class="col-md-6">
             <!-- general form elements -->
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Direccion del Usuario</h3>
-                </div>
-
-                <div class="card-body">
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-4" for="logo">Logo</label>
-                        <div class="col-sm-8">
-                            <input type="file" id="logo" name="logo" accept="image/*">
-                        </div>
-                    </div>
 
                     <div class="modal-footer">
                         <button class="btn btn-success" type="submit">
@@ -164,9 +151,6 @@
                             Cancelar
                         </button>
                     </div>
-
-                </div>
-            </div>
         </div>
     </div>
 </form>

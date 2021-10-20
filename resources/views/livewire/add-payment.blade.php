@@ -1,9 +1,8 @@
 <div>
-    <a class="btn btn-success" data-toggle="modal" data-target="#modal-test" href="#">Pagar</a>
-    <div class="modal fade" id="modal-test">
+    <!-- <a class="btn btn-success" data-toggle="modal" data-target="#addPaymentModal" href="#">Pagar</a> -->
+    <div class="modal fade" id="modalwindow" style="z-index: 10050" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form wire:submit.prevent="store">
                     <div class="modal-header">
                         <h4 class="modal-title">Pagos</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -14,7 +13,7 @@
                         <div class="form-group row">
                             <label class="control-label col-sm-4" for="date">Fecha de inscripción</label>
                             <div class="col-sm-4">
-                                <input type="date" wire:model="date" class="form-control form-control-sm" id="date" name="date" required>
+                                <input type="date" wire:model:defer="date" class="form-control form-control-sm" id="date" name="date" required>
                             </div>
                         </div>
 
@@ -38,11 +37,14 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                        <button class="btn btn-primary">Guardar</button>
                     </div>
-                </form>
             </div>
         </div>
     </div>
-    <!-- <a class="btn btn-success" href="#">Editar</a> -->
+    <script>
+        Livewire.on('closeModal', function(){
+            $('#addPaymentModal').modal('hide')
+        })
+    </script>
 </div>

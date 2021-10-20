@@ -32,6 +32,10 @@ class AddPayment extends Component
             'date' => $this->date,
             'amount' => $this->amount
         ]);
+
+        if ($payment) {
+            $this->emit('closeModal');
+        }
     }
 
     public function render()
