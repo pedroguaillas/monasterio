@@ -266,6 +266,11 @@ return [
             'url'         => '#',
             'icon'        => 'fas fa-fw fa-chart-pie',
         ],
+        [
+            'text'        => 'Métodos de pago',
+            'url'         => 'admin/metodosdepago',
+            'icon'        => 'fas fa-fw fa-money-bill-wave',
+        ],
         // [
         //     'text'        => 'pages',
         //     'url'         => 'admin/pages',
