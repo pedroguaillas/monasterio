@@ -12,28 +12,32 @@ class SearchSmartCustomers extends Component
     public $search, $customer, $payment;
     public $month;
     public $date_next_month;
-    public $modal;
 
-    protected $rules=[
-        'payment.date'=>'required',
-        'payment.amount'=>'required',
+    protected $rules = [
+        'payment.date' => 'required',
+        'payment.amount' => 'required',
     ];
 
-    public function mount(){
-        $this->month=1;
-        $this->modal=false;
-        $this->date_next_month=date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
+    public function mount()
+    {
+        $this->month = 1;
+        $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
     }
 
-    public function updatingMonth(){
-        $this->payment->amount = 30;
-        $this->emit('keyboardModal');
+    public function updatingMonth($value)
+    {
+        $this->payment->amount = 20 * $value;
+    }
+
+    public function updatingPaymentDate($value)
+    {
+        $this->date_next_month = date('d/m/Y', strtotime("$value +$this->month month"));
     }
 
     public function render()
     {
         $customers = null;
-        
+
         if ($this->search !== null && $this->search !== '') {
             $customers = Customer::where('identification', 'like', '%' . $this->search . '%')
                 ->orWhere('first_name', 'like', '%' . $this->search . '%')
@@ -59,16 +63,16 @@ class SearchSmartCustomers extends Component
         }
     }
 
-    public function edit(Customer $customer){
-        $this->customer=$customer;
+    public function edit(Customer $customer)
+    {
+        $this->customer = $customer;
 
-        $this->payment =new Payment;
+        $this->payment = new Payment;
         $this->payment->date = date('Y-m-d');
         $this->payment->amount = 20;
-        $this->month=1;
-        $this->date_next_month=date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
+        $this->month = 1;
+        $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
 
-        $this->modal=true;
         $this->emit('showModal');
     }
 }
