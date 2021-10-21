@@ -12,6 +12,7 @@ class SearchSmartCustomers extends Component
     public $search, $customer, $payment;
     public $month;
     public $date_next_month;
+    public $modal;
 
     protected $rules=[
         'payment.date'=>'required',
@@ -20,6 +21,7 @@ class SearchSmartCustomers extends Component
 
     public function mount(){
         $this->month=1;
+        $this->modal=false;
         $this->date_next_month=date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
     }
 
@@ -27,10 +29,6 @@ class SearchSmartCustomers extends Component
         $this->payment->amount = 30;
         $this->emit('keyboardModal');
     }
-
-    // public function updatingMonth(){
-    //     $this->payment->amount = 30;
-    // }
 
     public function render()
     {
@@ -70,6 +68,7 @@ class SearchSmartCustomers extends Component
         $this->month=1;
         $this->date_next_month=date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
 
+        $this->modal=true;
         $this->emit('showModal');
     }
 }

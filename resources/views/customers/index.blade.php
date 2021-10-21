@@ -21,12 +21,12 @@
         $('#modalwindow').modal('show')
     })
 
-    Livewire.on('keyboardModal', function() {
-        $('#modalwindow').modal('show')
-    })
+    // Livewire.on('keyboardModal', function() {
+    //     $('#modalwindow').modal('show')
+    // })
 
-    Livewire.on('closeModal', function() {
-        $('#modalwindow').modal('hide')
-    })
+    // Livewire.on('closeModal', function() {
+    //     $('#modalwindow').modal('hide')
+    // })
 </script>
 @endsection

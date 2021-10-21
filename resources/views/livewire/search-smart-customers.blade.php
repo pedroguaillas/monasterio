@@ -34,10 +34,52 @@
         </table>
         @endif
     </div>
+    {{-- Custom --}}
+    <x-adminlte-modal id="modalwindow" title="Pagos" theme="teal"
+        icon="fas fa-bell" v-centered static-backdrop scrollable>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4">Fecha de inscripción</label>
+                            <div class="col-sm-4">
+                                <input type="date" wire:model="payment.date" class="form-control form-control-sm" required>
+                            </div>
+                        </div>
 
-    <div class="modal fade" id="modalwindow">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+                        {{-- With append slot, number type and sm size --}}
+                        <x-adminlte-input name="month" label="Mes (es)" placeholder="number" type="number"
+                            igroup-size="sm" min=1 max=10>
+                            <x-slot name="appendSlot">
+                                <div class="input-group-text bg-dark">
+                                    <i class="fas fa-hashtag"></i>
+                                </div>
+                            </x-slot>
+                        </x-adminlte-input>
+
+                        <!-- <div class="form-group row">
+                            <label class="control-label col-sm-4">Mes (es)</label>
+                            <div class="col-sm-2">
+                                <input type="number" wire:model="month" min="1" class="form-control form-control-sm" required>
+                            </div>
+                        </div> -->
+
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4">Fecha mes próximo</label>
+                            <span class="control-label col-sm-8">{{$date_next_month}}</span>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4">Valor a pagar ($)</label>
+                            <div class="col-sm-2">
+                                <input type="number" wire:model="payment.amount" min="10" class="form-control form-control-sm" required>
+                            </div>
+                        </div>
+        <x-slot name="footerSlot">
+            <x-adminlte-button class="mr-auto" theme="success" label="Accept"/>
+            <x-adminlte-button theme="danger" label="Dismiss" data-dismiss="modal"/>
+        </x-slot>
+    </x-adminlte-modal>
+    <!-- <div class="modal fade" id="modalwindow" tabindex="-1" role="dialog" aria-labelledby="modalwindow-title" aria-modal="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content shadow">
                     <div class="modal-header">
                         <h4 class="modal-title">Pagos</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -76,5 +118,5 @@
                     </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
