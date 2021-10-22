@@ -24,8 +24,14 @@
                     $i++;
                     @endphp
                     <td>{{$i}}</td>
-                    <td>{{$item->description}}</td>
-                    <td>{{$item->amount}}</td>
+                    <td>
+                        <input type="text" value="{{$item->description}}">
+                    </td>
+                    <td>
+                        <input type="text" wire:model="$item->amount" class="custom-control-input">
+                    </td>
+                    <td hidden>{{$item->description}}</td>
+                    <td hidden>{{$item->amount}}</td>
                     <td>
                         <div class="form-group">
                             <div class="custom-control custom-switch">
