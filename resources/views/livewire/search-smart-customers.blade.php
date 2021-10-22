@@ -44,10 +44,20 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <!-- <div class="form-group row">
             <label class="control-label col-sm-4">Mes (es)</label>
             <div class="col-sm-2">
                 <input type="number" wire:model="month" min="1" class="form-control form-control-sm" required>
+            </div>
+        </div> -->
+
+        <div class="form-group row">
+            <label class="control-label col-sm-4">Metodos de pago</label>
+            <div class="col-sm-4">
+                <x-adminlte-select name="optionsTest1">
+                    <x-adminlte-options :options="['Option 1', 'Option 2', 'Option 3']" disabled="1"
+                        empty-option="Select an option..."/>
+                </x-adminlte-select>
             </div>
         </div>
 
@@ -63,7 +73,7 @@
             </div>
         </div>
         <x-slot name="footerSlot">
-            <x-adminlte-button style="height: 6em;" wire:click="storePayment" theme="success" label="Aceptar" />
+            <x-adminlte-button style="height: 3em;" wire:click="storePayment" theme="success" icon="fas fa-lg fa-save"/>
         </x-slot>
     </x-adminlte-modal>
 </div>
