@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class SearchSmartCustomers extends Component
 {
-    public $search, $customer, $payment, $paymentmethods;
-    public $amount;
+    public $search, $customer, $payment, $paymentmethod;
     public $date_next_month;
+    public $amount;
 
     protected $rules = [
         'payment.date' => 'required',
@@ -21,26 +21,20 @@ class SearchSmartCustomers extends Component
 
     public function mount()
     {
-        $this->paymentmethods = PaymentMethod::all();
         $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
-    }
-
-    public function updatingAmount($value)
-    {
-        $pay = PaymentMethod::find($value);
-
-        $this->payment->amount = $pay->amount;
-        $this->date_next_month = date('d/m/Y', strtotime($this->payment->date . " +$pay->months month"));
-    }
-
-    public function updatingMonth($value)
-    {
-        $this->payment->amount = 20 * $value;
     }
 
     public function updatingPaymentDate($value)
     {
-        $this->date_next_month = date('d/m/Y', strtotime($value . ' +1 month'));
+        $this->date_next_month = date('d/m/Y', strtotime($value . ' +' . $this->paymentmethod->months . ' month'));
+    }
+
+    public function updatingAmount($value)
+    {
+        $this->paymentmethod = PaymentMethod::find($value);
+
+        $this->payment->amount = $this->paymentmethod->amount;
+        $this->date_next_month = date('d/m/Y', strtotime($this->payment->date . ' +' . $this->paymentmethod->months . ' month'));
     }
 
     public function render()
@@ -53,8 +47,9 @@ class SearchSmartCustomers extends Component
                 ->orWhere('last_name', 'like', '%' . $this->search . '%')
                 ->paginate(5);
         }
+        $paymentmethods = PaymentMethod::all();
 
-        return view('livewire.search-smart-customers', compact('customers'));
+        return view('livewire.search-smart-customers', compact('customers', 'paymentmethods'));
     }
 
     public function storePayment()
@@ -66,6 +61,7 @@ class SearchSmartCustomers extends Component
             'user_id' => $auth->id,
             'date' => $this->payment->date,
             'amount' => $this->payment->amount,
+            'type' => 'mensual',
         ]);
 
         if ($payment) {
@@ -77,10 +73,12 @@ class SearchSmartCustomers extends Component
     {
         $this->customer = $customer;
 
+        $this->paymentmethod = PaymentMethod::first();
+
         $this->payment = new Payment;
         $this->payment->date = date('Y-m-d');
-        $this->payment->amount = 20;
-        $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
+        $this->payment->amount = $this->paymentmethod->amount;
+        $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +' . $this->paymentmethod->months . ' month'));
 
         $this->emit('showModal');
     }

@@ -18,6 +18,8 @@ class CreateClosuresTable extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->enum('type', ['diario', 'mensual', 'anual']);
             $table->date('date');
+            $table->decimal('debit', 8, 2)->default(0);
+            $table->decimal('have', 8, 2)->default(0);
             $table->decimal('amount', 8, 2);
 
             $table->foreign('branch_id')->references('id')->on('branches');

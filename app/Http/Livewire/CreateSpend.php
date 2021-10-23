@@ -4,24 +4,28 @@ namespace App\Http\Livewire;
 
 use App\Models\Spend;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class CreateSpend extends Component
 {
+    // estos son los atributos del componente
     public $description, $amount;
 
-    protected $rules=[
-        'description'=>'required',
-        'amount'=>'required',
+    // las reglas para que se visualice en el blade
+    protected $rules = [
+        'description' => 'required',
+        'amount' => 'required',
     ];
 
+    // esto es mas o menos como el constructor del componente
     public function mount()
     {
-        $this->description='pago';
-        $this->amount=5;
+        // si ves esto es como que inicia las variables
+        $this->description = '';
+        $this->amount = 0;
     }
 
+    // cada componente debe renderizar su vista
     public function render()
     {
         return view('livewire.create-spend');
@@ -29,7 +33,7 @@ class CreateSpend extends Component
 
     public function store()
     {
-        $date=Carbon::now();
+        $date = Carbon::now();
         $spend = Spend::create([
             'branch_id' => 1,
             'description' => $this->description,
@@ -37,8 +41,11 @@ class CreateSpend extends Component
             'date' => $date->format('Y-m-d')
         ]);
 
+        // si se guarda correctamente
         if ($spend) {
+            // decimos a su componente padre que actualice su lista en este caso al metodo render
             $this->emit('render');
+            // decimos al livewire que cierre el modal
             $this->emit('closeModal');
         }
     }

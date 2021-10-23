@@ -45,10 +45,19 @@
         </table>
         @endif
     </div>
-        <div class="row">
-            <div class="col-sm-10"></div>
-            <div class="col-sm-2">
-                @livewire('create-spend')
-            </div>
+    <div class="row">
+        <div class="col-sm-10"></div>
+        <div class="col-sm-2">
+            <!-- create-spend este componente se encarga de registrar el gasto -->
+            @livewire('create-spend')
         </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10"></div>
+        <div class="col-sm-2">
+            <!-- peste componente no es neceario crear porque solo toca guardar un valor -->
+            <!-- mejor voy a pasar el boton aqui -->
+            <button wire:click="store" class="btn btn-success mb-3">Cerrar caja</button>
+        </div>
+    </div>
 </div>

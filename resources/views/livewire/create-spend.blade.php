@@ -1,6 +1,6 @@
 <div>
     <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalwindow">Agregar Egreso</button>
-    <div class="modal fade" id="modalwindow" role="dialog">
+    <div class="modal fade" id="modalwindow" wire:ignore role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                     <div class="modal-header">

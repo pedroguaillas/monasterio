@@ -15,6 +15,7 @@ class HomeController extends Controller
             ->get();
 
         $reportbymoths = json_decode(json_encode($reportbymoths, true));
+        // return response()->json(['res' => $reportbymoths]);
 
         return view('admin.index', compact('reportbymoths'));
     }
