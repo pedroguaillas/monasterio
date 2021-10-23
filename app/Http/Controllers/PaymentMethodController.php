@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 
 class PaymentMethodController extends Controller
 {
+   
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +16,11 @@ class PaymentMethodController extends Controller
      */
     public function index()
     {
+        // Este metodo muestra una pagina estatica
+        // Solo utilizo esto para mostrar una vista
+        //  que dentro va estar un componente
+        //  Este controllador no va hacer nada mas s
+        //entonces todos estos metodos estan degana aqui simom
         return view('paymentmethods.index');
     }
 
@@ -60,6 +67,7 @@ class PaymentMethodController extends Controller
         //
     }
 
+   
     /**
      * Update the specified resource in storage.
      *
