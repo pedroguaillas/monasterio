@@ -7,63 +7,6 @@
 @stop
 
 @section('content')
-<!-- Small boxes (Stat box) -->
-<div class="row">
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>$3.244,32</h3>
-
-                <p>Ingreso</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa fa-money-bill-alt"></i>
-            </div>
-        </div>
-    </div>
-    <!-- ./col -->
-    <!-- <div class="col-lg-3 col-6">
-        <div class="small-box bg-secondary">
-            <div class="inner">
-                <h3>$788</h3>
-
-                <p>Egresos</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa fa-money-bill-wave"></i>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-primary">
-            <div class="inner">
-                <h3>$2.456,32‬</h3>
-
-                <p>Beneficio</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa fa-money-bill-wave-alt"></i>
-            </div>
-        </div>
-    </div> -->
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>134</h3>
-
-                <p>Usuarios</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa fa-users"></i>
-            </div>
-            <!-- <a href="{{url('people')}}" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div>
-    </div>
-</div>
 <!-- /.row -->
 <div class="row">
     <!-- /.col-md-6 -->
@@ -134,6 +77,37 @@
             </div>
         </div>
         <!-- /.card-body-->
+    </div>
+</div>
+<p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Reporte por año
+    </a>
+</p>
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        @if($reportbymoths !== null && count($reportbymoths))
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                    <th style="width: 40px">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($reportbymoths as $item)
+                <tr>
+                    <td>{{$item->date}}</td>
+                    <td>{{$item->amount}}</td>
+                    <td>
+                        <a href="#" class="btn btn-success">act</a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @endif
     </div>
 </div>
 @stop

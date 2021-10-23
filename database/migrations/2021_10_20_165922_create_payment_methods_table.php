@@ -16,6 +16,7 @@ class CreatePaymentMethodsTable extends Migration
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
             $table->string('description');
+            $table->integer('months');
             $table->decimal('amount', 8, 2);
 
             $table->timestamps();

@@ -38,42 +38,38 @@
     {{-- modal --}}
     <x-adminlte-modal id="modalwindow" wire:ignore title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
         <div class="form-group row">
-            <label class="control-label col-sm-4">Fecha de inscripción</label>
-            <div class="col-sm-4">
+            <label class="control-label col-sm-5">Fecha de pago</label>
+            <div class="col-sm-5">
                 <input type="date" wire:model="payment.date" class="form-control form-control-sm" required>
             </div>
         </div>
 
-        <!-- <div class="form-group row">
-            <label class="control-label col-sm-4">Mes (es)</label>
-            <div class="col-sm-2">
-                <input type="number" wire:model="month" min="1" class="form-control form-control-sm" required>
-            </div>
-        </div> -->
-
         <div class="form-group row">
-            <label class="control-label col-sm-4">Metodos de pago</label>
-            <div class="col-sm-4">
-                <x-adminlte-select name="optionsTest1">
-                    <x-adminlte-options :options="['Option 1', 'Option 2', 'Option 3']" disabled="1"
-                        empty-option="Select an option..."/>
-                </x-adminlte-select>
+            <label class="control-label col-sm-5" for="amount">Metodos de pago</label>
+            <div class="col-sm-5">
+                <select class="custom-select form-control form-control-sm" id="amount" wire:model="amount" required>
+                    @foreach($paymentmethods as $item)
+                    <option value="{{$item->id}}">{{$item->amount . ' ' .$item->description}}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-4">Fecha mes próximo</label>
-            <span class="control-label col-sm-8">{{$date_next_month}}</span>
+            <label class="control-label col-sm-5">Fecha próximo pago</label>
+            <div class="col-sm-5">
+                <input type="text" wire:model="date_next_month" class="form-control form-control-sm" disabled>
+            </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-4">Valor a pagar ($)</label>
+            <label class="control-label col-sm-5">Valor a pagar ($)</label>
             <div class="col-sm-2">
                 <input type="number" wire:model="payment.amount" min="10" class="form-control form-control-sm" required>
             </div>
         </div>
         <x-slot name="footerSlot">
-            <x-adminlte-button style="height: 3em;" wire:click="storePayment" theme="success" icon="fas fa-lg fa-save"/>
+            <x-adminlte-button style="height: 3em;" wire:click="storePayment" theme="success" icon="fas fa-lg fa-save" />
         </x-slot>
     </x-adminlte-modal>
 </div>

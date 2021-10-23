@@ -16,11 +16,13 @@ class PaymentMethodSeed extends Seeder
     {
         PaymentMethod::create([
             'description' => 'Mensual',
+            'months' => 1,
             'amount' => 20
         ]);
 
         PaymentMethod::create([
             'description' => 'Trimestral',
+            'months' => 3,
             'amount' => 55
         ]);
     }
