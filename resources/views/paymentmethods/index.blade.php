@@ -17,16 +17,14 @@
 @livewireScripts
 
 <script>
-    // Livewire.on('showModal', function() {
-    //     $('#modalwindow').modal('show')
-    // })
+    // Esta parte es para mostrar el modal cuando
+    Livewire.on('showModal', function() {
+        $('#modalwindow').modal('show')
+    })
 
-    // Livewire.on('keyboardModal', function() {
-    //     $('#modalwindow').modal('show')
-    // })
-
-    // Livewire.on('closeModal', function() {
-    //     $('#modalwindow').modal('hide')
-    // })
+    // Esta parte es para cerrar el modal cuando
+    Livewire.on('closeModal', function() {
+        $('#modalwindow').modal('hide')
+    })
 </script>
 @endsection
