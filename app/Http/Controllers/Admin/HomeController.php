@@ -9,14 +9,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $reportbymoths = DB::table('payments')
-            ->select(DB::raw('sum(amount) as amount, date'))
-            ->groupBy('date')
-            ->get();
-
-        $reportbymoths = json_decode(json_encode($reportbymoths, true));
-        // return response()->json(['res' => $reportbymoths]);
-
-        return view('admin.index', compact('reportbymoths'));
+        return view('admin.index');
     }
 }

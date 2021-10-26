@@ -79,37 +79,6 @@
         <!-- /.card-body-->
     </div>
 </div>
-<p>
-    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-        Reporte por año
-    </a>
-</p>
-<div class="collapse" id="collapseExample">
-    <div class="card card-body">
-        @if($reportbymoths !== null && count($reportbymoths))
-        <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Monto</th>
-                    <th style="width: 40px">Opciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($reportbymoths as $item)
-                <tr>
-                    <td>{{$item->date}}</td>
-                    <td>{{$item->amount}}</td>
-                    <td>
-                        <a href="#" class="btn btn-success">act</a>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        @endif
-    </div>
-</div>
 @stop
 
 @section('css')

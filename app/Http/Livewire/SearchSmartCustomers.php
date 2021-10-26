@@ -14,6 +14,9 @@ class SearchSmartCustomers extends Component
     public $date_next_month;
     public $amount;
 
+    // payments
+    public $payments;
+
     protected $rules = [
         'payment.date' => 'required',
         'payment.amount' => 'required',
@@ -21,6 +24,7 @@ class SearchSmartCustomers extends Component
 
     public function mount()
     {
+        $this->payment = null;
         $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
     }
 
@@ -81,5 +85,13 @@ class SearchSmartCustomers extends Component
         $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +' . $this->paymentmethod->months . ' month'));
 
         $this->emit('showModal');
+    }
+
+    public function listpayments(Customer $customer)
+    {
+        $this->payments = Payment::where('customer_id', $customer->id)
+            ->get();
+
+        $this->emit('showModalpayments');
     }
 }

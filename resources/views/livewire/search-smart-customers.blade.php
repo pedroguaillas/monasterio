@@ -16,7 +16,7 @@
                     <th>Identificación</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
-                    <th style="width: 40px">Opciones</th>
+                    <th style="width: 1em"></th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +26,22 @@
                     <td>{{$customer->first_name}}</td>
                     <td>{{$customer->last_name}}</td>
                     <td>
-                        <a wire:click="edit({{$customer->id}})" class="btn btn-success">Pagar</a>
+                        <!-- <a wire:click="edit({{$customer->id}})" class="btn btn-success">Pagar</a> -->
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                                    <a wire:click="edit({{$customer->id}})" class="dropdown-item">
+                                        <i class="far fa-edit"></i> Pagar
+                                    </a>
+                                    <a wire:click="listpayments({{$customer->id}})" class="dropdown-item">
+                                        <i class="far fa-list-alt"></i> Pagos
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
                     </td>
                 </tr>
                 @endforeach
@@ -35,7 +50,7 @@
         @endif
     </div>
 
-    {{-- modal --}}
+    {{-- modal pago --}}
     <x-adminlte-modal id="modalwindow" wire:ignore title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
         <div class="form-group row">
             <label class="control-label col-sm-5">Fecha de pago</label>
@@ -71,5 +86,30 @@
         <x-slot name="footerSlot">
             <x-adminlte-button style="height: 3em;" wire:click="storePayment" theme="success" icon="fas fa-lg fa-save" />
         </x-slot>
+    </x-adminlte-modal>
+
+    {{-- modal lista de pagos --}}
+    <x-adminlte-modal id="modalwindowpayments" title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
+
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
+            @if($payments !== null && $payments->count())
+            <tbody>
+                @foreach($payments as $item)
+                <tr>
+                    <td>1</td>
+                    <td>{{$item->date}}</td>
+                    <td>{{$item->amount}}</td>
+                </tr>
+                @endforeach
+            </tbody>
+            @endif
+        </table>
     </x-adminlte-modal>
 </div>

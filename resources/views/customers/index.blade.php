@@ -24,5 +24,10 @@
     Livewire.on('closeModal', function() {
         $('#modalwindow').modal('hide')
     })
+
+    // otro
+    Livewire.on('showModalpayments', function() {
+        $('#modalwindowpayments').modal('show')
+    })
 </script>
 @endsection

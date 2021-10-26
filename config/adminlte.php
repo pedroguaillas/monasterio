@@ -263,7 +263,7 @@ return [
         ],
         [
             'text'        => 'Estadísticas',
-            'url'         => '#',
+            'url'         => 'admin/estadistica',
             'icon'        => 'fas fa-fw fa-chart-pie',
         ],
         [
