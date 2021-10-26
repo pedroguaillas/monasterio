@@ -47,13 +47,7 @@
             @endphp
             <tbody>
                 @foreach($closures as $item)
-                <tr>
-                    <td>{{ $item->date }}</td>
-                    <td>{{ number_format($item->entry, 2, ',', '.') }}</td>
-                    <td>{{ number_format($item->egress, 2, ',', '.') }}</td>
-                    <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
-                    <livewire:statistics-month :year="$item->date">
-                </tr>
+                @livewire('statistics-month', ['closure' => $item, 'key' => 'closure' .$item->date])
                 @php
                 $sum_entry += $item->entry;
                 $sum_egress += $item->egress;

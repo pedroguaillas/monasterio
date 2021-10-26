@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class StatisticsMonth extends Component
 {
-    public $year;
+    public $year, $closure;
 
     public function mount()
     {
