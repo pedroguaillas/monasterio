@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\DB;
 
 class StatisticsMonth extends Component
 {
-    public $year, $closure;
+    public $date = 0, $entry = 0, $egress = 0;
 
-    public function mount()
+    public function mount($closure)
     {
-        $this->year = null;
+        $this->date = $closure->date;
+        $this->entry = $closure->entry;
+        $this->egress = $closure->egress;
     }
 
     public function render()
