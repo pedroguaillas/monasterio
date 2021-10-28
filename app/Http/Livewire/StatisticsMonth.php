@@ -7,24 +7,30 @@ use Illuminate\Support\Facades\DB;
 
 class StatisticsMonth extends Component
 {
-    public $date = 0, $entry = 0, $egress = 0;
+    public $date, $entry, $egress;
+    public $active = false;
 
-    public function mount($closure)
+    public function mount($date, $entry, $egress)
     {
-        $this->date = $closure->date;
-        $this->entry = $closure->entry;
-        $this->egress = $closure->egress;
+        $this->date = $date;
+        $this->entry = $entry;
+        $this->egress = $egress;
+    }
+
+    public function collapseddddd($si)
+    {
+        $this->active = !$this->active;
     }
 
     public function render()
     {
         $closuresmoth = null;
 
-        if ($this->year !== null) {
-            $closuresmoth = DB::select('SELECT SUM(entry) AS entry, SUM(egress) AS egress, MONTH(date) AS date FROM `closures` GROUP BY MONTH(date)');
+        if ($this->active) {
+            $closuresmoth = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, MONTH(date) AS month FROM closures GROUP BY MONTH(date) WHERE YEAR(date) = $this->year");
             $closuresmoth = json_decode(json_encode($closuresmoth, true));
         }
 
-        return view('livewire.statistics-month', compact('closuresmoth'));
+        return view('livewire.statistics-month', ['closuresmoth' => $closuresmoth]);
     }
 }

@@ -47,7 +47,7 @@
             @endphp
             <tbody>
                 @foreach($closures as $item)
-                @livewire('statistics-month', ['closure' => $item, 'key' => 'closure' .$item->date])
+                @livewire('statistics-month', ['date' => $item->date, 'entry' => $item->entry, 'egress' => $item->egress, 'key' => 'closure' .$item->date])
                 @php
                 $sum_entry += $item->entry;
                 $sum_egress += $item->egress;
