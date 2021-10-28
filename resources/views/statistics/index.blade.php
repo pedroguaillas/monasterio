@@ -48,9 +48,9 @@
             <tbody>
                 @foreach($closures as $item)
                 <tr>
-                    <td>{{ $item->date }}</td>
-                    <td>{{ number_format($item->entry, 2, ',', '.') }}</td>
-                    <td>{{ number_format($item->egress, 2, ',', '.') }}</td>
+                    <td style="width: 25%;">{{ $item->date }}</td>
+                    <td style="width: 25%;">{{ number_format($item->entry, 2, ',', '.') }}</td>
+                    <td style="width: 25%;">{{ number_format($item->egress, 2, ',', '.') }}</td>
                     <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
                     <td>
                         <button onClick="collapseAnio({{$item->date}})" class="btn btn-success btn-sm">+</button>
@@ -60,7 +60,6 @@
                     <td id="{{ 'anio' .$item->date }}" colspan="5">
                     </td>
                 </tr>
-
                 @php
                 $sum_entry += $item->entry;
                 $sum_egress += $item->egress;
@@ -101,30 +100,44 @@
 <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
 <script src="{{ asset('plugins/flot/plugins/jquery.flot.pie.js') }}"></script>
 <script>
+    let moths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+
     function collapseAnio(anio) {
         $.ajax({
             type: 'GET',
             url: "{{url('admin/statistics/bymonth')}}/" + anio,
             success: (res) => {
-                // res.closuresmoth.forEach(ele => console.log(ele))
-                let part = '<table>'
+                let part = '<table style="width: 100%;">'
                 part += '<tbody>'
                 jQuery.each(res.closuresmoth, function(index, val) {
-                    part += '<tr>'
-                    part += '<td>' + val.month + '</td>'
-                    part += '<td>' + val.entry + '</td>'
-                    part += '<td>' + val.egress + '</td>'
-                    part += '<td>' + (Number(val.entry) - Number(val.egress)) + '</td>'
-                    part += '<td>o</td>'
+                    let month = Number(val.month) - 1
+                    part += '<tr style="font-style: italic;">'
+                    part += '<td style="width: 25%;">' + moths[month] + '</td>'
+                    part += '<td style="width: 25%;">' + val.entry + '</td>'
+                    part += '<td style="width: 25%;">' + val.egress + '</td>'
+                    part += '<td>' + formatter.format((Number(val.entry) - Number(val.egress))) + '</td>'
+                    part += '<td style="width: 1em;">'
+                    part += '<button onClick="collapseAnio(' + month + ')" class="btn btn-success btn-sm">+</button>'
+                    part += '</td>'
                     part += '</tr>'
                 })
                 part += '</tbody>'
                 part += '</table>'
 
-                $.('anio' + anio).html(part)
+                $('#anio' + anio).html(part)
             },
             error: (err) => console.log(err)
         })
     }
+
+    // Create our number formatter.
+    var formatter = new Intl.NumberFormat('es-EC', {
+        //     style: 'currency',
+        //     currency: 'USD',
+
+        //     // These options are needed to round to whole numbers if that's what you want.
+        minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+        maximumFractionDigits: 2, // (causes 2500.99 to be printed as $2,501)
+    })
 </script>
 @stop
