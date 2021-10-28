@@ -13,6 +13,7 @@ class ListPaymentMethod extends Component
     protected $rules = [
         'paymentMethod.description' => 'required',
         'paymentMethod.amount' => 'required',
+        'paymentMethod.months' => 'required',
     ];
 
     public function render()
