@@ -20,4 +20,13 @@ class StatisticsController extends Controller
 
         return view('statistics.index', compact('closures'));
     }
+
+    public function byMonth(int $year)
+    {
+        $closuresmoth = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, MONTH(date) AS month FROM closures WHERE YEAR(date) = $year GROUP BY MONTH(date)");
+
+        $closuresmoth = json_decode(json_encode($closuresmoth, true));
+
+        return response()->json(['closuresmoth' => $closuresmoth]);
+    }
 }

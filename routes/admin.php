@@ -14,5 +14,6 @@ Route::resource('customers', CustomerController::class)->only(['index', 'create'
 Route::get('contabilidad', [AccountingController::class, 'index']);
 
 Route::get('estadistica', [StatisticsController::class, 'index']);
+Route::get('statistics/bymonth/{year}', [StatisticsController::class, 'byMonth']);
 
 Route::get('metodosdepago', [PaymentMethodController::class, 'index']);

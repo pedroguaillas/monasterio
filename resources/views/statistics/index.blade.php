@@ -47,7 +47,20 @@
             @endphp
             <tbody>
                 @foreach($closures as $item)
-                @livewire('statistics-month', ['date' => $item->date, 'entry' => $item->entry, 'egress' => $item->egress, 'key' => 'closure' .$item->date])
+                <tr>
+                    <td>{{ $item->date }}</td>
+                    <td>{{ number_format($item->entry, 2, ',', '.') }}</td>
+                    <td>{{ number_format($item->egress, 2, ',', '.') }}</td>
+                    <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
+                    <td>
+                        <button onClick="collapseAnio({{$item->date}})" class="btn btn-success btn-sm">+</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="{{ 'anio' .$item->date }}" colspan="5">
+                    </td>
+                </tr>
+
                 @php
                 $sum_entry += $item->entry;
                 $sum_egress += $item->egress;
@@ -87,4 +100,31 @@
 <script src="{{ asset('plugins/flot/plugins/jquery.flot.resize.js') }}"></script>
 <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
 <script src="{{ asset('plugins/flot/plugins/jquery.flot.pie.js') }}"></script>
+<script>
+    function collapseAnio(anio) {
+        $.ajax({
+            type: 'GET',
+            url: "{{url('admin/statistics/bymonth')}}/" + anio,
+            success: (res) => {
+                // res.closuresmoth.forEach(ele => console.log(ele))
+                let part = '<table>'
+                part += '<tbody>'
+                jQuery.each(res.closuresmoth, function(index, val) {
+                    part += '<tr>'
+                    part += '<td>' + val.month + '</td>'
+                    part += '<td>' + val.entry + '</td>'
+                    part += '<td>' + val.egress + '</td>'
+                    part += '<td>' + (Number(val.entry) - Number(val.egress)) + '</td>'
+                    part += '<td>o</td>'
+                    part += '</tr>'
+                })
+                part += '</tbody>'
+                part += '</table>'
+
+                $.('anio' + anio).html(part)
+            },
+            error: (err) => console.log(err)
+        })
+    }
+</script>
 @stop
