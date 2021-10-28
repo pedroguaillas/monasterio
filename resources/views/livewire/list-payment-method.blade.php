@@ -12,6 +12,7 @@
                     <th>#</th>
                     <th>Descripción</th>
                     <th>Monto</th>
+                    <th>Mes</th>
                     <th style="width: 40px">Accion</th>
                 </tr>
             </thead>
@@ -27,19 +28,18 @@
                     <td>{{$i}}</td>
                     <td>{{$item->description}}</td>
                     <td>{{$item->amount}}</td>
+                    <td>{{$item->months}}</td>
                     <td>
 
                         <!-- SECCION DEL BOTON EDITAR QUE DESPLEGA EL MODAL  -->
-
                         <div class="form-group">
-                            <button wire:click="editar({{$item->id}})">Editar</button>
-
-
+                            <button class="btn btn-success " wire:click="editar({{$item->id}})"><i class="far fa-edit"></i></button>
+                            
                             <!-- <div class="custom-control custom-switch">
                                 <input type="checkbox" wire:model="selected" value="{{$item->id}}" class="custom-control-input" id="customSwitch{{$i}}">
                                 <label class="custom-control-label" for="customSwitch{{$i}}"></label>
-                            eso ya mi propi tutorial ggggg bn bn
                             </div> -->
+
                         </div>
                     </td>
                 </tr>
@@ -65,10 +65,15 @@
             </div>
         </div>
 
+        <div class="form-group row">
+            <label class="control-label col-sm-4">Mes</label>
+            <div class="col-sm-8">
+                <input type="text" wire:model="paymentMethod.months" class="form-control form-control-sm" required>
+            </div>
+        </div>
+
         <x-slot name="footerSlot">
-            <x-adminlte-button style="height: 6em;" wire:click="update" theme="success" label="Editar" />
+            <x-adminlte-button style="height: 3em;"  wire:click="update" theme="success" icon="fas fa-lg fa-save" />
         </x-slot>
     </x-adminlte-modal>
 </div>
-
-
