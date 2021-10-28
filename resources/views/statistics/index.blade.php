@@ -20,6 +20,9 @@
         </h3>
 
         <div class="card-tools">
+            <a target="_blank"  href="{{ route('reporte') }}"  class="btn btn-white btn-sm">
+                <i class="far fa-file-pdf"></i>
+            </a>
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                 <i class="fas fa-minus"></i>
             </button>
