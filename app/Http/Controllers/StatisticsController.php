@@ -35,11 +35,18 @@ class StatisticsController extends Controller
     public function byMonth(int $year)
     {
         $closuresmoth = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, MONTH(date) AS month FROM closures WHERE YEAR(date) = $year GROUP BY MONTH(date)");
-
         $closuresmoth = json_decode(json_encode($closuresmoth, true));
 
         return response()->json(['closuresmoth' => $closuresmoth]);
     }
 
-   
+    public function edit($year)
+    {
+
+        $closuresmoth = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, MONTH(date) AS month FROM closures WHERE YEAR(date) = $year GROUP BY MONTH(date)");
+        $closuresmoth = json_decode(json_encode($closuresmoth, true));
+
+        $pdf = PDF::loadView('statistics.monthReport', compact('closuresmoth', 'year'));
+        return $pdf->stream('statistics.monthReport.pdf');
+    }
 }

@@ -18,3 +18,4 @@ Route::get('statistics/bymonth/{year}', [StatisticsController::class, 'byMonth']
 Route::get('metodosdepago', [PaymentMethodController::class, 'index']);
 
 Route::get('statisticsReport', [StatisticsController::class, 'statisticsReport'])->name('reporte');
+Route::get('monthReport/{id}', [StatisticsController::class, 'edit'])->name('monthReport');
