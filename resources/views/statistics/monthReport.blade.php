@@ -22,7 +22,7 @@
 	<hr>
 	<h4 align="center"><b><u>REPORTE ESTADISTICO</u></b></h4>
 	<h5></h5>
-	@if($closures !== null && count($closures))
+	@if($closuresmoth !== null && count($closuresmoth))
 	<table class="table table-sm">
 		<thead>
 			<tr>
@@ -38,18 +38,13 @@
 		$months = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 		@endphp
 		<tbody>
-			@foreach($closures as $item)
+			@foreach($closuresmoth as $item)
 			<tr>
-				<td>{{ $item->date }}</td>
+				<td>{{ $months[$item->month -1] }}</td>
 				<td>{{ number_format($item->entry, 2, ',', '.') }}</td>
 				<td>{{ number_format($item->egress, 2, ',', '.') }}</td>
 				<td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
 			</tr>
-			<tr>
-				<td id="{{ 'anio' .$item->date }}" colspan="5">
-				</td>
-			</tr>
-
 			@php
 			$sum_entry += $item->entry;
 			$sum_egress += $item->egress;

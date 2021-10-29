@@ -20,7 +20,7 @@
         </h3>
 
         <div class="card-tools">
-            <a target="_blank"  href="{{ route('reporte') }}"  class="btn btn-white btn-sm">
+            <a target="_blank" href="{{ route('reporte') }}" class="btn btn-white btn-sm">
                 <i class="far fa-file-pdf"></i>
             </a>
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -51,12 +51,22 @@
             <tbody>
                 @foreach($closures as $item)
                 <tr>
+                    <input type="hidden" class="serdelete_val" value="{{$item->date}}">
+
                     <td style="width: 25%;">{{ $item->date }}</td>
                     <td style="width: 25%;">{{ number_format($item->entry, 2, ',', '.') }}</td>
                     <td style="width: 25%;">{{ number_format($item->egress, 2, ',', '.') }}</td>
                     <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
-                    <td>
+                    <td class="text-center" width="150px">
                         <button onClick="collapseAnio({{$item->date}})" class="btn btn-success btn-sm">+</button>
+
+               
+                        <a target="_blank" href="{{ route('monthReport', $item->date) }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="far fa-file-pdf"></i>
+                        </a>
+
+
+
                     </td>
                 </tr>
                 <tr>
