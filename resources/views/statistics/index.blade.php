@@ -46,7 +46,6 @@
             @php
             $sum_entry=0;
             $sum_egress=0;
-            $months = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
             @endphp
             <tbody>
                 @foreach($closures as $item)
@@ -60,12 +59,9 @@
                     <td class="text-center" width="150px">
                         <button onClick="collapseAnio({{$item->date}})" class="btn btn-success btn-sm">+</button>
 
-               
                         <a target="_blank" href="{{ route('monthReport', $item->date) }}" class="btn btn-outline-secondary btn-sm">
                             <i class="far fa-file-pdf"></i>
                         </a>
-
-
 
                     </td>
                 </tr>
@@ -130,7 +126,39 @@
                     part += '<td style="width: 25%;">' + val.egress + '</td>'
                     part += '<td>' + formatter.format((Number(val.entry) - Number(val.egress))) + '</td>'
                     part += '<td style="width: 1em;">'
+                    part += '<button onClick="collapseMonth(' + month + ')" class="btn btn-success btn-sm">+</button>'
+                    part += '</td>'
+                    part += '</tr>'
+                })
+                part += '</tbody>'
+                part += '</table>'
+
+                $('#anio' + anio).html(part)
+            },
+            error: (err) => console.log(err)
+        })
+    }
+
+    function collapseMonth(month) {
+        $.ajax({
+            type: 'GET',
+            url: "{{url('admin/statistics/byweek')}}/" + month,
+            success: (res) => {
+                let part = '<table style="width: 100%;">'
+                part += '<tbody>'
+                jQuery.each(res.closuresmoth, function(index, val) {
+                    let week = Number(val.month) - 1
+                    part += '<tr style="font-style: italic;">'
+                    part += '<td style="width: 25%;">' + moths[month] + '</td>'
+                    part += '<td style="width: 25%;">' + val.entry + '</td>'
+                    part += '<td style="width: 25%;">' + val.egress + '</td>'
+                    part += '<td>' + formatter.format((Number(val.entry) - Number(val.egress))) + '</td>'
+                    part += '<td style="width: 1em;">'
                     part += '<button onClick="collapseAnio(' + month + ')" class="btn btn-success btn-sm">+</button>'
+                    part += '</td>'
+                    part += '</tr>'
+                    part += '<tr>'
+                    part += '<td id="mes' + month + '" colspan="5">'
                     part += '</td>'
                     part += '</tr>'
                 })
