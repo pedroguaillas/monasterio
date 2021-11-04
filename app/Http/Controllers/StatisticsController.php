@@ -2,15 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade as PDF;
+use DateTime;
 
 class StatisticsController extends Controller
 {
     public function index()
     {
         $closures = DB::select('SELECT SUM(entry) AS entry, SUM(egress) AS egress, YEAR(date) AS date FROM `closures` GROUP BY YEAR(date)');
+
+        $customers = Customer::all();
+        $countcustomers = $customers->count();
+
+        $dates = Customer::all('date_of_birth');
+        $years = [];
+        $now = new DateTime();
+
+        foreach ($dates as $date) {
+            $start = new DateTime($date->date_of_birth);
+            $interval = $start->diff($now);
+            $years[] = $interval->format('%a');
+        }
 
         // $closures = DB::table('closures')
         //     ->select(DB::raw('sum(amount) AS amount, MONTH(date) AS date'))
@@ -19,7 +34,7 @@ class StatisticsController extends Controller
 
         $closures = json_decode(json_encode($closures, true));
 
-        return view('statistics.index', compact('closures'));
+        return view('statistics.index', compact('closures', 'countcustomers'));
     }
 
     public function statisticsReport()

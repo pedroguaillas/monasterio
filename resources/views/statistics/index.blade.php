@@ -7,6 +7,69 @@
 @stop
 
 @section('content')
+<!-- Small boxes (Stat box) -->
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>{{ $countcustomers }}</h3>
+
+                <p>Usuario</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-stalker"></i>
+            </div>
+            <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>{{ '6:00 - 22:00' }}</h3>
+
+                <p>Horarios</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person"></i>
+            </div>
+            <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>{{ 'Promedio' }}</h3>
+
+                <p>Edades</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-cash"></i>
+            </div>
+            <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>{{ 'Estadisticas' }}</h3>
+
+                <p>{{ 'Estadisticas' }}</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-pricetags"></i>
+            </div>
+            <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+</div>
 <!-- <p>
     <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
         Reporte por año
