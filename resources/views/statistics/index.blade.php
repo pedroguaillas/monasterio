@@ -126,7 +126,11 @@
                     part += '<td style="width: 25%;">' + val.egress + '</td>'
                     part += '<td>' + formatter.format((Number(val.entry) - Number(val.egress))) + '</td>'
                     part += '<td style="width: 1em;">'
-                    part += '<button onClick="collapseMonth(' + month + ')" class="btn btn-success btn-sm">+</button>'
+                    part += '<button onClick="collapseMonth(' + month + ', ' + anio + ')" class="btn btn-success btn-sm">+</button>'
+                    part += '</td>'
+                    part += '</tr>'
+                    part += '<tr>'
+                    part += '<td id="' + anio + 'mes' + month + '" colspan="5">'
                     part += '</td>'
                     part += '</tr>'
                 })
@@ -139,33 +143,30 @@
         })
     }
 
-    function collapseMonth(month) {
+    function collapseMonth(month, year) {
         $.ajax({
             type: 'GET',
-            url: "{{url('admin/statistics/byweek')}}/" + month,
+            url: "{{url('admin/statistics/byweek')}}/" + month + '/year/' + year,
             success: (res) => {
                 let part = '<table style="width: 100%;">'
                 part += '<tbody>'
-                jQuery.each(res.closuresmoth, function(index, val) {
-                    let week = Number(val.month) - 1
+                jQuery.each(res.closuresweek, function(index, val) {
                     part += '<tr style="font-style: italic;">'
-                    part += '<td style="width: 25%;">' + moths[month] + '</td>'
+                    part += '<td style="width: 25%;">' + val.date + '</td>'
                     part += '<td style="width: 25%;">' + val.entry + '</td>'
                     part += '<td style="width: 25%;">' + val.egress + '</td>'
                     part += '<td>' + formatter.format((Number(val.entry) - Number(val.egress))) + '</td>'
                     part += '<td style="width: 1em;">'
-                    part += '<button onClick="collapseAnio(' + month + ')" class="btn btn-success btn-sm">+</button>'
-                    part += '</td>'
-                    part += '</tr>'
-                    part += '<tr>'
-                    part += '<td id="mes' + month + '" colspan="5">'
+                    part += '<button class="btn btn-success btn-sm">+</button>'
                     part += '</td>'
                     part += '</tr>'
                 })
                 part += '</tbody>'
                 part += '</table>'
 
-                $('#anio' + anio).html(part)
+                console.log(part)
+
+                $('#' + year + 'mes' + month).html(part)
             },
             error: (err) => console.log(err)
         })

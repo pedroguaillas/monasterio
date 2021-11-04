@@ -15,6 +15,7 @@ Route::get('contabilidad', [AccountingController::class, 'index']);
 
 Route::get('estadistica', [StatisticsController::class, 'index']);
 Route::get('statistics/bymonth/{year}', [StatisticsController::class, 'byMonth']);
+Route::get('statistics/byweek/{month}/year/{year}', [StatisticsController::class, 'byWeek']);
 Route::get('metodosdepago', [PaymentMethodController::class, 'index']);
 
 Route::get('statisticsReport', [StatisticsController::class, 'statisticsReport'])->name('reporte');

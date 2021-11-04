@@ -31,7 +31,6 @@ class StatisticsController extends Controller
         return $pdf->stream('statistics.statisticsReport.pdf');
     }
 
-
     public function byMonth(int $year)
     {
         $closuresmoth = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, MONTH(date) AS month FROM closures WHERE YEAR(date) = $year GROUP BY MONTH(date)");
@@ -48,5 +47,13 @@ class StatisticsController extends Controller
 
         $pdf = PDF::loadView('statistics.monthReport', compact('closuresmoth', 'year'));
         return $pdf->stream('statistics.monthReport.pdf');
+    }
+
+    public function byWeek(int $month, int $year)
+    {
+        $closuresweek = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, date FROM closures WHERE YEAR(date) = $year AND MONTH(date) = $month GROUP BY date");
+        $closuresweek = json_decode(json_encode($closuresweek, true));
+
+        return response()->json(['closuresweek' => $closuresweek]);
     }
 }

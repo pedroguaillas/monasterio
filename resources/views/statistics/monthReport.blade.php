@@ -15,12 +15,12 @@
 		</a>
 		<nav>
 			<ul>
-				<h4><b><i>GYM - MONASTERIO</i></b></h4>
+				<h4><b><i>GIMNASIO</i></b></h4>
 			</ul>
 		</nav>
 	</header><br>
 	<hr>
-	<h4 align="center"><b><u>REPORTE ESTADISTICO</u></b></h4>
+	<h4 align="center"><b><u>REPORTE ESTADISTICO AÑO {{ $year }}</u></b></h4>
 	<h5></h5>
 	@if($closuresmoth !== null && count($closuresmoth))
 	<table class="table table-sm">

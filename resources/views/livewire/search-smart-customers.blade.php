@@ -100,10 +100,16 @@
                 </tr>
             </thead>
             @if($payments !== null && $payments->count())
+            @php
+            $i=0;
+            @endphp
             <tbody>
                 @foreach($payments as $item)
+                    @php
+                    $i++;
+                    @endphp
                 <tr>
-                    <td>1</td>
+                    <td>{{$i}}</td>
                     <td>{{$item->date}}</td>
                     <td>{{$item->amount}}</td>
                 </tr>
