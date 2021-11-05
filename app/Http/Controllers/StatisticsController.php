@@ -18,14 +18,25 @@ class StatisticsController extends Controller
         $countcustomers = $customers->count();
 
         $dates = Customer::all('date_of_birth');
+
         $years = [];
         $now = new DateTime();
 
         foreach ($dates as $date) {
             $start = new DateTime($date->date_of_birth);
             $interval = $start->diff($now);
-            $years[] = $interval->format('%a');
+            $years[] = $interval->format('%y');
         }
+
+        $sum = 0;
+        $cont = 0;
+
+        foreach ($years as $year) {
+            $cont++;
+            $sum += $year;
+        }
+
+        $averange = $sum / $cont;
 
         // $closures = DB::table('closures')
         //     ->select(DB::raw('sum(amount) AS amount, MONTH(date) AS date'))
@@ -34,7 +45,7 @@ class StatisticsController extends Controller
 
         $closures = json_decode(json_encode($closures, true));
 
-        return view('statistics.index', compact('closures', 'countcustomers'));
+        return view('statistics.index', compact('closures', 'countcustomers', 'averange'));
     }
 
     public function statisticsReport()
@@ -56,7 +67,6 @@ class StatisticsController extends Controller
 
     public function edit($year)
     {
-
         $closuresmoth = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, MONTH(date) AS month FROM closures WHERE YEAR(date) = $year GROUP BY MONTH(date)");
         $closuresmoth = json_decode(json_encode($closuresmoth, true));
 

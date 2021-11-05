@@ -18,7 +18,7 @@
                 <p>Usuario</p>
             </div>
             <div class="icon">
-                <i class="ion ion-person-stalker"></i>
+                <i class="fa fa-users"></i>
             </div>
             <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
@@ -33,7 +33,7 @@
                 <p>Horarios</p>
             </div>
             <div class="icon">
-                <i class="ion ion-person"></i>
+                <i class="fa fa-clock"></i>
             </div>
             <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
@@ -43,12 +43,12 @@
         <!-- small box -->
         <div class="small-box bg-warning">
             <div class="inner">
-                <h3>{{ 'Promedio' }}</h3>
+                <h3>{{ (int)$averange }}</h3>
 
                 <p>Edades</p>
             </div>
             <div class="icon">
-                <i class="ion ion-cash"></i>
+                <i class="fas fa-chart-bar"></i>
             </div>
             <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
@@ -63,7 +63,7 @@
                 <p>{{ 'Estadisticas' }}</p>
             </div>
             <div class="icon">
-                <i class="ion ion-pricetags"></i>
+                <i class="fas fa-chart-pie"></i>
             </div>
             <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
