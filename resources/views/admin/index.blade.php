@@ -86,6 +86,7 @@
 @stop
 
 @section('js')
+
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <!-- jQuery Mapael -->
 <script src="{{ asset('plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
