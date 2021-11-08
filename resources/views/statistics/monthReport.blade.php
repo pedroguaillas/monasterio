@@ -74,6 +74,7 @@
 		padding: 0;
 		font-size: 1em;
 		line-height: 1.5em;
+		font-family: Arial, Helvetica, sans-serif;
 	}
 
 	#main-header {
@@ -85,7 +86,7 @@
 	}
 
 	hr {
-		border: 1px solid #57B9DF;
+		border: 1px solid #817C7C;
 	}
 
 	/*
@@ -108,6 +109,12 @@
 		color: #999;
 	}
 
+	.logo {
+		padding-top: 10px;
+		height: 50px;
+		float: right;
+		margin: 5px;
+	}
 
 	/*
  * Navegación
@@ -129,38 +136,30 @@
 	}
 
 
-	.table {
-		table-layout: fixed;
+	table {
+		border: 0.01px solid #F4EDEB;
+		font-family: Arial, Helvetica, sans-serif;
 		width: 100%;
-		border-collapse: collapse;
-		border: 0.5px solid;
-		border-color: rgba(0, 0, 0, 0.3);
+		border-spacing: 0;
 	}
 
-	th,
-	td {
-		padding: 2px;
+	th {
+		border: 0.01px solid #F4EDEB;
 		font-size: 15px;
 		letter-spacing: 1px;
 		text-align: center;
 	}
 
-	.margin {
-		padding: 0;
+	td {
+		border: 0.01px solid #F4EDEB;
+		font-size: 15px;
+		letter-spacing: 1px;
+		text-align: center;
 	}
-
-
+	
 	thead {
-		background-color: #57B9DF;
+		background-color: #544F4F;
 		color: #FFF;
-	}
-
-
-	.logo {
-		padding-top: 10px;
-		height: 50px;
-		float: right;
-		margin: 5px;
 	}
 
 	footer {
