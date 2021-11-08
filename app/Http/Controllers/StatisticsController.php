@@ -81,4 +81,56 @@ class StatisticsController extends Controller
 
         return response()->json(['closuresweek' => $closuresweek]);
     }
+
+    public function chars()
+    {
+        $genders = DB::table('customers')
+            ->select(DB::raw('COUNT(gender) as count'), 'gender')
+            ->groupBy('gender')
+            ->get();
+
+        $genders_data = [];
+        $genders_ticks = [];
+        $index = 1;
+        $genders_data[] = [$index, 0];
+        $genders_ticks[] = [$index++, ''];
+
+        foreach ($genders as $gender) {
+            $genders_data[] = [$index, $gender->count];
+            $genders_ticks[] = [$index, $gender->gender];
+            $index++;
+        }
+        $genders_data[] = [$index, 0];
+        $genders_ticks[] = [$index, ''];
+
+        $dates = Customer::all('date_of_birth');
+
+        $ages = [];
+        $now = new DateTime();
+
+        foreach ($dates as $date) {
+            $start = new DateTime($date->date_of_birth);
+            $interval = $start->diff($now);
+            $ages[] = $interval->format('%y');
+        }
+
+        $collection = collect($ages);
+        $collection = $collection->sort();
+        $collection = $collection->countBy();
+
+        $ages_data = [];
+        $ages_ticks = [];
+        $index = 1;
+
+        foreach ($collection as $key => $value) {
+            $ages_data[] = [$index, $value];
+            $ages_ticks[] = [$index, '' . $key];
+            $index++;
+        }
+
+        return response()->json([
+            'genders' => ['data' => $genders_data, 'ticks' => $genders_ticks],
+            'ages' => ['data' => $ages_data, 'ticks' => $ages_ticks],
+        ]);
+    }
 }
