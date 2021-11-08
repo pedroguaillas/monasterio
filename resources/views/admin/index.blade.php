@@ -86,20 +86,6 @@
 @stop
 
 @section('js')
-
-<script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-<!-- jQuery Mapael -->
-<script src="{{ asset('plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
-<script src="{{ asset('plugins/raphael/raphael.min.js') }}"></script>
-<script src="{{ asset('plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
-<script src="{{ asset('plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
-<!-- ChartJS -->
-<!-- FLOT CHARTS -->
-<script src="{{ asset('plugins/flot/jquery.flot.js') }}"></script>
-<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
-<script src="{{ asset('plugins/flot/plugins/jquery.flot.resize.js') }}"></script>
-<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-<script src="{{ asset('plugins/flot/plugins/jquery.flot.pie.js') }}"></script>
 <script>
     $(function() {
         /*

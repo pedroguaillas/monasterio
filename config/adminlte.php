@@ -380,6 +380,26 @@ return [
     */
 
     'plugins' => [
+        'flot' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/flot/jquery.flot.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/flot/plugins/jquery.flot.resize.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/flot/plugins/jquery.flot.pie.js',
+                ],
+            ],
+        ],
         'Datatables' => [
             'active' => false,
             'files' => [

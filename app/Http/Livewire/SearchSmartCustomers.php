@@ -91,6 +91,8 @@ class SearchSmartCustomers extends Component
     {
         $this->payments = Payment::where('customer_id', $customer->id)
             ->get();
+        // $this->payments = Payment::where('customer_id', $customer->id)
+        //     ->get();
 
         $this->emit('showModalpayments');
     }
