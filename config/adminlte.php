@@ -267,8 +267,8 @@ return [
             'icon'        => 'fas fa-fw fa-chart-pie',
         ],
         [
-            'text'        => 'Métodos de pago',
-            'url'         => 'admin/metodosdepago',
+            'text'        => 'Servicios',
+            'url'         => 'admin/servicios',
             'icon'        => 'fas fa-fw fa-money-bill-wave',
         ],
         // [
