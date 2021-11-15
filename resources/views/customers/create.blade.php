@@ -3,7 +3,18 @@
 @section('title', 'Registrar nuevo usuario')
 
 @section('content')
+
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@else
 <br />
+@endif
 <form class="form-horizontal" role="form" method="POST" action="{{ route('customers.store') }}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="row">
@@ -86,7 +97,7 @@
                             <select name="listaDeDispositivos" id="listaDeDispositivos" style="display: none;">
                             </select>
                             <p id="estado"></p>
-                            
+
                             <button class="btn btn-success" id="boton" type="button">
                                 Tomar foto
                             </button>
@@ -118,9 +129,13 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="control-label col-sm-4" for="month_payment">Mes (es)</label>
-                        <div class="col-sm-2">
-                            <input type="number" value="1" min="1" class="form-control form-control-sm" id="month_payment" name="month" required>
+                        <label class="control-label col-sm-4" for="month_payment">Servicios</label>
+                        <div class="col-sm-5">
+                            <select class="custom-select form-control form-control-sm" id="payment_method_id" name="payment_method_id" required>
+                                @foreach($paymentmethods as $item)
+                                <option value="{{$item->id}}">{{$item->amount . ' ' .$item->description}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
@@ -143,14 +158,14 @@
         <div class="col-md-6">
             <!-- general form elements -->
 
-                    <div class="modal-footer">
-                        <button class="btn btn-success" type="submit">
-                            Guardar
-                        </button>
-                        <button class="btn btn-warning" type="button">
-                            Cancelar
-                        </button>
-                    </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" type="submit">
+                    Guardar
+                </button>
+                <button class="btn btn-warning" type="button">
+                    Cancelar
+                </button>
+            </div>
         </div>
     </div>
 </form>
@@ -158,17 +173,36 @@
 
 @section('js')
 <script>
-    $('#date_payment').change(e=>update(e))
-
-    $('#month_payment').change(e=>update(e))
-
-    const update=e=>{
+    let service = undefined
+    $('#date_payment').change(e => {
         e.preventDefault()
 
-        let sum_month= parseInt($('#month_payment').val())
+        if (service === undefined) {
+            getService()
+        }
+        update()
+    })
 
-        $('#date_next_month').text(sumMonth($('#date_payment').val(), sum_month))
-        $('#amount_payment').val(20 * sum_month)
+    $('#payment_method_id').change(e => {
+        e.preventDefault()
+        getService()
+    })
+
+    const update = () => {
+        $('#date_next_month').text(sumMonth($('#date_payment').val(), service.months))
+        $('#amount_payment').val(service.amount)
+    }
+
+    const getService = () => {
+        $.ajax({
+            type: 'GET',
+            url: "{{url('admin/services')}}/" + $('#payment_method_id').val(),
+            success: (res) => {
+                service = res.paymentMethod
+                update()
+            },
+            error: (err) => console.log(err)
+        })
     }
 
     function sumMonth(date, val_sum) {
@@ -187,7 +221,7 @@
             } else {
                 // Suma año
                 date_str[0] = parseInt(date_str[0]) + 1
-                // Pone el mes 1
+                // Asigna el mes 1
                 date_str[1] = '0' + (sum - 12)
             }
         }
@@ -327,7 +361,7 @@
                         contexto.drawImage($video, 0, 0, $canvas.width, $canvas.height);
 
                         // let foto = $canvas.toDataURL(); //Esta es la foto, en base 64
-                        
+
                         $('#photo_customer').val($canvas.toDataURL())
                         $('#botonTomarNuevo').css("display", "inline-block")
                         $('#boton').css("display", "none")

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSchedulesTable extends Migration
+class CreatePaymentItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateSchedulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('schedules', function (Blueprint $table) {
+        Schema::create('payment_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id');
-            $table->string('description');
+            $table->unsignedBigInteger('payment_id');
+            $table->date('date');
+            $table->decimal('amount', 8, 2);
+            $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches');
-
-            $table->timestamps();
+            $table->foreign('payment_id')->references('id')->on('payments');
         });
     }
 
@@ -31,6 +33,6 @@ class CreateSchedulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('payment_items');
     }
 }

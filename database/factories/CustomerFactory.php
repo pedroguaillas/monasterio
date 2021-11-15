@@ -22,14 +22,13 @@ class CustomerFactory extends Factory
     public function definition()
     {
         return [
-            'branch_id'=>1,
-            'user_id'=>1,
-            'schedule_id'=>1,
-            'first_name'=>$this->faker->name(),
-            'last_name'=>$this->faker->name(),
-            'gender'=>rand(0,1)==0?'masculino':'femenino',
-            'date_of_birth'=>$this->faker->date,
-            'photo'=>'photo',
+            'branch_id' => 1,
+            'user_id' => 1,
+            'first_name' => $this->faker->name(),
+            'last_name' => $this->faker->name(),
+            'gender' => rand(0, 1) == 0 ? 'masculino' : 'femenino',
+            'date_of_birth' => $this->faker->date,
+            'photo' => 'photo',
         ];
     }
 }

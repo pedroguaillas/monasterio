@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -26,7 +28,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('customers.create');
+        $paymentmethods = PaymentMethod::all();
+
+        return view('customers.create', compact('paymentmethods'));
     }
 
     /**
@@ -39,6 +43,34 @@ class CustomerController extends Controller
     {
         $auth = Auth::user();
 
+        // $validator = Validator::make(
+        //     $request->all(),
+        //     [
+        //         'first_name' => 'required',
+        //         'last_name' => 'required',
+        //         'gender' => 'required|integer',
+        //         'photo' => 'required',
+        //         'payment_method_id' => 'required',
+        //         'date' => 'required',
+        //         'amount' => 'required',
+        //     ],
+        //     [
+        //         'first_name.required' => 'El campo "Nombres" es requerido.',
+        //         'last_name.required' => 'El campo "Apellidos" es requerido.',
+        //         'gender.integer' => 'Debe seleccionar un "Genero".',
+        //         'photo.required' => 'Debe tomarse la foto.',
+        //         'payment_method_id.required' => 'Debe seleccionar un "Servicio".',
+        //         'date.required' => 'El campo "Fecha de inscripción" es requerido.',
+        //         'amount.required' => 'El campo "Valor a pagar" es requerido.',
+        //     ]
+        // );
+
+        // if ($validator->fails()) {
+        //     return redirect()->back()
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+
         $image_parts = explode(";base64,", $request->photo);
         $image_type_aux = explode("image/", $image_parts[0]);
         $image_type = $image_type_aux[1];
@@ -48,7 +80,6 @@ class CustomerController extends Controller
         Storage::put($file, $image_base64);
 
         $customer = Customer::create([
-            'schedule_id' => 1,
             'branch_id' => 1,
             'identification' => $request->identification,
             'user_id' => $auth->id,
@@ -61,11 +92,19 @@ class CustomerController extends Controller
             'phone' => $request->phone
         ]);
 
+        $service = PaymentMethod::find($request->payment_method_id);
+
         $payment = $customer->payments()->create([
             'branch_id' => 1,
-            'user_id' => $auth->id,
+            'to_pay' => $service->amount,
+            'type' => $service->description,
+        ]);
+
+        $paymentItem = $payment->paymentitems()->create([
+            'branch_id' => 1,
             'date' => $request->date,
             'amount' => $request->amount
+
         ]);
 
         return view('admin.index');

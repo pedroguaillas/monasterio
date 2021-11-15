@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class PaymentMethodController extends Controller
 {
-   
+
     /**
      * Display a listing of the resource.
      *
@@ -53,7 +53,7 @@ class PaymentMethodController extends Controller
      */
     public function show(PaymentMethod $paymentMethod)
     {
-        //
+        return response()->json(['paymentMethod' => $paymentMethod]);
     }
 
     /**
@@ -67,7 +67,7 @@ class PaymentMethodController extends Controller
         //
     }
 
-   
+
     /**
      * Update the specified resource in storage.
      *

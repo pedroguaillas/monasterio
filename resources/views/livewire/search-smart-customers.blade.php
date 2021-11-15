@@ -60,7 +60,7 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-5" for="amount">Metodos de pago</label>
+            <label class="control-label col-sm-5" for="amount">Servicios</label>
             <div class="col-sm-5">
                 <select class="custom-select form-control form-control-sm" wire:model="amount" required>
                     @foreach($paymentmethods as $item)

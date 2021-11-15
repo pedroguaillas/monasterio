@@ -17,7 +17,6 @@ class CreateCustomersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('schedule_id');
             $table->string('identification', 13)->nullable()->unique();
             $table->string('first_name');
             $table->string('last_name');
@@ -29,7 +28,6 @@ class CreateCustomersTable extends Migration
 
             $table->foreign('branch_id')->references('id')->on('branches');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('schedule_id')->references('id')->on('schedules');
 
             $table->timestamps();
         });
