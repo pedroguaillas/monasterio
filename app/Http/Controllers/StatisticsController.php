@@ -52,13 +52,13 @@ class StatisticsController extends Controller
     {
         $closures = DB::select('SELECT SUM(entry) AS entry, SUM(egress) AS egress, YEAR(date) AS date FROM `closures` GROUP BY YEAR(date)');
         $closures = json_decode(json_encode($closures, true));
-        
+
         $pdf = PDF::loadView('statistics.statisticsReport', compact('closures'));
-       //El codigo siguiente es el que no ejecuta,  si comentas las 4 lineas, funciona normal el reporte. 
-        $pdf->setOptions('enable-javascript', true);
-        $pdf->setOptions('javascript-delay', 1000);
-        $pdf->setOptions('no-stop-slow-scripts', true);
-        $pdf->setOptions('enable-smart-shrinking', true);
+        //El codigo siguiente es el que no ejecuta,  si comentas las 4 lineas, funciona normal el reporte. 
+        // $pdf->setOptions('enable-javascript', true);
+        // $pdf->setOptions('javascript-delay', 1000);
+        // $pdf->setOptions('no-stop-slow-scripts', true);
+        // $pdf->setOptions('enable-smart-shrinking', true);
 
         return $pdf->stream('statistics.statisticsReport.pdf');
     }
