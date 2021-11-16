@@ -18,6 +18,7 @@ class SearchSmartCustomers extends Component
     public $payments;
 
     protected $rules = [
+        'payment.service_id' => 'required',
         'payment.date' => 'required',
         'payment.amount' => 'required',
     ];
@@ -58,17 +59,20 @@ class SearchSmartCustomers extends Component
 
     public function storePayment()
     {
-        $auth = Auth::user();
-
+        $service = PaymentMethod::find($this->payment->service_id);
         $payment = $this->customer->payments()->create([
             'branch_id' => 1,
-            'user_id' => $auth->id,
-            'date' => $this->payment->date,
-            'amount' => $this->payment->amount,
-            'type' => 'mensual',
+            'to_pay' => $service->amount,
+            'type' => $service->description,
         ]);
 
-        if ($payment) {
+        $paymentItem = $payment->paymentitems()->create([
+            'branch_id' => 1,
+            'date' => $this->payment->date,
+            'amount' => $this->payment->amount
+        ]);
+
+        if ($paymentItem) {
             $this->emit('closeModal');
         }
     }
