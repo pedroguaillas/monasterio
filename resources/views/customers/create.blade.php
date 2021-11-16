@@ -3,6 +3,7 @@
 @section('title', 'Registrar nuevo usuario')
 
 @section('content')
+<br />
 
 @if ($errors->any())
 <div class="alert alert-danger">
@@ -12,8 +13,6 @@
         @endforeach
     </ul>
 </div>
-@else
-<br />
 @endif
 <form class="form-horizontal" role="form" method="POST" action="{{ route('customers.store') }}" enctype="multipart/form-data">
     {{ csrf_field() }}
