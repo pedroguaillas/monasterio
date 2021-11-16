@@ -62,7 +62,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-5" for="amount">Servicios</label>
             <div class="col-sm-5">
-                <select class="custom-select form-control form-control-sm" wire:model="amount" required>
+                <select class="custom-select form-control form-control-sm" wire:model="payment.service_id" required>
                     @foreach($paymentmethods as $item)
                     <option value="{{$item->id}}">{{$item->amount . ' ' .$item->description}}</option>
                     @endforeach
@@ -105,9 +105,9 @@
             @endphp
             <tbody>
                 @foreach($payments as $item)
-                    @php
-                    $i++;
-                    @endphp
+                @php
+                $i++;
+                @endphp
                 <tr>
                     <td>{{$i}}</td>
                     <td>{{$item->date}}</td>
