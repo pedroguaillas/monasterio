@@ -29,6 +29,12 @@ class SearchSmartCustomers extends Component
         $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
     }
 
+    public function updatingPaymentServiceId($value)
+    {
+        $this->paymentmethod = PaymentMethod::find($value);
+        $this->payment->amount = $this->paymentmethod->amount;
+    }
+
     public function updatingPaymentDate($value)
     {
         $this->date_next_month = date('d/m/Y', strtotime($value . ' +' . $this->paymentmethod->months . ' month'));
@@ -60,6 +66,9 @@ class SearchSmartCustomers extends Component
     public function storePayment()
     {
         $service = PaymentMethod::find($this->payment->service_id);
+        if (!$service) {
+            $service = PaymentMethod::first();
+        }
         $payment = $this->customer->payments()->create([
             'branch_id' => 1,
             'to_pay' => $service->amount,
@@ -94,6 +103,7 @@ class SearchSmartCustomers extends Component
     public function listpayments(Customer $customer)
     {
         $this->payments = Payment::where('customer_id', $customer->id)
+            ->join('payment_items AS pi', 'pi.payment_id', 'payments.id')
             ->get();
         // $this->payments = Payment::where('customer_id', $customer->id)
         //     ->get();

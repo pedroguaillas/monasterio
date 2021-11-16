@@ -37,7 +37,7 @@
                                         <i class="far fa-edit"></i> Pagar
                                     </a>
                                     <a wire:click="listpayments({{$customer->id}})" class="dropdown-item">
-                                        <i class="far fa-list-alt"></i> Pagos
+                                        <i class="far fa-list-alt"></i> Historial
                                     </a>
                                 </div>
                             </li>
@@ -95,8 +95,11 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Fecha</th>
-                    <th>Monto</th>
+                    <th>Servicio</th>
+                    <th>Periodo</th>
+                    <th>Valor</th>
+                    <th>Pagado</th>
+                    <th>Saldo</th>
                 </tr>
             </thead>
             @if($payments !== null && $payments->count())
@@ -110,7 +113,10 @@
                 @endphp
                 <tr>
                     <td>{{$i}}</td>
+                    <td>{{$item->type}}</td>
                     <td>{{$item->date}}</td>
+                    <td>{{$item->amount}}</td>
+                    <td>{{$item->amount}}</td>
                     <td>{{$item->amount}}</td>
                 </tr>
                 @endforeach
