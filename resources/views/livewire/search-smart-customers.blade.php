@@ -89,11 +89,12 @@
     </x-adminlte-modal>
 
     {{-- modal lista de pagos --}}
-    <x-adminlte-modal id="modalwindowpayments" title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
+    <x-adminlte-modal id="modalwindowpayments" title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered size="lg" scrollable>
 
+        @if($payments !== null && $payments->count())
         <table class="table table-sm">
             <thead>
-                <tr>
+                <tr style="text-align: center;">
                     <th>#</th>
                     <th>Servicio</th>
                     <th>Periodo</th>
@@ -102,26 +103,38 @@
                     <th>Saldo</th>
                 </tr>
             </thead>
-            @if($payments !== null && $payments->count())
             @php
             $i=0;
+            $sum_to_pay=0;
+            $sum_amount=0;
             @endphp
             <tbody>
                 @foreach($payments as $item)
                 @php
                 $i++;
+                $sum_to_pay+=$item->to_pay;
+                $sum_amount+=$item->amount;
                 @endphp
-                <tr>
-                    <td>{{$i}}</td>
-                    <td>{{$item->type}}</td>
-                    <td>{{$item->date}}</td>
+                <tr style="text-align: right;">
+                    <td style="text-align: center;">{{$i}}</td>
+                    <td style="text-align: left;">{{$item->type}}</td>
+                    <td style="text-align: center;">{{$item->date}}</td>
+                    <td>{{$item->to_pay}}</td>
                     <td>{{$item->amount}}</td>
-                    <td>{{$item->amount}}</td>
-                    <td>{{$item->amount}}</td>
+                    <td>{{number_format($item->to_pay - $item->amount, 2, '.', ',')}}</td>
                 </tr>
                 @endforeach
             </tbody>
-            @endif
+            <tfoot>
+                <tr style="text-align: right;">
+                    <th style="text-align: center;" colspan="2">TOTAL</th>
+                    <td></td>
+                    <th>{{number_format($sum_to_pay, 2, '.', ',')}}</th>
+                    <th>{{number_format($sum_amount, 2, '.', ',')}}</th>
+                    <th>{{number_format($sum_to_pay - $sum_amount, 2, '.', ',')}}</th>
+                </tr>
+            </tfoot>
         </table>
+        @endif
     </x-adminlte-modal>
 </div>

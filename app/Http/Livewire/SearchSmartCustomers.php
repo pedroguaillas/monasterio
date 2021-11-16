@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SearchSmartCustomers extends Component
 {
@@ -33,6 +34,7 @@ class SearchSmartCustomers extends Component
     {
         $this->paymentmethod = PaymentMethod::find($value);
         $this->payment->amount = $this->paymentmethod->amount;
+        $this->date_next_month = date('d/m/Y', strtotime($this->payment->date . " +" . $this->paymentmethod->months . " month"));
     }
 
     public function updatingPaymentDate($value)
@@ -58,6 +60,7 @@ class SearchSmartCustomers extends Component
                 ->orWhere('last_name', 'like', '%' . $this->search . '%')
                 ->paginate(5);
         }
+
         $paymentmethods = PaymentMethod::all();
 
         return view('livewire.search-smart-customers', compact('customers', 'paymentmethods'));
@@ -66,9 +69,11 @@ class SearchSmartCustomers extends Component
     public function storePayment()
     {
         $service = PaymentMethod::find($this->payment->service_id);
+
         if (!$service) {
             $service = PaymentMethod::first();
         }
+
         $payment = $this->customer->payments()->create([
             'branch_id' => 1,
             'to_pay' => $service->amount,
@@ -102,11 +107,11 @@ class SearchSmartCustomers extends Component
 
     public function listpayments(Customer $customer)
     {
-        $this->payments = Payment::where('customer_id', $customer->id)
+        $this->payments = DB::table('payments')->select(DB::raw('sum(amount) as amount, type, date, to_pay'))
+            ->where('customer_id', $customer->id)
             ->join('payment_items AS pi', 'pi.payment_id', 'payments.id')
+            ->groupBy('type', 'date', 'to_pay')
             ->get();
-        // $this->payments = Payment::where('customer_id', $customer->id)
-        //     ->get();
 
         $this->emit('showModalpayments');
     }
