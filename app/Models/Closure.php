@@ -9,5 +9,5 @@ class Closure extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['branch_id', 'type', 'date', 'amount'];
+    protected $fillable = ['branch_id', 'type', 'date', 'entry', 'egress'];
 }
