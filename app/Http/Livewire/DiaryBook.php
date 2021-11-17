@@ -60,14 +60,14 @@ class DiaryBook extends Component
         // primero le voy a reestructurar la tabla
 
         $date = Carbon::now();
+        
         $closing = Closure::create([
             'branch_id' => 1,
             'type' => 'diario',
             'date' => $date->format('Y-m-d'),
             'description' => 'Cierre ' . $date->format('Y-m-d'),
-            'debit' => $this->sum_entry,
-            'have' => $this->sum_egress,
-            'amount' => $this->sum_entry - $this->sum_egress,
+            'entry' => $this->sum_entry,
+            'egress' => $this->sum_egress,
         ]);
     }
 }

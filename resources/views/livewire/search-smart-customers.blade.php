@@ -33,10 +33,10 @@
                                     <i class="fa fa-angle-down"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
-                                    <a wire:click="edit({{$customer->id}})" class="dropdown-item">
+                                    <a wire:click="createPayment({{$customer->id}})" class="dropdown-item">
                                         <i class="far fa-edit"></i> Pagar
                                     </a>
-                                    <a wire:click="listpayments({{$customer->id}})" class="dropdown-item">
+                                    <a wire:click="listPayments({{$customer->id}})" class="dropdown-item">
                                         <i class="far fa-list-alt"></i> Historial
                                     </a>
                                 </div>
@@ -80,7 +80,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-5">Valor a pagar ($)</label>
             <div class="col-sm-2">
-                <input type="number" wire:model="payment.amount" min="10" class="form-control form-control-sm" required>
+                <input type="number" wire:model="payment.amount" min="10" max="payment.amount" class="form-control form-control-sm" required>
             </div>
         </div>
         <x-slot name="footerSlot">
@@ -101,6 +101,7 @@
                     <th>Valor</th>
                     <th>Pagado</th>
                     <th>Saldo</th>
+                    <th></th>
                 </tr>
             </thead>
             @php
@@ -122,6 +123,13 @@
                     <td>{{$item->to_pay}}</td>
                     <td>{{$item->amount}}</td>
                     <td>{{number_format($item->to_pay - $item->amount, 2, '.', ',')}}</td>
+                    <td>
+                        @if($item->to_pay - $item->amount)
+                        <button class="btn btn-secondary" wire:click="complete({{$item->id}})">
+                            Pagar
+                        </button>
+                        @endif
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -132,6 +140,7 @@
                     <th>{{number_format($sum_to_pay, 2, '.', ',')}}</th>
                     <th>{{number_format($sum_amount, 2, '.', ',')}}</th>
                     <th>{{number_format($sum_to_pay - $sum_amount, 2, '.', ',')}}</th>
+                    <th></th>
                 </tr>
             </tfoot>
         </table>
