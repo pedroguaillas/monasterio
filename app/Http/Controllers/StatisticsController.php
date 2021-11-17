@@ -54,11 +54,11 @@ class StatisticsController extends Controller
         $closures = json_decode(json_encode($closures, true));
         
         $pdf = PDF::loadView('statistics.statisticsReport', compact('closures'));
-       //El codigo siguiente es el que no ejecuta,  si comentas las 4 lineas, funciona normal el reporte. 
+       /* //El codigo siguiente es el que no ejecuta,  si comentas las 4 lineas, funciona normal el reporte. 
         $pdf->setOptions('enable-javascript', true);
         $pdf->setOptions('javascript-delay', 1000);
         $pdf->setOptions('no-stop-slow-scripts', true);
-        $pdf->setOptions('enable-smart-shrinking', true);
+        $pdf->setOptions('enable-smart-shrinking', true); */
 
         return $pdf->stream('statistics.statisticsReport.pdf');
     }

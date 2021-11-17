@@ -60,15 +60,14 @@
 		<a id="logo-header" href="#">
 			<img class="img-circle" src="images/logo.jpg" style="width: 100px; height:100px;  ">
 		</a>
-		<nav>
-			<ul>
-				<h4><b><i>GYM - MONASTERIO</i></b></h4>
-			</ul>
-		</nav>
-	</header><br>
+	</header>
 	<hr>
+	<br>
 	<h4 align="center"><b><u>REPORTE ESTADISTICO</u></b></h4>
-	<h5></h5>
+	<div class="marca-de-agua">
+		<img alt="" src="images/marca.jpg" />
+	</div>
+
 	@if($closures !== null && count($closures))
 	<table class="table table-sm">
 		<thead>
@@ -110,16 +109,11 @@
 		</tfoot>
 	</table>
 	@endif
-
-	<div id="chart_div" style="width: 900px; height: 500px;"></div>
-
-
+	
 	<footer>
-		<hr>
 		<h6 align="center"> Derechos Reserados &copy; 2021</h6>
 	</footer>
 </body>
-
 </html>
 <style>
 	body {
@@ -128,6 +122,22 @@
 		font-size: 1em;
 		line-height: 1.5em;
 		font-family: Arial, Helvetica, sans-serif;
+	}
+
+	.marca-de-agua {
+		background-image: url("../images/logo.jpg");
+		background-repeat: no-repeat;
+		background-position: center;
+		width: 100%;
+		height: auto;
+		margin: auto;
+	}
+
+	.marca-de-agua img {
+		padding: 100px;
+		width: 80%;
+		height: auto;
+		opacity: 0.5;
 	}
 
 	#main-header {
@@ -139,14 +149,16 @@
 	}
 
 	hr {
-		border: 1px solid #817C7C;
+		border: 4px solid #232E63;
+		margin-left: 0%;
+		margin-right: 20%
 	}
 
 	/*
  * Logo
  */
 	#logo-header {
-		float: left;
+		float: right;
 		padding: 1px;
 		text-decoration: none;
 	}
@@ -180,7 +192,7 @@
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		padding-right: 300px;
+		padding-right: 10px;
 	}
 
 	nav ul li a {
