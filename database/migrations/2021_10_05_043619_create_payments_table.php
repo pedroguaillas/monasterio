@@ -16,14 +16,13 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('customer_id')->nullable(); //Es nulable solo cuando el tipo es diario
-            $table->date('date');
-            $table->decimal('amount', 8, 2);
-            $table->enum('type', ['diario', 'mensual']);
+            $table->decimal('to_pay', 8, 2);
+            $table->date('start_period');
+            $table->date('end_period')->nullable(); //Es nulable solo cuando el tipo es diario
+            $table->string('type'); // mensual, diario, trimestral
 
             $table->foreign('branch_id')->references('id')->on('branches');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('customer_id')->references('id')->on('customers');
 
             $table->timestamps();

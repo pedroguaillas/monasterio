@@ -33,11 +33,11 @@
                                     <i class="fa fa-angle-down"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
-                                    <a wire:click="edit({{$customer->id}})" class="dropdown-item">
+                                    <a wire:click="createPayment({{$customer->id}})" class="dropdown-item">
                                         <i class="far fa-edit"></i> Pagar
                                     </a>
-                                    <a wire:click="listpayments({{$customer->id}})" class="dropdown-item">
-                                        <i class="far fa-list-alt"></i> Pagos
+                                    <a wire:click="listPayments({{$customer->id}})" class="dropdown-item">
+                                        <i class="far fa-list-alt"></i> Historial
                                     </a>
                                 </div>
                             </li>
@@ -60,9 +60,9 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-5" for="amount">Metodos de pago</label>
+            <label class="control-label col-sm-5" for="amount">Servicios</label>
             <div class="col-sm-5">
-                <select class="custom-select form-control form-control-sm" wire:model="amount" required>
+                <select class="custom-select form-control form-control-sm" wire:model="payment.service_id" required>
                     @foreach($paymentmethods as $item)
                     <option value="{{$item->id}}">{{$item->amount . ' ' .$item->description}}</option>
                     @endforeach
@@ -80,7 +80,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-5">Valor a pagar ($)</label>
             <div class="col-sm-2">
-                <input type="number" wire:model="payment.amount" min="10" class="form-control form-control-sm" required>
+                <input type="number" wire:model="payment.amount" min="10" max="payment.amount" class="form-control form-control-sm" required>
             </div>
         </div>
         <x-slot name="footerSlot">
@@ -89,33 +89,61 @@
     </x-adminlte-modal>
 
     {{-- modal lista de pagos --}}
-    <x-adminlte-modal id="modalwindowpayments" title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
+    <x-adminlte-modal id="modalwindowpayments" title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered size="lg" scrollable>
 
+        @if($payments !== null && $payments->count())
         <table class="table table-sm">
             <thead>
-                <tr>
+                <tr style="text-align: center;">
                     <th>#</th>
-                    <th>Fecha</th>
-                    <th>Monto</th>
+                    <th>Servicio</th>
+                    <th>Periodo</th>
+                    <th>Valor</th>
+                    <th>Pagado</th>
+                    <th>Saldo</th>
+                    <th></th>
                 </tr>
             </thead>
-            @if($payments !== null && $payments->count())
             @php
             $i=0;
+            $sum_to_pay=0;
+            $sum_amount=0;
             @endphp
             <tbody>
                 @foreach($payments as $item)
-                    @php
-                    $i++;
-                    @endphp
-                <tr>
-                    <td>{{$i}}</td>
-                    <td>{{$item->date}}</td>
+                @php
+                $i++;
+                $sum_to_pay+=$item->to_pay;
+                $sum_amount+=$item->amount;
+                @endphp
+                <tr style="text-align: right;">
+                    <td style="text-align: center;">{{$i}}</td>
+                    <td style="text-align: left;">{{$item->type}}</td>
+                    <td style="text-align: center;">{{"Desde $item->start_period hasta $item->end_period"}}</td>
+                    <td>{{$item->to_pay}}</td>
                     <td>{{$item->amount}}</td>
+                    <td>{{number_format($item->to_pay - $item->amount, 2, '.', ',')}}</td>
+                    <td>
+                        @if($item->to_pay - $item->amount)
+                        <button class="btn btn-secondary" wire:click="complete({{$item->id}})">
+                            Pagar
+                        </button>
+                        @endif
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
-            @endif
+            <tfoot>
+                <tr style="text-align: right;">
+                    <th style="text-align: center;" colspan="2">TOTAL</th>
+                    <td></td>
+                    <th>{{number_format($sum_to_pay, 2, '.', ',')}}</th>
+                    <th>{{number_format($sum_amount, 2, '.', ',')}}</th>
+                    <th>{{number_format($sum_to_pay - $sum_amount, 2, '.', ',')}}</th>
+                    <th></th>
+                </tr>
+            </tfoot>
         </table>
+        @endif
     </x-adminlte-modal>
 </div>

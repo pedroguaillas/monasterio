@@ -10,7 +10,12 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'branch_id', 'user_id', 'customer_id',
-        'date', 'amount', 'type'
+        'branch_id', 'customer_id', 'to_pay',
+        'type', 'start_period', 'end_period'
     ];
+
+    public function paymentitems()
+    {
+        return $this->hasMany(PaymentItem::class);
+    }
 }

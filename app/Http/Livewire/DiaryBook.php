@@ -3,14 +3,13 @@
 namespace App\Http\Livewire;
 
 use App\Models\Closure;
-use App\Models\Payment;
+use App\Models\Customer;
 use App\Models\Spend;
 use Carbon\Carbon;
 use Livewire\Component;
 
 class DiaryBook extends Component
 {
-
     public $sum_entry;
     public $sum_egress;
 
@@ -24,16 +23,19 @@ class DiaryBook extends Component
 
     public function render()
     {
-        $date = Carbon::now();
+        // Ingresos
 
-        // pilas aqui estan los ingresos
-        $payments = Payment::select('c.first_name', 'c.last_name', 'payments.amount')
-            ->join('customers AS c', 'c.id', 'payments.customer_id')
-            ->where('date', $date->format('Y-m-d'))
-            ->get();
+        // Nota no se agrupa el monto de los items de pago,
+        // por que los items de pago se hacen en diferentes fechas
+        // y en el libro diario solo se debe mostrar de la fecha actual
 
-        // estos son los gastos
-        $spends = Spend::where('date', $date->format('Y-m-d'))
+        $payments = Customer::select('amount', 'type', 'first_name', 'last_name')
+            ->join('payments AS p', 'p.customer_id', 'customers.id')
+            ->join('payment_items AS pi', 'pi.payment_id', 'p.id')
+            ->whereDate('pi.created_at', Carbon::today())->get();
+
+        // Egresos
+        $spends = Spend::whereDate('date', Carbon::today())
             ->get();
 
         $this->sum_entry = 0;
@@ -58,14 +60,14 @@ class DiaryBook extends Component
         // primero le voy a reestructurar la tabla
 
         $date = Carbon::now();
+
         $closing = Closure::create([
             'branch_id' => 1,
             'type' => 'diario',
             'date' => $date->format('Y-m-d'),
-            'description' => 'Cierre ' . $date->format('Y-m-d'),
-            'debit' => $this->sum_entry,
-            'have' => $this->sum_egress,
-            'amount' => $this->sum_entry - $this->sum_egress,
+            // 'description' => 'Cierre ' . $date->format('Y-m-d'),
+            'entry' => $this->sum_entry,
+            'egress' => $this->sum_egress,
         ]);
     }
 }
