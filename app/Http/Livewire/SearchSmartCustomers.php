@@ -107,10 +107,10 @@ class SearchSmartCustomers extends Component
 
     public function listpayments(Customer $customer)
     {
-        $this->payments = DB::table('payments')->select(DB::raw('sum(amount) as amount, type, date, to_pay'))
+        $this->payments = DB::table('payments')->select(DB::raw('sum(amount) as amount, type, start_period, end_period, to_pay'))
             ->where('customer_id', $customer->id)
             ->join('payment_items AS pi', 'pi.payment_id', 'payments.id')
-            ->groupBy('type', 'date', 'to_pay')
+            ->groupBy('type', 'start_period', 'end_period', 'to_pay')
             ->get();
 
         $this->emit('showModalpayments');

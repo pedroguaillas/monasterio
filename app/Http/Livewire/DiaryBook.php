@@ -3,9 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Closure;
+use App\Models\Customer;
 use App\Models\Spend;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class DiaryBook extends Component
@@ -23,25 +23,23 @@ class DiaryBook extends Component
 
     public function render()
     {
-        $date = Carbon::now();
+        // Ingresos
 
-        // pilas aqui estan los ingresos
-        // $payments = Payment::select('c.first_name', 'c.last_name', 'pi.amount')
-        //     ->join('customers AS c', 'c.id', 'payments.customer_id')
-        //     ->join('payment_items AS pi', 'pi.payment_id', 'payments.id')
-        //     ->where('date', $date->format('Y-m-d'))
-        //     ->get();
-        $payments = DB::select('SELECT SUM(pi.amount) AS amount, p.to_pay, c.first_name, c.last_name FROM payment_items AS pi INNER JOIN payments AS p ON p.id = pi.payment_id INNER JOIN customers AS c ON c.id = p.customer_id GROUP BY payment_id, p.to_pay, c.first_name, c.last_name');
-        // $payments = DB::select('SELECT SUM(pi.amount) AS amount, p.to_pay, c.first_name, c.last_name FROM payment_items AS pi INNER JOIN payments AS p ON p.id = pi.payment_id INNER JOIN customers AS c ON c.id = p.customer_id WHERE pi.date LIKE ' . $date->format('Y-m-d') . ' GROUP BY payment_id, p.to_pay, c.first_name, c.last_name');
+        // Nota no se agrupa el monto de los items de pago,
+        // por que los items de pago se hacen en diferentes fechas
+        // y en el libro diario solo se debe mostrar de la fecha actual
 
-        // estos son los gastos
-        $spends = Spend::where('date', $date->format('Y-m-d'))
+        $payments = Customer::select('amount', 'type', 'first_name', 'last_name')
+            ->join('payments AS p', 'p.customer_id', 'customers.id')
+            ->join('payment_items AS pi', 'pi.payment_id', 'p.id')
+            ->whereDate('pi.created_at', Carbon::today())->get();
+
+        // Egresos
+        $spends = Spend::whereDate('date', Carbon::today())
             ->get();
 
         $this->sum_entry = 0;
         $this->sum_egress = 0;
-
-        // $payments = json_decode(json_encode($payments, true));
 
         foreach ($payments as $item) {
             $this->sum_entry += $item->amount;

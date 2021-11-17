@@ -18,6 +18,8 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('customer_id')->nullable(); //Es nulable solo cuando el tipo es diario
             $table->decimal('to_pay', 8, 2);
+            $table->date('start_period');
+            $table->date('end_period')->nullable(); //Es nulable solo cuando el tipo es diario
             $table->string('type'); // mensual, diario, trimestral
 
             $table->foreign('branch_id')->references('id')->on('branches');

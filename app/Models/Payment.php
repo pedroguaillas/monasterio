@@ -10,8 +10,8 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'branch_id', 'customer_id',
-        'to_pay', 'type'
+        'branch_id', 'customer_id', 'to_pay',
+        'type', 'start_period', 'end_period'
     ];
 
     public function paymentitems()

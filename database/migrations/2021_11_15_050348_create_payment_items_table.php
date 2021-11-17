@@ -17,7 +17,6 @@ class CreatePaymentItemsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('payment_id');
-            $table->date('date');
             $table->decimal('amount', 8, 2);
             $table->timestamps();
 

@@ -2,7 +2,7 @@
 
     <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalwindow">Agregar Egreso</button>
 
-    <x-adminlte-modal id="modalwindow" wire:ignore role="dialog" theme="green" title="Registro de Gastos">
+    <x-adminlte-modal id="modalwindow" wire:ignore role="dialog" theme="green" title="Registro de gasto">
         <form wire:submit.prevent="store">
             <div class="modal-body">
 
@@ -20,10 +20,11 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-success" style="height: 3em;"><i class="far fa-save"></i></button>
-            </div>
+
+            <x-slot name="footerSlot">
+                <x-adminlte-button style="height: 3em;" wire:click="store" theme="success" icon="fas fa-lg fa-save" />
+            </x-slot>
         </form>
     </x-adminlte-modal>
-    
+
 </div>

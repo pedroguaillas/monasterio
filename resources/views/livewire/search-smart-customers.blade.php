@@ -118,7 +118,7 @@
                 <tr style="text-align: right;">
                     <td style="text-align: center;">{{$i}}</td>
                     <td style="text-align: left;">{{$item->type}}</td>
-                    <td style="text-align: center;">{{$item->date}}</td>
+                    <td style="text-align: center;">{{"Desde $item->start_period hasta $item->end_period"}}</td>
                     <td>{{$item->to_pay}}</td>
                     <td>{{$item->amount}}</td>
                     <td>{{number_format($item->to_pay - $item->amount, 2, '.', ',')}}</td>
