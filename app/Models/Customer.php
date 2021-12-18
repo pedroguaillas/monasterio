@@ -13,7 +13,7 @@ class Customer extends Model
         'branch_id', 'user_id', 'schedule_id',
         'identification', 'first_name', 'last_name',
         'gender', 'alias', 'date_of_birth',
-        'phone', 'photo'
+        'phone', 'photo', 'finger'
     ];
 
     public function payments()

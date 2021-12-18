@@ -70,14 +70,16 @@ class CustomerController extends Controller
         //         ->withErrors($validator)
         //         ->withInput();
         // }
+        $file = NULL;
+        if ($request->photo) {
+            $image_parts = explode(";base64,", $request->photo);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+            $file = 'photos/' . uniqid() . '.' . $image_type;
 
-        $image_parts = explode(";base64,", $request->photo);
-        $image_type_aux = explode("image/", $image_parts[0]);
-        $image_type = $image_type_aux[1];
-        $image_base64 = base64_decode($image_parts[1]);
-        $file = 'photos/' . uniqid() . '.' . $image_type;
-
-        Storage::put($file, $image_base64);
+            Storage::put($file, $image_base64);
+        }
 
         $customer = Customer::create([
             'branch_id' => 1,
@@ -89,7 +91,8 @@ class CustomerController extends Controller
             'alias' => $request->alias,
             'gender' => $request->gender,
             'date_of_birth' => $request->date_of_birth,
-            'phone' => $request->phone
+            'phone' => $request->phone,
+            'finger' => $request->finger
         ]);
 
         $service = PaymentMethod::find($request->payment_method_id);

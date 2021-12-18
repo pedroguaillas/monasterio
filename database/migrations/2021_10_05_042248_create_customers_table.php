@@ -24,7 +24,8 @@ class CreateCustomersTable extends Migration
             $table->string('alias')->nullable();
             $table->date('date_of_birth');
             $table->string('phone', 10)->nullable();
-            $table->string('photo');
+            $table->string('photo')->nullable();
+            $table->text('finger')->nullable();
 
             $table->foreign('branch_id')->references('id')->on('branches');
             $table->foreign('user_id')->references('id')->on('users');
