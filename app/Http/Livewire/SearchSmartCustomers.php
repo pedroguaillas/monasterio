@@ -6,7 +6,6 @@ use App\Models\Customer;
 use Livewire\Component;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SearchSmartCustomers extends Component
