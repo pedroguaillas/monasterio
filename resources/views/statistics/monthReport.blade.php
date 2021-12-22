@@ -24,7 +24,7 @@
 	</header>
 >>>>>>> 07a6068... Diseño pdf
 	<hr>
-	<h4 align="center"><b><u>REPORTE ESTADISTICO AÑO {{ $year }}</u></b></h4>
+	<h4 align="center"><b><u>REPORTE ESTADISTICO AÑO: {{ $year }}</u></b></h4>
 	<h5></h5>
 	<div class="marca-de-agua">
 		<img alt="" src="images/marca.jpg" />
