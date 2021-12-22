@@ -10,6 +10,6 @@ class PaymentItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'branch_id', 'payment_id', 'amount'
+        'branch_id', 'payment_id', 'amount','description'
     ];
 }

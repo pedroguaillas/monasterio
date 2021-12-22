@@ -18,6 +18,7 @@ class CreatePaymentItemsTable extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('payment_id');
             $table->decimal('amount', 8, 2);
+            $table->string('description'); // mensual, diario, trimestral
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches');

@@ -100,13 +100,13 @@ class CustomerController extends Controller
         $payment = $customer->payments()->create([
             'branch_id' => 1,
             'to_pay' => $service->amount,
-            'type' => $service->description,
             'start_period' => $request->date,
             'end_period' => date('Y-m-d', strtotime($request->date . ' +' . $service->months . ' month')),
         ]);
-
+        
         $paymentItem = $payment->paymentitems()->create([
             'branch_id' => 1,
+            'description' => $service->description,
             'amount' => $request->amount
 
         ]);

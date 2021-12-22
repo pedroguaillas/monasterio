@@ -11,7 +11,7 @@ class Payment extends Model
 
     protected $fillable = [
         'branch_id', 'customer_id', 'to_pay',
-        'type', 'start_period', 'end_period'
+        'start_period', 'end_period'
     ];
 
     public function paymentitems()
