@@ -9,13 +9,14 @@
     </div>
 
     <div class="card-body">
-        @if($customers !== null && $customers->count())
+        @if($customers !== null && count($customers))
         <table class="table table-sm">
             <thead>
                 <tr>
                     <th>Identificación</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
+                    <th></th>
                     <th style="width: 1em"></th>
                 </tr>
             </thead>
@@ -26,22 +27,21 @@
                     <td>{{$customer->first_name}}</td>
                     <td>{{$customer->last_name}}</td>
                     <td>
-                        <!-- <a wire:click="edit({{$customer->id}})" class="btn btn-success">Pagar</a> -->
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-angle-down"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
-                                    <a wire:click="createPayment({{$customer->id}})" class="dropdown-item">
-                                        <i class="far fa-edit"></i> Pagar
-                                    </a>
-                                    <a wire:click="listPayments({{$customer->id}})" class="dropdown-item">
-                                        <i class="far fa-list-alt"></i> Historial
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
+                        @if($customer->to_pay - $customer->amount)
+                        <button class="btn btn-secondary" wire:click="complete({{$customer->id}})">
+                            $ {{ $customer->to_pay - $customer->amount}} Pagar
+                        </button>
+                        @endif
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a title="Pagar" wire:click="createPayment({{$customer->id}})" class="btn btn-success btn-sm">
+                                <i class="far fa-money-bill-alt"></i>
+                            </a>
+                            <a title="Historial de pagos" wire:click="listPayments({{$customer->id}})" class="btn btn-secondary btn-sm ml-1">
+                                <i class="far fa-list-alt"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 @endforeach
@@ -51,7 +51,7 @@
     </div>
 
     {{-- modal pago --}}
-    <x-adminlte-modal id="modalwindow" wire:ignore title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
+    <x-adminlte-modal id="modalwindow" wire:ignore title="Pagos" theme="lightblue" icon="fas fa-money-bill-wave" v-centered scrollable>
         <div class="form-group row">
             <label class="control-label col-sm-5">Fecha de pago</label>
             <div class="col-sm-5">
@@ -84,24 +84,23 @@
             </div>
         </div>
         <x-slot name="footerSlot">
-            <x-adminlte-button style="height: 3em;" wire:click="storePayment" theme="success" icon="fas fa-lg fa-save" />
+            <x-adminlte-button style="height: 3em;" wire:click="storePayment" class="bg-lightblue" icon="fas fa-lg fa-save" />
         </x-slot>
     </x-adminlte-modal>
 
     {{-- modal lista de pagos --}}
-    <x-adminlte-modal id="modalwindowpayments" title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered size="lg" scrollable>
+    <x-adminlte-modal id="modalwindowpayments" title="Pagos" theme="lightblue" icon="fas fa-money-bill-wave" v-centered size="lg" scrollable>
 
         @if($payments !== null && $payments->count())
         <table class="table table-sm">
             <thead>
                 <tr style="text-align: center;">
                     <th>#</th>
-                    <th>Servicio</th>
                     <th>Periodo</th>
+                    <th>Servicio</th>
                     <th>Valor</th>
                     <th>Pagado</th>
                     <th>Saldo</th>
-                    <th></th>
                 </tr>
             </thead>
             @php
@@ -118,31 +117,14 @@
                 @endphp
                 <tr style="text-align: right;">
                     <td style="text-align: center;">{{$i}}</td>
-                    <td style="text-align: left;">{{$item->type}}</td>
                     <td style="text-align: center;">{{"Desde $item->start_period hasta $item->end_period"}}</td>
+                    <td style="text-align: left;">{{$item->description}}</td>
                     <td>{{$item->to_pay}}</td>
                     <td>{{$item->amount}}</td>
                     <td>{{number_format($item->to_pay - $item->amount, 2, '.', ',')}}</td>
-                    <td>
-                        @if($item->to_pay - $item->amount)
-                        <button class="btn btn-secondary" wire:click="complete({{$item->id}})">
-                            Pagar
-                        </button>
-                        @endif
-                    </td>
                 </tr>
                 @endforeach
             </tbody>
-            <tfoot>
-                <tr style="text-align: right;">
-                    <th style="text-align: center;" colspan="2">TOTAL</th>
-                    <td></td>
-                    <th>{{number_format($sum_to_pay, 2, '.', ',')}}</th>
-                    <th>{{number_format($sum_amount, 2, '.', ',')}}</th>
-                    <th>{{number_format($sum_to_pay - $sum_amount, 2, '.', ',')}}</th>
-                    <th></th>
-                </tr>
-            </tfoot>
         </table>
         @endif
     </x-adminlte-modal>
