@@ -105,15 +105,12 @@
             </thead>
             @php
             $i=0;
-            $sum_to_pay=0;
-            $sum_amount=0;
+            $residue=0;
             @endphp
             <tbody>
                 @foreach($payments as $item)
                 @php
                 $i++;
-                $sum_to_pay+=$item->to_pay;
-                $sum_amount+=$item->amount;
                 @endphp
                 <tr style="text-align: right;">
                     <td style="text-align: center;">{{$i}}</td>
@@ -121,8 +118,11 @@
                     <td style="text-align: left;">{{$item->description}}</td>
                     <td>{{$item->to_pay}}</td>
                     <td>{{$item->amount}}</td>
-                    <td>{{number_format($item->to_pay - $item->amount, 2, '.', ',')}}</td>
+                    <td>{{number_format($item->to_pay - ($item->amount + $residue), 2, '.', ',')}}</td>
                 </tr>
+                @php
+                $residue = ($item->to_pay - $item->amount) > 0 ? $item->amount : 0;
+                @endphp
                 @endforeach
             </tbody>
         </table>

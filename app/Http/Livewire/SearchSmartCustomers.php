@@ -55,10 +55,6 @@ class SearchSmartCustomers extends Component
         $customers = null;
 
         if ($this->search !== null && $this->search !== '') {
-            // $customers = Customer::where('identification', 'like', '%' . $this->search . '%')
-            //     ->orWhere('first_name', 'like', '%' . $this->search . '%')
-            //     ->orWhere('last_name', 'like', '%' . $this->search . '%')
-            //     ->paginate(5);
 
             // tener en cuenta que aqui se pasa el id del cliente
             // $customers = DB::table('customers')->select(DB::raw('sum(amount) as amount, customers.id, identification, first_name, last_name, sum(to_pay) as to_pay'))
@@ -69,10 +65,9 @@ class SearchSmartCustomers extends Component
             //     ->orWhere('first_name', 'like', '%' . $this->search . '%')
             //     ->orWhere('last_name', 'like', '%' . $this->search . '%')
             //     ->paginate(5);
-            
+
             $customers = DB::select("select (SELECT SUM(to_pay) FROM `payments` WHERE `customer_id` = c.id) as to_pay, (SELECT SUM(amount) FROM `payments` AS p INNER JOIN payment_items AS pi ON p.id=pi.payment_id WHERE `customer_id` = c.id) as amount, id, identification, first_name, last_name from `customers` AS c where `identification` like '%$this->search%' or `first_name` like '%$this->search%' or `last_name` like '%p$this->search%'");
-            
-            // $customers = DB::select("select (SELECT SUM(to_pay) FROM `payments` WHERE `customer_id` = c.id) as to_pay, (SELECT SUM(amount) FROM `payments` AS p INNER JOIN payment_items AS pi ON p.id=pi.payment_id WHERE `customer_id` = c.id) as amount, id, identification, first_name, last_name from `customers` AS c where `identification` like '%p%' or `first_name` like '%p%' or `last_name` like '%p%'");
+
             $customers = json_decode(json_encode($customers), false);
         }
 
@@ -117,7 +112,7 @@ class SearchSmartCustomers extends Component
     public function listPayments(Customer $customer)
     {
         $this->payments = Payment::select('amount', 'description', 'start_period', 'end_period', 'to_pay')
-            ->join('payment_items AS pi', 'pi.payment_id', 'payments.id')
+            ->join('payment_items', 'payment_id', 'payments.id')
             ->where('payments.customer_id', $customer->id)
             ->get();
 
@@ -132,26 +127,27 @@ class SearchSmartCustomers extends Component
 
     public function complete(Customer $customer)
     {
+        // $paymentsByCustom = DB::table('payments')->select(DB::raw('sum(to_pay) - sum(amount) AS diff, payments.id'))
+        //     ->leftJoin('payment_items', 'payment_id', 'payments.id')
+        //     ->groupBy('id')
+        //     ->where('customer_id', $customer->id)
+        //     ->havingRaw('diff > 0')
+        //     ->first();
+
         // no se completa al primer pago
         // se completa al pago que falta
-        // 1. identificar el pago que falta
 
-        $paymentsByCustom = DB::table('payments')->select(DB::raw('sum(to_pay1) - sum(amount) AS diff, payments.id'))
-            ->leftJoin('payment_items', 'payment_id', 'payments.id')
-            ->groupBy('id')
-            ->where('customer_id', $customer->id)
-            ->havingRaw('diff > 0')
-            ->first();
-
+        // 1. Identificar el pago que falta
+        $paymentsByCustom = DB::select("SELECT id, (to_pay - (SELECT SUM(amount) FROM payment_items WHERE p.id = payment_id)) as diff FROM payments AS p WHERE p.customer_id = $customer->id HAVING diff > 0");
+        $paymentsByCustom = $paymentsByCustom[0];
         $payment = Payment::find($paymentsByCustom->id);
 
-        // ajustar el pago
+        // 2. Ajustar el pago
         $paymentItem = $payment->paymentitems()->create([
             'branch_id' => 1,
             'description' => 'Ajuste ' . $payment->paymentitems()->first()->description,
             'amount' => $paymentsByCustom->diff
         ]);
-
 
         $this->render();
     }

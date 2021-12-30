@@ -29,9 +29,9 @@ class DiaryBook extends Component
         // por que los items de pago se hacen en diferentes fechas
         // y en el libro diario solo se debe mostrar de la fecha actual
 
-        $payments = Customer::select('amount', 'type', 'first_name', 'last_name')
-            ->join('payments AS p', 'p.customer_id', 'customers.id')
-            ->join('payment_items AS pi', 'pi.payment_id', 'p.id')
+        $payments = Customer::select('amount', 'description', 'first_name', 'last_name')
+            ->join('payments', 'customer_id', 'customers.id')
+            ->join('payment_items AS pi', 'payment_id', 'payments.id')
             ->whereDate('pi.created_at', Carbon::today())->get();
 
         // Egresos

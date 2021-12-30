@@ -26,7 +26,7 @@
                 @endforeach
                 @foreach($spends as $item)
                 <tr>
-                    <td>{{ $item->description }}</td>
+                    <td>&nbsp&nbsp&nbsp&nbsp&nbsp{{ $item->description }}</td>
                     <td></td>
                     <td>{{number_format($item->amount, 2, ',', '.')}}</td>
                     <td>
@@ -53,11 +53,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-10"></div>
-        <div class="col-sm-2">
-            <!-- peste componente no es neceario crear porque solo toca guardar un valor -->
-            <!-- mejor voy a pasar el boton aqui -->
-            <button wire:click="store" class="btn btn-success mb-3">Cerrar caja</button>
+        <div class="col-sm-12">
+            <button wire:click="store" class="btn btn-primary mb-3 mr-3" style="float: right;">Cerrar caja</button>
         </div>
     </div>
 </div>
