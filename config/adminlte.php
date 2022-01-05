@@ -260,16 +260,18 @@ return [
             'text'        => 'Contabilidad',
             'url'         => 'admin/contabilidad',
             'icon'        => 'fas fa-fw fa-book',
+            'can'         => 'admin.contabilidad',
         ],
-        [
-            'text'        => 'Estadísticas',
-            'url'         => 'admin/estadistica',
-            'icon'        => 'fas fa-fw fa-chart-pie',
-        ],
+        // [
+        //     'text'        => 'Estadísticas',
+        //     'url'         => 'admin/estadistica',
+        //     'icon'        => 'fas fa-fw fa-chart-pie',
+        // ],
         [
             'text'        => 'Servicios',
             'url'         => 'admin/servicios',
             'icon'        => 'fas fa-fw fa-money-bill-wave',
+            'can'         => 'admin.servicios',
         ],
         // [
         //     'text'        => 'pages',

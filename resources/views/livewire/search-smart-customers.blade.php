@@ -121,7 +121,7 @@
                     <td>{{number_format($item->to_pay - ($item->amount + $residue), 2, '.', ',')}}</td>
                 </tr>
                 @php
-                $residue = ($item->to_pay - $item->amount) > 0 ? $item->amount : 0;
+                $residue = ($item->to_pay - $item->amount) > 0 && ($item->to_pay - ($item->amount + $residue)) > 0 ? $item->amount : 0;
                 @endphp
                 @endforeach
             </tbody>

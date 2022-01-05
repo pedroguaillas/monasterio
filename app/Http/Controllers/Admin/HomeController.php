@@ -14,7 +14,7 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function index()
     {
         $closures = DB::select('SELECT SUM(entry) AS entry, SUM(egress) AS egress, YEAR(date) AS date FROM `closures` GROUP BY YEAR(date)');
@@ -41,7 +41,7 @@ class HomeController extends Controller
             $sum += $year;
         }
 
-        $averange = $sum / $cont;
+        $averange = $cont > 0 ? $sum / $cont : 0;
 
         // $closures = DB::table('closures')
         //     ->select(DB::raw('sum(amount) AS amount, MONTH(date) AS date'))

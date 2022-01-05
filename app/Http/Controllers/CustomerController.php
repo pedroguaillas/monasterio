@@ -103,7 +103,7 @@ class CustomerController extends Controller
             'start_period' => $request->date,
             'end_period' => date('Y-m-d', strtotime($request->date . ' +' . $service->months . ' month')),
         ]);
-        
+
         $paymentItem = $payment->paymentitems()->create([
             'branch_id' => 1,
             'description' => $service->description,
@@ -111,7 +111,7 @@ class CustomerController extends Controller
 
         ]);
 
-        return view('admin.index');
+        return redirect()->route('admin.home');
     }
 
     /**
