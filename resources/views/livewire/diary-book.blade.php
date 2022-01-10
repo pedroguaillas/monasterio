@@ -17,7 +17,7 @@
             <tbody>
                 @foreach($payments as $item)
                 <tr>
-                    <td>{{ "Cobro $item->type $item->first_name $item->last_name" }}</td>
+                    <td>{{ "$item->first_name $item->last_name" }}</td>
                     <td>{{number_format($item->amount, 2, ',', '.')}}</td>
                     <td></td>
                     <td>
