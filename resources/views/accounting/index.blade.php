@@ -24,5 +24,14 @@
     Livewire.on('closeModal', function() {
         $('#modalwindow').modal('hide')
     })
+
+    // Modal Form new User
+    Livewire.on('showModalNew', function() {
+        $('#modalwindownew').modal('show')
+    })
+
+    Livewire.on('closeModalNew', function() {
+        $('#modalwindownew').modal('hide')
+    })
 </script>
 @endsection

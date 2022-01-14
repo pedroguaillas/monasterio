@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserList extends Component
 {
@@ -13,6 +14,7 @@ class UserList extends Component
         'user.name' => 'required',
         'user.user' => 'required',
         'user.email' => 'required',
+        // 'user.password' => 'min:6',
     ];
 
     public function render()
@@ -30,5 +32,12 @@ class UserList extends Component
 
     public function update()
     {
+        // if (isset($this->user->password)) {
+        //     $this->user->password = Hash::make($this->user->password);
+        // }
+
+        if ($this->user->save()) {
+            $this->emit('closeModal');
+        }
     }
 }
