@@ -19,8 +19,9 @@ Route::get('statistics/chars', [StatisticsController::class, 'chars']);
 Route::get('statistics/bymonth/{year}', [StatisticsController::class, 'byMonth']);
 Route::get('statistics/byweek/{month}/year/{year}', [StatisticsController::class, 'byWeek']);
 
-Route::get('servicios', [PaymentMethodController::class, 'index'])->name('admin.servicios');
-Route::get('services/{paymentMethod}', [PaymentMethodController::class, 'show']);
+Route::resource('servicios', PaymentMethodController::class)->only(['index', 'show', 'destroy']);
+// Route::get('servicios', [PaymentMethodController::class, 'index'])->name('admin.servicios');
+// Route::get('services/{paymentMethod}', [PaymentMethodController::class, 'show']);
 
 Route::resource('usuarios', UserController::class)->only(['index', 'create', 'store', 'destroy']);
 // Route::get('usuarios', [UserController::class, 'index'])->name('admin.usuarios');

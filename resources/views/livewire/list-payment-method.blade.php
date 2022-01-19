@@ -1,7 +1,14 @@
 <div>
     <!-- Esta vista es un componente controlado por ListPaymentMethod -->
     <div class="card-header">
-        <h3 class="text-center">Métodos de Pago</h3>
+        <h3 class="card-title">Servicios</h3>
+        <div class="card-tools">
+            <div class="dt-buttons btn-group flex-wrap">
+                <a title="Agregar servicio" type="button" class="btn btn-success btn-sm" wire:click="create()">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="card-body">
@@ -13,7 +20,7 @@
                     <th>Descripción</th>
                     <th>Monto</th>
                     <th>Mes</th>
-                    <th style="width: 40px">Accion</th>
+                    <th style="width: 1.5em;">Accion</th>
                 </tr>
             </thead>
             @php
@@ -32,13 +39,14 @@
                     <td>
 
                         <!-- SECCION DEL BOTON EDITAR QUE DESPLEGA EL MODAL  -->
-                        <div class="form-group">
-                            <button class="btn btn-success " wire:click="editar({{$item->id}})"><i class="far fa-edit"></i></button>
-                            
-                            <!-- <div class="custom-control custom-switch">
-                                <input type="checkbox" wire:model="selected" value="{{$item->id}}" class="custom-control-input" id="customSwitch{{$i}}">
-                                <label class="custom-control-label" for="customSwitch{{$i}}"></label>
-                            </div> -->
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" wire:click="editar({{ $item->id }})">
+                                <i class="far fa-edit"></i>
+                            </button>
+
+                            <button title="Eliminar" class="btn btn-danger btn-sm ml-1" onClick='payDelete("{{ $item->id }}")'>
+                                <i class="far fa-trash-alt"></i>
+                            </button>
 
                         </div>
                     </td>
@@ -49,10 +57,10 @@
         @endif
     </div>
     {{-- modal --}}
-    <x-adminlte-modal id="modalwindow" wire:ignore title="Pagos" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
+    <x-adminlte-modal id="modalwindow" wire:ignore title="Registro de servicio" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
 
         <div class="form-group row">
-            <label class="control-label col-sm-4">Descripcion</label>
+            <label class="control-label col-sm-4">Descripción</label>
             <div class="col-sm-8">
                 <input type="text" wire:model="paymentMethod.description" class="form-control form-control-sm" required>
             </div>
@@ -73,7 +81,7 @@
         </div>
 
         <x-slot name="footerSlot">
-            <x-adminlte-button style="height: 3em;"  wire:click="update" theme="success" icon="fas fa-lg fa-save" />
+            <x-adminlte-button style="height: 3em;" wire:click="update" theme="success" icon="fas fa-lg fa-save" />
         </x-slot>
     </x-adminlte-modal>
 </div>

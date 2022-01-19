@@ -80,14 +80,8 @@ class PaymentMethodController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PaymentMethod  $paymentMethod
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PaymentMethod $paymentMethod)
+    public function destroy($id)
     {
-        //
+        PaymentMethod::destroy($id);
     }
 }

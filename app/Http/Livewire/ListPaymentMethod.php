@@ -8,7 +8,7 @@ use Livewire\Component;
 class ListPaymentMethod extends Component
 {
     // Simon este es una variable que se comunica con la vista ok
-    public $paymentMethod;
+    public $paymentMethod = null, $pay_id = null;
 
     protected $rules = [
         'paymentMethod.description' => 'required',
@@ -20,6 +20,17 @@ class ListPaymentMethod extends Component
     {
         $paymentmethods = PaymentMethod::all();
         return view('livewire.list-payment-method', compact('paymentmethods'));
+    }
+
+    public function create()
+    {
+        $this->pay_id = null;
+
+        if ($this->paymentMethod) {
+            $this->paymentMethod->reset();
+        }
+
+        $this->emit("showModal");
     }
 
     // Aqui este metodo cuando le pansan un id el

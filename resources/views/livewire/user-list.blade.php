@@ -33,9 +33,9 @@
                                 <i class="far fa-edit"></i>
                             </a>
 
-                            <!-- <button title="Eliminar" class="btn btn-danger btn-sm ml-1" onclick='userDelete("{{$item->id}}")'>
+                            <button title="Eliminar" class="btn btn-danger btn-sm ml-1" onClick='userDelete("{{ $item->id }}")'>
                                 <i class="far fa-trash-alt"></i>
-                            </button> -->
+                            </button>
                         </div>
                     </td>
                 </tr>

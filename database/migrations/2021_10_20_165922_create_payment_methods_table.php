@@ -20,6 +20,7 @@ class CreatePaymentMethodsTable extends Migration
             $table->decimal('amount', 8, 2);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -40,4 +40,19 @@ class UserList extends Component
             $this->emit('closeModal');
         }
     }
+
+    public function deleteConfirmation($id)
+    {
+        $this->dispatchBrowserEvent('swal:confirm', [
+            'type' => 'warning',
+            'title' => '¿Esta seguro?',
+            'text' => "Eliminar usuario",
+            'id' => $id
+        ]);
+    }
+
+    public function delete(User $user)
+    {
+        $user->delete();
+    }
 }

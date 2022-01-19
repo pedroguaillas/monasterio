@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Spatie\Permission\Traits\HasRoles;
 
@@ -20,6 +21,9 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use HasRoles;
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.

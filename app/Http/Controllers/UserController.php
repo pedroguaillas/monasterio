@@ -33,8 +33,8 @@ class UserController extends Controller
         return redirect()->route('usuarios.index')->with('info', 'Se registro un nuevo usuario');
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        $user->delete();
+        User::destroy($id);
     }
 }
