@@ -36,13 +36,13 @@
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="first_name">Nombres *</label>
                         <div class="col-sm-8">
-                            <input type="text" style="text-transform: capitalize;" class="form-control form-control-sm" id="first_name" name="first_name" maxlength="300" required>
+                            <input type="text" onkeyup="mayusculas(this);" style="text-transform: capitalize;" class="form-control form-control-sm" id="first_name" name="first_name" maxlength="300" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="last_name">Apellidos *</label>
                         <div class="col-sm-8">
-                            <input type="text" style="text-transform: capitalize;" class="form-control form-control-sm" id="last_name" name="last_name" maxlength="300" required>
+                            <input type="text" onkeyup="mayusculas(this);" style="text-transform: capitalize;" class="form-control form-control-sm" id="last_name" name="last_name" maxlength="300" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -194,6 +194,13 @@
 @section('js')
 <script>
     let service = undefined
+
+    $('#identification').mask('0000000000')
+
+    function mayusculas(e) {
+        e.value = e.value.toUpperCase()
+    }
+
     $('#date_payment').change(e => {
         e.preventDefault()
 
