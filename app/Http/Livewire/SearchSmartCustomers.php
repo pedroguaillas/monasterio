@@ -66,7 +66,7 @@ class SearchSmartCustomers extends Component
             //     ->orWhere('last_name', 'like', '%' . $this->search . '%')
             //     ->paginate(5);
 
-            $customers = DB::select("select (SELECT SUM(to_pay) FROM `payments` WHERE `customer_id` = c.id) as to_pay, (SELECT SUM(amount) FROM `payments` AS p INNER JOIN payment_items AS pi ON p.id=pi.payment_id WHERE `customer_id` = c.id) as amount, id, identification, first_name, last_name from `customers` AS c where `identification` like '%$this->search%' or `first_name` like '%$this->search%' or `last_name` like '%p$this->search%'");
+            $customers = DB::select("select (SELECT SUM(to_pay) FROM `payments` WHERE `customer_id` = c.id) as to_pay, (SELECT SUM(amount) FROM `payments` AS p INNER JOIN payment_items AS pi ON p.id=pi.payment_id WHERE `customer_id` = c.id) as amount, id, identification, first_name, last_name from `customers` AS c where `identification` like '%$this->search%' or `first_name` like '%$this->search%' or `last_name` like '%$this->search%'");
 
             $customers = json_decode(json_encode($customers), false);
         }

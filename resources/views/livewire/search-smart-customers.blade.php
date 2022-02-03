@@ -3,7 +3,7 @@
         <h3 class="text-center">Usuarios</h3>
         <div>
             <div class="input-group input-group">
-                <input type="text" wire:model="search" name="table_search" class="form-control float-right" placeholder="Buscar">
+                <input type="text" wire:model="search" class="form-control float-right" placeholder="Buscar">
             </div>
         </div>
     </div>

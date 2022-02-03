@@ -155,7 +155,7 @@
         </h3>
 
         <div class="card-tools">
-            <a target="_blank" href="{{ route('reporte') }}" class="btn btn-white btn-sm">
+            <a target="_blank" href="{{ route('reportegeneral') }}" class="btn btn-white btn-sm">
                 <i class="far fa-file-pdf"></i>
             </a>
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -194,7 +194,7 @@
                     <td class="text-center" width="150px">
                         <button onClick="collapseAnio({{$item->date}})" class="btn btn-success btn-sm">+</button>
 
-                        <a target="_blank" href="{{ route('monthReport', $item->date) }}" class="btn btn-outline-secondary btn-sm">
+                        <a target="_blank" href="{{ route('reportepormeses', $item->date) }}" class="btn btn-outline-secondary btn-sm">
                             <i class="far fa-file-pdf"></i>
                         </a>
 

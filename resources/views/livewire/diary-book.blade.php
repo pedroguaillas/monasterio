@@ -1,6 +1,12 @@
 <div>
+
     <div class="card-header">
-        <h3 class="text-center">Libro Diario</h3>
+        <h3 class="card-title">Libro Diario</h3>
+        <div class="card-tools">
+            <div class="dt-buttons btn-group flex-wrap">
+                @livewire('create-spend')
+            </div>
+        </div>
     </div>
 
     <div class="card-body">
@@ -44,13 +50,6 @@
             </tfoot>
         </table>
         @endif
-    </div>
-    <div class="row">
-        <div class="col-sm-10"></div>
-        <div class="col-sm-2">
-            <!-- create-spend este componente se encarga de registrar el gasto -->
-            @livewire('create-spend')
-        </div>
     </div>
     <div class="row">
         <div class="col-sm-12">

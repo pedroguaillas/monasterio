@@ -5,26 +5,26 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Reporte</title>
+	<title>Reporte por meses</title>
 </head>
 
-<body> 
+<body>
 	<header id="main-header">
 		<a id="logo-header" href="#">
-			<img class="img-circle" src="images/logo.jpg" style="width: 100px; height:100px;">
+			<img class="img-circle" src="{{ public_path('images/logo.jpg') }}" style="width: 100px; height:100px;">
 		</a>
 	</header>
 	<hr>
 	<h4 align="center"><b><u>REPORTE ESTADISTICO {{ $year }}</u></b></h4>
-	<h5></h5>
+
 	<div class="marca-de-agua">
-		<img alt="" src="images/marca.jpg" />
+		<img alt="Marca de agua" src="{{ public_path('images/marca.jpg') }}" />
 	</div>
 	@if($closuresmoth !== null && count($closuresmoth))
 	<table class="table table-sm">
 		<thead>
 			<tr>
-				<th>Año</th>
+				<th>Mes</th>
 				<th>Ingresos</th>
 				<th>Egresos</th>
 				<th>Total</th>

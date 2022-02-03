@@ -5,21 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte</title>
+    <title>Reporte por años</title>
 </head>
 
 <body>
     <header id="main-header">
         <a id="logo-header" href="#">
-            <img class="img-circle" src="images/logo.jpg" style="width: 100px; height:100px;  ">
+            <img class="img-circle" src="{{ public_path('images/logo.jpg') }}" style="width: 100px; height:100px;">
         </a>
     </header>
     <hr>
-    <br>
     <h4 align="center"><b><u>REPORTE ESTADISTICO</u></b></h4>
 
     <div class="marca-de-agua">
-        <img alt="" src="images/marca.jpg" />
+        <img alt="Marca de agua" src="{{ public_path('images/marca.jpg') }}" />
     </div>
 
     @if($closures !== null && count($closures))
@@ -45,7 +44,6 @@
                 <td>{{ number_format($item->egress, 2, ',', '.') }}</td>
                 <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
             </tr>
-
 
             @php
             $sum_entry += $item->entry;
