@@ -10,4 +10,9 @@ class Branch extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'address'];
+
+    public function closures()
+    {
+        return $this->hasMany(Closure::class);
+    }
 }

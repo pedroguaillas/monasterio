@@ -77,7 +77,8 @@ class StatisticsController extends Controller
 
     public function byWeek(int $month, int $year)
     {
-        $closuresweek = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, date FROM closures WHERE YEAR(date) = $year AND MONTH(date) = $month GROUP BY date");
+        $date = str_pad((string)$month, 2, '0', STR_PAD_LEFT) . '-' . $year;
+        $closuresweek = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, DATE_FORMAT(date, '%d-%m-%Y') AS date FROM closures WHERE '$date' = DATE_FORMAT(date, '%m-%Y') GROUP BY date");
         $closuresweek = json_decode(json_encode($closuresweek, true));
 
         return response()->json(['closuresweek' => $closuresweek]);

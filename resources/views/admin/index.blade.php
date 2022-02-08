@@ -191,7 +191,7 @@
                     <td style="width: 25%;">{{ number_format($item->entry, 2, ',', '.') }}</td>
                     <td style="width: 25%;">{{ number_format($item->egress, 2, ',', '.') }}</td>
                     <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
-                    <td class="text-center" width="150px">
+                    <td class="text-center" width="70px">
                         <button onClick="collapseAnio({{$item->date}})" class="btn btn-success btn-sm">+</button>
 
                         <a target="_blank" href="{{ route('reportepormeses', $item->date) }}" class="btn btn-outline-secondary btn-sm">
@@ -331,7 +331,7 @@
     function collapseMonth(month, year) {
         $.ajax({
             type: 'GET',
-            url: "{{url('admin/statistics/byweek')}}/" + month + '/year/' + year,
+            url: "{{url('admin/statistics/byweek')}}/" + (month + 1) + '/year/' + year,
             success: (res) => {
                 let part = '<table style="width: 100%;">'
                 part += '<tbody>'

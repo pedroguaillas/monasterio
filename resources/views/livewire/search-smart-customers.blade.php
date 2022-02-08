@@ -28,7 +28,8 @@
                     <td>{{$customer->last_name}}</td>
                     <td>
                         @if($customer->to_pay - $customer->amount)
-                        <button class="btn btn-secondary" wire:click="complete({{$customer->id}})">
+                        <!-- <button class="btn btn-secondary" wire:click="complete({{$customer->id}})"> -->
+                        <button class="btn btn-secondary" wire:click="showComplete({{$customer->id}})">
                             $ {{ $customer->to_pay - $customer->amount}} Pagar
                         </button>
                         @endif
@@ -50,7 +51,26 @@
         @endif
     </div>
 
-    {{-- modal pago --}}
+    {{-- modal para completar el pago --}}
+    <x-adminlte-modal id="modalcomplete" wire:ignore title="Pagar" theme="lightblue" icon="fas fa-money-bill-wave" v-centered scrollable>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-5" for="branch_id">Sede</label>
+            <div class="col-sm-5">
+                <select class="custom-select form-control form-control-sm" wire:model="payment.branch_id" required>
+                    @foreach($branchs as $item)
+                    <option value="{{$item->id}}">{{$item->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <x-slot name="footerSlot">
+            <x-adminlte-button style="height: 3em;" wire:click="complete1" class="bg-lightblue" icon="fas fa-lg fa-save" />
+        </x-slot>
+    </x-adminlte-modal>
+
+    {{-- modal para registrar nuevo pago --}}
     <x-adminlte-modal id="modalwindow" wire:ignore title="Pagos" theme="lightblue" icon="fas fa-money-bill-wave" v-centered scrollable>
         <div class="form-group row">
             <label class="control-label col-sm-5">Fecha de pago</label>
@@ -78,6 +98,17 @@
         </div>
 
         <div class="form-group row">
+            <label class="control-label col-sm-5" for="branch_id">Sede</label>
+            <div class="col-sm-5">
+                <select class="custom-select form-control form-control-sm" wire:model="payment.branch_id" required>
+                    @foreach($branchs as $item)
+                    <option value="{{$item->id}}">{{$item->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
             <label class="control-label col-sm-5">Valor a pagar ($)</label>
             <div class="col-sm-2">
                 <input type="number" wire:model="payment.amount" min="10" max="payment.amount" class="form-control form-control-sm" required>
@@ -88,7 +119,7 @@
         </x-slot>
     </x-adminlte-modal>
 
-    {{-- modal lista de pagos --}}
+    {{-- modal para mostrar la lista de pagos --}}
     <x-adminlte-modal id="modalwindowpayments" title="Pagos" theme="lightblue" icon="fas fa-money-bill-wave" v-centered size="lg" scrollable>
 
         @if($payments !== null && $payments->count())

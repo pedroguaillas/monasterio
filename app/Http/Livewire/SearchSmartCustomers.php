@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Branch;
 use App\Models\Customer;
 use Livewire\Component;
 use App\Models\Payment;
@@ -19,6 +20,7 @@ class SearchSmartCustomers extends Component
     public $payments;
 
     protected $rules = [
+        'payment.branch_id' => 'required',
         'payment.service_id' => 'required',
         'payment.date' => 'required',
         'payment.amount' => 'required',
@@ -72,8 +74,9 @@ class SearchSmartCustomers extends Component
         }
 
         $paymentmethods = PaymentMethod::all();
+        $branchs = Branch::all();
 
-        return view('livewire.search-smart-customers', compact('customers', 'paymentmethods'));
+        return view('livewire.search-smart-customers', compact('customers', 'paymentmethods', 'branchs'));
     }
 
     public function createPayment(Customer $customer)
@@ -89,17 +92,18 @@ class SearchSmartCustomers extends Component
         $this->emit('showModal');
     }
 
+    //Registro de nuevo pago
     public function storePayment()
     {
         $payment = $this->customer->payments()->create([
-            'branch_id' => 1,
+            'branch_id' => $this->payment->branch_id,
             'to_pay' => $this->service->amount,
             'start_period' => $this->payment->date,
             'end_period' => date('Y-m-d', strtotime($this->payment->date . ' +' . $this->service->months . ' month')),
         ]);
 
         $paymentItem = $payment->paymentitems()->create([
-            'branch_id' => 1,
+            'branch_id' => $this->payment->branch_id,
             'description' => $this->service->description,
             'amount' => $this->payment->amount
         ]);
@@ -111,29 +115,17 @@ class SearchSmartCustomers extends Component
 
     public function listPayments(Customer $customer)
     {
-        $this->payments = Payment::select('amount', 'description', 'start_period', 'end_period', 'to_pay')
+        $this->payments = Payment::select(DB::raw("amount, description, DATE_FORMAT(start_period, '%d-%m-%Y') AS start_period, DATE_FORMAT(end_period, '%d-%m-%Y') AS end_period, to_pay"))
             ->join('payment_items', 'payment_id', 'payments.id')
             ->where('payments.customer_id', $customer->id)
             ->get();
 
-        // $this->payments = DB::table('payments1')->select(DB::raw('sum(amount) as amount, payments.id, description, start_period, end_period, to_pay'))
-        //     ->where('customer_id', $customer->id)
-        //     ->join('payment_items AS pi', 'pi.payment_id', 'payments.id')
-        //     ->groupBy('id', 'description', 'start_period', 'end_period', 'to_pay')
-        //     ->get();
-
         $this->emit('showModalpayments');
     }
 
+    //Registro de saldo de pago
     public function complete(Customer $customer)
     {
-        // $paymentsByCustom = DB::table('payments')->select(DB::raw('sum(to_pay) - sum(amount) AS diff, payments.id'))
-        //     ->leftJoin('payment_items', 'payment_id', 'payments.id')
-        //     ->groupBy('id')
-        //     ->where('customer_id', $customer->id)
-        //     ->havingRaw('diff > 0')
-        //     ->first();
-
         // no se completa al primer pago
         // se completa al pago que falta
 
@@ -144,11 +136,50 @@ class SearchSmartCustomers extends Component
 
         // 2. Ajustar el pago
         $paymentItem = $payment->paymentitems()->create([
+            // EL branch_id SE CAPTURARA DE MANERA AUTOMÁTICA
             'branch_id' => 1,
             'description' => 'Ajuste ' . $payment->paymentitems()->first()->description,
             'amount' => $paymentsByCustom->diff
         ]);
 
         $this->render();
+    }
+
+    // Mostrar modal para completar el pago
+    function showComplete(Customer $customer)
+    {
+        $this->customer = $customer;
+        $this->service = PaymentMethod::first();
+
+        $this->payment = new Payment;
+        $this->payment->branch_id = Branch::first()->id;
+
+        $this->emit('showModalComplete');
+    }
+
+    //Registro de saldo de pago
+    public function complete1()
+    {
+        // no se completa al primer pago
+        // se completa al pago que falta
+
+        $customer_id = $this->customer->id;
+
+        // 1. Identificar el pago que falta
+        $paymentsByCustom = DB::select("SELECT id, (to_pay - (SELECT SUM(amount) FROM payment_items WHERE p.id = payment_id)) as diff FROM payments AS p WHERE p.customer_id = $customer_id HAVING diff > 0");
+        $paymentsByCustom = $paymentsByCustom[0];
+        $payment = Payment::find($paymentsByCustom->id);
+
+        // 2. Ajustar el pago
+        $paymentItem = $payment->paymentitems()->create([
+            // POR EL branch_id SE CREA ESTE NUEVO METODO
+            'branch_id' => $this->payment->branch_id,
+            'description' => 'Ajuste ' . $payment->paymentitems()->first()->description,
+            'amount' => $paymentsByCustom->diff
+        ]);
+
+        $this->render();
+
+        $this->emit('hideModalComplete');
     }
 }

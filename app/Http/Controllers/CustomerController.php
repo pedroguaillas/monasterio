@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
@@ -29,8 +30,9 @@ class CustomerController extends Controller
     public function create()
     {
         $paymentmethods = PaymentMethod::all();
+        $branchs = Branch::all();
 
-        return view('customers.create', compact('paymentmethods'));
+        return view('customers.create', compact('paymentmethods', 'branchs'));
     }
 
     /**
@@ -82,7 +84,7 @@ class CustomerController extends Controller
         }
 
         $customer = Customer::create([
-            'branch_id' => 1,
+            'branch_id' => $request->brach_id,
             'identification' => $request->identification,
             'user_id' => $auth->id,
             'photo' => $file,
@@ -98,20 +100,20 @@ class CustomerController extends Controller
         $service = PaymentMethod::find($request->payment_method_id);
 
         $payment = $customer->payments()->create([
-            'branch_id' => 1,
+            'branch_id' => $request->brach_id,
             'to_pay' => $service->amount,
             'start_period' => $request->date,
             'end_period' => date('Y-m-d', strtotime($request->date . ' +' . $service->months . ' month')),
         ]);
 
         $paymentItem = $payment->paymentitems()->create([
-            'branch_id' => 1,
+            'branch_id' => $request->brach_id,
             'description' => $service->description,
             'amount' => $request->amount
 
         ]);
 
-        return redirect()->route('admin.home');
+        return redirect()->route('customers.index');
     }
 
     /**

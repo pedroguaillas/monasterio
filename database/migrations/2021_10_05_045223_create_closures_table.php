@@ -22,6 +22,7 @@ class CreateClosuresTable extends Migration
             $table->decimal('egress', 8, 2)->default(0);
 
             $table->foreign('branch_id')->references('id')->on('branches');
+            $table->unique(['branch_id', 'type', 'date'], 'closure-unique');
 
             $table->timestamps();
         });

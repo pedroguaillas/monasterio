@@ -144,6 +144,17 @@
                     </div>
 
                     <div class="form-group row">
+                        <label class="control-label col-sm-4" for="brach_id">Sede</label>
+                        <div class="col-sm-5">
+                            <select class="custom-select form-control form-control-sm" id="brach_id" name="brach_id" required>
+                                @foreach($branchs as $item)
+                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label class="control-label col-sm-4" for="amount_payment">Valor a pagar ($)</label>
                         <div class="col-sm-2">
                             <input type="number" value="20" min="10" class="form-control form-control-sm" id="amount_payment" name="amount" required>
