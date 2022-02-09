@@ -13,7 +13,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row mb-0">
                     <label class="control-label col-sm-4" for="amount">Costo ($)</label>
                     <div class="col-sm-3">
                         <input type="text" wire:model="amount" class="form-control form-control-sm" required>

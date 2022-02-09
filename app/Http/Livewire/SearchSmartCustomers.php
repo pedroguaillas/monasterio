@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class SearchSmartCustomers extends Component
 {
-    public $search, $customer, $payment, $service;
+    public $search, $customer, $payment, $service, $branch;
     public $date_next_month;
     public $amount;
 
@@ -30,6 +30,11 @@ class SearchSmartCustomers extends Component
     {
         $this->payment = null;
         $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
+    }
+
+    public function updatingPaymentBranchId($value)
+    {
+        $this->branch = Branch::find($value);
     }
 
     public function updatingPaymentServiceId($value)
@@ -83,6 +88,7 @@ class SearchSmartCustomers extends Component
     {
         $this->customer = $customer;
         $this->service = PaymentMethod::first();
+        $this->branch = Branch::first();
 
         $this->payment = new Payment;
         $this->payment->date = date('Y-m-d');
@@ -96,14 +102,14 @@ class SearchSmartCustomers extends Component
     public function storePayment()
     {
         $payment = $this->customer->payments()->create([
-            'branch_id' => $this->payment->branch_id,
+            'branch_id' => $this->branch->id,
             'to_pay' => $this->service->amount,
             'start_period' => $this->payment->date,
             'end_period' => date('Y-m-d', strtotime($this->payment->date . ' +' . $this->service->months . ' month')),
         ]);
 
         $paymentItem = $payment->paymentitems()->create([
-            'branch_id' => $this->payment->branch_id,
+            'branch_id' => $this->branch->id,
             'description' => $this->service->description,
             'amount' => $this->payment->amount
         ]);

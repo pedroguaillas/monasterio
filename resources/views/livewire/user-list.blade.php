@@ -48,21 +48,21 @@
     {{-- modal pago --}}
     <x-adminlte-modal id="modalwindow" wire:ignore title="Editar usuario" theme="lightblue" icon="fas fa-user" v-centered scrollable>
         <div class="form-group row">
-            <label class="control-label col-sm-5">Nombre</label>
+            <label class="control-label col-sm-3">Nombre</label>
             <div class="col-sm-5">
                 <input type="text" wire:model="user.name" class="form-control form-control-sm" required>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-5" for="amount">Usurio</label>
+            <label class="control-label col-sm-3" for="amount">Usuario</label>
             <div class="col-sm-5">
                 <input type="text" wire:model="user.user" class="form-control form-control-sm" required>
             </div>
         </div>
 
-        <div class="form-group row">
-            <label class="control-label col-sm-5">Correo</label>
+        <div class="form-group row mb-0">
+            <label class="control-label col-sm-3">Correo</label>
             <div class="col-sm-5">
                 <input type="email" wire:model="user.email" class="form-control form-control-sm" required>
             </div>

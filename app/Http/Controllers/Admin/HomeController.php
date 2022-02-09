@@ -23,7 +23,7 @@ class HomeController extends Controller
     //             DB::raw("(SELECT SUM(amount) FROM payment_items AS pi WHERE DATE_FORMAT(pi.created_at, '%Y') = DATE_FORMAT(start_period, '%Y') GROUP BY DATE_FORMAT(pi.created_at, '%Y')) AS entry"),
     //             DB::raw("(SELECT SUM(amount) FROM spends AS s WHERE DATE_FORMAT(s.created_at, '%Y') = DATE_FORMAT(start_period, '%Y') GROUP BY DATE_FORMAT(s.created_at, '%Y')) AS egress"),
     //         )
-    //         ->groupBy("DATE_FORMAT(start_period, '%Y')")->get();
+    //         ->groupBy("year")->get();
 
     //     $closures = json_decode(json_encode($closures), false);
 
@@ -83,11 +83,6 @@ class HomeController extends Controller
         }
 
         $averange = $cont > 0 ? $sum / $cont : 0;
-
-        // $closures = DB::table('closures')
-        //     ->select(DB::raw('sum(amount) AS amount, MONTH(date) AS date'))
-        //     ->groupBy('date')
-        //     ->get();
 
         $closures = json_decode(json_encode($closures, true));
 

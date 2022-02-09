@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-0">
             <label class="control-label col-sm-5">Valor a pagar ($)</label>
             <div class="col-sm-2">
                 <input type="number" wire:model="payment.amount" min="10" max="payment.amount" class="form-control form-control-sm" required>
@@ -123,7 +123,7 @@
     <x-adminlte-modal id="modalwindowpayments" title="Pagos" theme="lightblue" icon="fas fa-money-bill-wave" v-centered size="lg" scrollable>
 
         @if($payments !== null && $payments->count())
-        <table class="table table-sm">
+        <table class="table table-sm mb-0">
             <thead>
                 <tr style="text-align: center;">
                     <th>#</th>

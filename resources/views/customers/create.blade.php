@@ -157,7 +157,7 @@
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="amount_payment">Valor a pagar ($)</label>
                         <div class="col-sm-2">
-                            <input type="number" value="20" min="10" class="form-control form-control-sm" id="amount_payment" name="amount" required>
+                            <input type="number" value="{{ $paymentmethods[0]->amount }}" min="10" max="{{ $paymentmethods[0]->amount }}" class="form-control form-control-sm" id="amount_payment" name="amount" required>
                         </div>
                     </div>
 
@@ -208,6 +208,7 @@
     let service = undefined
 
     $('#identification').mask('0000000000')
+    $('#amount_payment').mask('00')
 
     function mayusculas(e) {
         e.value = e.value.toUpperCase()
@@ -230,12 +231,13 @@
     const update = () => {
         $('#date_next_month').text(sumMonth($('#date_payment').val(), service.months))
         $('#amount_payment').val(service.amount)
+        $('#amount_payment').attr('max', service.amount)
     }
 
     const getService = () => {
         $.ajax({
             type: 'GET',
-            url: "{{url('admin/services')}}/" + $('#payment_method_id').val(),
+            url: "{{url('admin/servicios')}}/" + $('#payment_method_id').val(),
             success: (res) => {
                 service = res.paymentMethod
                 update()
