@@ -19,12 +19,11 @@
     @php
     $sum_entry=0;
     $sum_egress=0;
-    $months = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
     @endphp
     <tbody>
         @foreach($closures as $item)
         <tr>
-            <td>{{ $item->date }}</td>
+            <td>{{ $item->year }}</td>
             <td>{{ number_format($item->entry, 2, ',', '.') }}</td>
             <td>{{ number_format($item->egress, 2, ',', '.') }}</td>
             <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>

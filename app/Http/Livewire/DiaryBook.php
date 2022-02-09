@@ -69,5 +69,6 @@ class DiaryBook extends Component
             'entry' => $this->sum_entry,
             'egress' => $this->sum_egress,
         ]);
+        $this->emit('showAlert');
     }
 }

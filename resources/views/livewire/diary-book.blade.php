@@ -51,9 +51,11 @@
         </table>
         @endif
     </div>
+
     <div class="row">
         <div class="col-sm-12">
             <button wire:click="store" class="btn btn-primary mb-3 mr-3" style="float: right;">Cerrar caja</button>
         </div>
     </div>
+
 </div>

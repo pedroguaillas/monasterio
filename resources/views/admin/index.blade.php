@@ -185,23 +185,21 @@
             <tbody>
                 @foreach($closures as $item)
                 <tr>
-                    <input type="hidden" class="serdelete_val" value="{{$item->date}}">
-
-                    <td style="width: 25%;">{{ $item->date }}</td>
+                    <td style="width: 25%;">{{ $item->year }}</td>
                     <td style="width: 25%;">{{ number_format($item->entry, 2, ',', '.') }}</td>
                     <td style="width: 25%;">{{ number_format($item->egress, 2, ',', '.') }}</td>
                     <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
                     <td class="text-center" width="70px">
-                        <button onClick="collapseAnio({{$item->date}})" class="btn btn-success btn-sm">+</button>
+                        <button onClick="collapseAnio({{$item->year}})" class="btn btn-success btn-sm">+</button>
 
-                        <a target="_blank" href="{{ route('reportepormeses', $item->date) }}" class="btn btn-outline-secondary btn-sm">
+                        <a target="_blank" href="{{ route('reportepormeses', $item->year) }}" class="btn btn-outline-secondary btn-sm">
                             <i class="far fa-file-pdf"></i>
                         </a>
 
                     </td>
                 </tr>
                 <tr>
-                    <td id="{{ 'anio' .$item->date }}" colspan="5">
+                    <td id="{{ 'anio' .$item->year }}" colspan="5">
                     </td>
                 </tr>
                 @php

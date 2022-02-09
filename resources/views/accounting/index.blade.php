@@ -17,6 +17,12 @@
 @livewireScripts
 
 <script>
+    // Alerta del cierre de caja
+    Livewire.on('showAlert', function() {
+        alert('Se ha echo el cierre de caja')
+    })
+
+    // Modal registro de gasto
     Livewire.on('showModal', function() {
         $('#modalwindow').modal('show')
     })

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Payment;
+use App\Models\PaymentItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -10,47 +12,10 @@ use DateTime;
 
 class StatisticsController extends Controller
 {
-    public function index()
-    {
-        $closures = DB::select('SELECT SUM(entry) AS entry, SUM(egress) AS egress, YEAR(date) AS date FROM `closures` GROUP BY YEAR(date)');
-
-        $customers = Customer::all();
-        $countcustomers = $customers->count();
-
-        $dates = Customer::all('date_of_birth');
-
-        $years = [];
-        $now = new DateTime();
-
-        foreach ($dates as $date) {
-            $start = new DateTime($date->date_of_birth);
-            $interval = $start->diff($now);
-            $years[] = $interval->format('%y');
-        }
-
-        $sum = 0;
-        $cont = 0;
-
-        foreach ($years as $year) {
-            $cont++;
-            $sum += $year;
-        }
-
-        $averange = $sum / $cont;
-
-        // $closures = DB::table('closures')
-        //     ->select(DB::raw('sum(amount) AS amount, MONTH(date) AS date'))
-        //     ->groupBy('date')
-        //     ->get();
-
-        $closures = json_decode(json_encode($closures, true));
-
-        return view('statistics.index', compact('closures', 'countcustomers', 'averange'));
-    }
-
     public function general()
     {
-        $closures = DB::select('SELECT SUM(entry) AS entry, SUM(egress) AS egress, YEAR(date) AS date FROM `closures` GROUP BY YEAR(date)');
+        $closures = DB::select('SELECT SUM(entry) AS entry, SUM(egress) AS egress, YEAR(date) AS year FROM `closures` GROUP BY YEAR(date)');
+        // $closures = DB::select("SELECT YEAR(p.start_period) AS year, (SELECT SUM(amount) FROM payment_items AS pi WHERE YEAR(pi.created_at) = YEAR(p.start_period) GROUP BY YEAR(pi.created_at)) AS entry, (SELECT SUM(amount) FROM spends AS s WHERE YEAR(s.created_at) = YEAR(p.start_period) GROUP BY YEAR(s.created_at)) AS egress FROM payments AS p GROUP BY YEAR(p.start_period)");
         $closures = json_decode(json_encode($closures, true));
 
         $pdf = PDF::loadView('statistics.years-report', compact('closures'));
@@ -130,9 +95,25 @@ class StatisticsController extends Controller
             $index++;
         }
 
+        $payments = PaymentItem::select(DB::raw('SUM(amount) AS amount'), 'name')
+            ->join('branches', 'branch_id', 'branches.id')
+            ->groupBy('name')
+            ->get();
+
+        $payment_data = [];
+        $payment_ticks = [];
+        $index = 1;
+
+        foreach ($payments as $payment) {
+            $payment_data[] = [$index, $payment->amount];
+            $payment_ticks[] = [$index, $payment->name];
+            $index++;
+        }
+
         return response()->json([
             'genders' => ['data' => $genders_data, 'ticks' => $genders_ticks],
             'ages' => ['data' => $ages_data, 'ticks' => $ages_ticks],
+            'payments' => ['data' => $payment_data, 'ticks' => $payment_ticks],
         ]);
     }
 }

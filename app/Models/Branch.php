@@ -15,4 +15,14 @@ class Branch extends Model
     {
         return $this->hasMany(Closure::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
 }
