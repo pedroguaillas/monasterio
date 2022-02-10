@@ -41,6 +41,8 @@ class CreateSpend extends Component
             'date' => $date->format('Y-m-d')
         ]);
 
+        $this->reset(['description', 'amount']);
+
         // si se guarda correctamente
         if ($spend) {
             // decimos a su componente padre que actualice su lista en este caso al metodo render

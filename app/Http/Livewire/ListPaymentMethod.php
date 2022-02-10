@@ -7,13 +7,12 @@ use Livewire\Component;
 
 class ListPaymentMethod extends Component
 {
-    // Simon este es una variable que se comunica con la vista ok
-    public $paymentMethod = null, $pay_id = null;
+    public $description, $amount, $months, $pay_id;
 
     protected $rules = [
-        'paymentMethod.description' => 'required',
-        'paymentMethod.amount' => 'required',
-        'paymentMethod.months' => 'required',
+        'description' => 'required',
+        'amount' => 'required',
+        'months' => 'required',
     ];
 
     public function render()
@@ -24,10 +23,9 @@ class ListPaymentMethod extends Component
 
     public function create()
     {
-        $this->pay_id = null;
-
-        if ($this->paymentMethod) {
-            $this->paymentMethod->reset();
+        if ($this->pay_id !== null) {
+            $this->reset(['description', 'amount', 'months']);
+            $this->pay_id = null;
         }
 
         $this->emit("showModal");
@@ -37,15 +35,32 @@ class ListPaymentMethod extends Component
     // automaticamente le puede convertir en un modelo
     public function editar(PaymentMethod $paymentMethod)
     {
-        $this->paymentMethod = $paymentMethod;
+        $this->pay_id = $paymentMethod->id;
+        $this->description = $paymentMethod->description;
+        $this->amount = $paymentMethod->amount;
+        $this->months = $paymentMethod->months;
+
         // Aqui solo falta emitir un evento a Livewire para que abra el modal
         $this->emit("showModal");
     }
 
     public function update()
     {
-        $this->paymentMethod->save();
-        // Una vez guardado le cerramos el modal
+        $pay = null;
+        if ($this->pay_id == null) {
+            $pay = new PaymentMethod;
+        } else {
+            $pay = PaymentMethod::find($this->pay_id);
+        }
+        $pay->description = $this->description;
+        $pay->amount = $this->amount;
+        $pay->months = $this->months;
+        $pay->save();
+
+        $this->reset(['description', 'amount', 'months']);
+
+        // Una vez guardado le renderizamos la lista de registro y cerramos el modal
+        $this->render();
         $this->emit("closeModal");
     }
 }

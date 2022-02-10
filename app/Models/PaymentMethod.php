@@ -11,5 +11,7 @@ class PaymentMethod extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = ['description', 'amount', 'months'];
+
     protected $dates = ['deleted_at'];
 }

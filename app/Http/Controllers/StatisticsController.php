@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\Payment;
 use App\Models\PaymentItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,9 +35,10 @@ class StatisticsController extends Controller
         $closuresmoth = DB::table('payments')
             ->select(
                 DB::raw("MONTH(start_period) AS month"),
-                DB::raw("(SELECT SUM(amount) FROM payment_items AS pi WHERE MONTH(pi.created_at) = month AND YEAR(pi.created_at) = $year GROUP BY MONTH(pi.created_at)) AS entry"),
-                DB::raw("(SELECT SUM(amount) FROM spends AS s WHERE MONTH(s.created_at) = month AND YEAR(s.created_at) = $year GROUP BY MONTH(s.created_at)) AS egress"),
+                DB::raw("IFNULL((SELECT SUM(amount) FROM payment_items AS pi WHERE MONTH(pi.created_at) = month AND YEAR(pi.created_at) = $year GROUP BY MONTH(pi.created_at)), 0) AS entry"),
+                DB::raw("IFNULL((SELECT SUM(amount) FROM spends AS s WHERE MONTH(s.created_at) = month AND YEAR(s.created_at) = $year GROUP BY MONTH(s.created_at)), 0) AS egress"),
             )
+            ->havingRaw('egress > 0 OR entry > 0')
             ->groupBy("month")->get();
         // $closuresmoth = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, MONTH(date) AS month FROM closures WHERE YEAR(date) = $year GROUP BY MONTH(date)");
         $closuresmoth = json_decode(json_encode($closuresmoth, true));
@@ -52,9 +52,10 @@ class StatisticsController extends Controller
         $closuresmoth = DB::table('payments')
             ->select(
                 DB::raw("MONTH(start_period) AS month"),
-                DB::raw("(SELECT SUM(amount) FROM payment_items AS pi WHERE MONTH(pi.created_at) = month AND YEAR(pi.created_at) = $year GROUP BY MONTH(pi.created_at)) AS entry"),
-                DB::raw("(SELECT SUM(amount) FROM spends AS s WHERE MONTH(s.created_at) = month AND YEAR(s.created_at) = $year GROUP BY MONTH(s.created_at)) AS egress"),
+                DB::raw("IFNULL((SELECT SUM(amount) FROM payment_items AS pi WHERE MONTH(pi.created_at) = month AND YEAR(pi.created_at) = $year GROUP BY MONTH(pi.created_at)), 0) AS entry"),
+                DB::raw("IFNULL((SELECT SUM(amount) FROM spends AS s WHERE MONTH(s.created_at) = month AND YEAR(s.created_at) = $year GROUP BY MONTH(s.created_at)), 0) AS egress"),
             )
+            ->havingRaw('egress > 0 OR entry > 0')
             ->groupBy("month")->get();
 
         $closuresmoth = json_decode(json_encode($closuresmoth, true));

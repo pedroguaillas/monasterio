@@ -304,6 +304,7 @@
             grid: {
                 borderWidth: 1,
                 borderColor: '#f3f3f3',
+                hoverable: true,
                 tickColor: '#f3f3f3'
             },
             series: {
@@ -316,7 +317,8 @@
             colors: ['#3c8dbc'],
             xaxis: {
                 ticks
-            }
+            },
+            tooltip: true,
         })
         /* END BAR CHART */
     }

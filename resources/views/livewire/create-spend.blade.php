@@ -2,7 +2,7 @@
 
     <button class="btn btn-success" data-toggle="modal" data-target="#modalwindow">Agregar egreso</button>
 
-    <x-adminlte-modal id="modalwindow" wire:ignore role="dialog" theme="green" title="Registro de gasto">
+    <x-adminlte-modal id="modalwindow" wire:ignore role="dialog" theme="green" icon="fas fa-money-bill-wave" title="Registro de gasto">
         <form wire:submit.prevent="store">
             <div class="modal-body">
 

@@ -57,26 +57,26 @@
         @endif
     </div>
     {{-- modal --}}
-    <x-adminlte-modal id="modalwindow" wire:ignore title="Registro de servicio" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
+    <x-adminlte-modal id="modalwindow" wire:ignore title="Formulario servicio" theme="green" icon="fas fa-money-bill-wave" v-centered scrollable>
 
         <div class="form-group row">
             <label class="control-label col-sm-3">Descripción</label>
             <div class="col-sm-6">
-                <input type="text" wire:model="paymentMethod.description" class="form-control form-control-sm" required>
+                <input type="text" wire:model="description" class="form-control form-control-sm" required>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-3">Precio</label>
+            <label class="control-label col-sm-3">Precio ($)</label>
             <div class="col-sm-2">
-                <input type="text" wire:model="paymentMethod.amount" class="form-control form-control-sm" required>
+                <input type="text" wire:model="amount" class="form-control form-control-sm" required>
             </div>
         </div>
 
         <div class="form-group row mb-0">
-            <label class="control-label col-sm-3">Mes</label>
+            <label class="control-label col-sm-3">Meses</label>
             <div class="col-sm-2">
-                <input type="text" wire:model="paymentMethod.months" class="form-control form-control-sm" required>
+                <input type="text" wire:model="months" class="form-control form-control-sm" required>
             </div>
         </div>
 
