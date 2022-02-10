@@ -11,20 +11,20 @@
 <body>
     <header id="main-header">
         <a id="logo-header" href="#">
-            <img class="img-circle" src="{{ base_path('public/images/logo.jpg') }}" style="width: 100px; height:100px;">
+            <img class="img-circle" src="{{ base_path('public/images/logo.jpeg') }}" style="width: 100px; margin-top: 3em;">
         </a>
     </header>
     <hr>
     <h4 align="center"><b><u>@yield('title')</u></b></h4>
 
     <div class="marca-de-agua">
-        <img alt="Marca de agua" src="{{ base_path('public/images/marca.jpg') }}" />
+        <img alt="Marca de agua" src="{{ base_path('public/images/marca.jpeg') }}" />
     </div>
 
     @yield('content')
 
     <footer>
-        <h6 align="center"> Derechos Reserados &copy; 2021</h6>
+        <h6 align="center"> Derechos Reserados &copy; {{ date('Y') }}</h6>
     </footer>
 </body>
 
@@ -51,7 +51,7 @@
         padding: 0;
         width: 100%;
         height: auto;
-        opacity: 0.4;
+        opacity: 0.1;
         position: absolute;
     }
 

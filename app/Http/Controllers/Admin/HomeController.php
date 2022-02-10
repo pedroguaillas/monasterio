@@ -19,9 +19,9 @@ class HomeController extends Controller
     {
         $closures = DB::table('payments')
             ->select(
-                DB::raw("YEAR(payments.start_period) AS year"),
-                DB::raw("(SELECT SUM(amount) FROM payment_items AS pi WHERE DATE_FORMAT(pi.created_at, '%Y') = DATE_FORMAT(start_period, '%Y') GROUP BY DATE_FORMAT(pi.created_at, '%Y')) AS entry"),
-                DB::raw("(SELECT SUM(amount) FROM spends AS s WHERE DATE_FORMAT(s.created_at, '%Y') = DATE_FORMAT(start_period, '%Y') GROUP BY DATE_FORMAT(s.created_at, '%Y')) AS egress"),
+                DB::raw("YEAR(start_period) AS year"),
+                DB::raw("(SELECT SUM(amount) FROM payment_items AS pi WHERE YEAR(pi.created_at) = year GROUP BY YEAR(pi.created_at)) AS entry"),
+                DB::raw("(SELECT SUM(amount) FROM spends AS s WHERE YEAR(s.created_at) = year GROUP BY YEAR(s.created_at)) AS egress"),
             )
             ->groupBy("year")->get();
 

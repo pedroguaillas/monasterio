@@ -78,30 +78,57 @@
     </a>
 </p> -->
 <!-- <div class="collapse" id="collapseExample"> -->
+<div class="row">
+    <div class="col-sm-6">
+        <!-- Bar chart -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-users"></i>
+                    Usuarios
+                </h3>
 
-<!-- Bar chart -->
-<div class="card card-primary card-outline">
-    <div class="card-header">
-        <h3 class="card-title">
-            <i class="fa fa-users"></i>
-            Usuarios
-        </h3>
-
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-            </button>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="bar-chart-gender" style="height: 300px;"></div>
+            </div>
+            <!-- /.card-body-->
         </div>
     </div>
-    <div class="card-body">
-        <div id="bar-chart-gender" style="height: 300px;"></div>
-    </div>
-    <!-- /.card-body-->
-</div>
 
+    <div class="col-sm-6">
+        <!-- Bar chart sedes -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-home"></i>
+                    Sedes
+                </h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="bar-chart-branches" style="height: 300px;"></div>
+            </div>
+            <!-- /.card-body-->
+        </div>
+    </div>
+</div>
 <!-- Bar chart -->
 <div class="card card-primary card-outline">
     <div class="card-header">
@@ -129,7 +156,7 @@
 <div class="card card-primary card-outline">
     <div class="card-header">
         <h3 class="card-title">
-            <i class="fa fa-clock"></i>
+            <i class="fa fa-size"></i>
             Edades
         </h3>
 
@@ -151,6 +178,7 @@
 <div class="card" id="collapseExample">
     <div class="card-header">
         <h3 class="card-title">
+            <i class="fa fa-statistics"></i>
             Reporte Estadístico
         </h3>
 
@@ -255,6 +283,7 @@
                 loadcharts('gender', res.genders)
                 loadcharts('schedule', schedule)
                 loadcharts('age', res.ages)
+                loadcharts('branches', res.branches)
             },
             error: (err) => console.log(err)
         })
