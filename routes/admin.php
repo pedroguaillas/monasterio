@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('', [HomeController::class, 'index'])->name('admin.home');
 
-Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
+Route::resource('customers', CustomerController::class);
+// Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store', 'edit', 'update']);
 
 Route::get('contabilidad', [AccountingController::class, 'index'])->name('admin.contabilidad');
 

@@ -42,6 +42,9 @@
                             <a title="Historial de pagos" wire:click="listPayments({{$customer->id}})" class="btn btn-secondary btn-sm ml-1">
                                 <i class="far fa-list-alt"></i>
                             </a>
+                            <a title="Historial de pagos" href="{{ route('customers.edit', $customer->id) }}" class="btn btn-primary btn-sm ml-1">
+                                <i class="far fa-edit"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>

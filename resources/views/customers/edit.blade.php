@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Registrar nuevo usuario')
+@section('title', 'Editar un usuario')
 
 @section('content')
 <br />
@@ -14,8 +14,9 @@
     </ul>
 </div>
 @endif
-<form class="form-horizontal" role="form" method="POST" action="{{ route('customers.store') }}" enctype="multipart/form-data">
+<form class="form-horizontal" role="form" method="POST" action="{{ route('customers.update', $customer->id) }}" enctype="multipart/form-data">
     {{ csrf_field() }}
+    {{ method_field('PATCH')}}
     <div class="row">
         <!-- left column -->
         <div class="col-md-6">
@@ -29,47 +30,46 @@
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="identification">Cédula</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="identification" name="identification" maxlength="13">
+                            <input value="{{ $customer->identification }}" type="text" class="form-control form-control-sm" id="identification" name="identification" maxlength="13">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="first_name">Nombres *</label>
                         <div class="col-sm-8">
-                            <input type="text" onkeyup="mayusculas(this);" style="text-transform: capitalize;" class="form-control form-control-sm" id="first_name" name="first_name" maxlength="300" required>
+                            <input value="{{ $customer->first_name }}" type="text" onkeyup="mayusculas(this);" style="text-transform: capitalize;" class="form-control form-control-sm" id="first_name" name="first_name" maxlength="300" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="last_name">Apellidos *</label>
                         <div class="col-sm-8">
-                            <input type="text" onkeyup="mayusculas(this);" style="text-transform: capitalize;" class="form-control form-control-sm" id="last_name" name="last_name" maxlength="300" required>
+                            <input value="{{ $customer->last_name }}" type="text" onkeyup="mayusculas(this);" style="text-transform: capitalize;" class="form-control form-control-sm" id="last_name" name="last_name" maxlength="300" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="alias">Alias</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="alias" name="alias" maxlength="300">
+                            <input value="{{ $customer->alias }}" type="text" class="form-control form-control-sm" id="alias" name="alias" maxlength="300">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="gender">Genero *</label>
                         <div class="col-sm-8">
                             <select class="form-control form-control-sm" id="gender" name="gender" required>
-                                <option value="">Seleccione</option>
-                                <option value="femenino">Femenimo</option>
-                                <option value="masculino">Masculino</option>
+                                <option {{ $customer->gender === 'femenino' ? 'selected': '' }} value="femenino">Femenimo</option>
+                                <option {{ $customer->gender === 'masculino' ? 'selected': '' }} value="masculino">Masculino</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="date_of_birth">Fecha de nacimiento *</label>
                         <div class="col-sm-8">
-                            <input type="date" class="form-control form-control-sm" id="date_of_birth" name="date_of_birth" required>
+                            <input value="{{ $customer->date_of_birth }}" type="date" class="form-control form-control-sm" id="date_of_birth" name="date_of_birth" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="phone">Celular</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="phone" name="phone" maxlength="10">
+                            <input value="{{ $customer->phone }}" type="text" class="form-control form-control-sm" id="phone" name="phone" maxlength="10">
                         </div>
                     </div>
                 </div>
@@ -107,62 +107,7 @@
         </div>
     </div>
     <div class="row">
-        <!-- left column -->
         <div class="col-md-6">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Pago</h3>
-                </div>
-
-                <div class="card-body">
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-4" for="date_payment">Fecha de inscripción</label>
-                        <div class="col-sm-4">
-                            <input type="date" value="{{ date('Y-m-d') }}" class="form-control form-control-sm" id="date_payment" name="date" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-4" for="month_payment">Servicios</label>
-                        <div class="col-sm-5">
-                            <select class="custom-select form-control form-control-sm" id="payment_method_id" name="payment_method_id" required>
-                                @foreach($paymentmethods as $item)
-                                <option value="{{$item->id}}">{{$item->amount . ' ' .$item->description}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-4">Fecha mes próximo</label>
-                        <span class="control-label col-sm-4" id="date_next_month">{{date('d/m/Y', strtotime(date('Y-m-d'). ' +1 month'))}}</span>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-4" for="brach_id">Sede</label>
-                        <div class="col-sm-5">
-                            <select class="custom-select form-control form-control-sm" id="brach_id" name="brach_id" required>
-                                @foreach($branchs as $item)
-                                <option value="{{$item->id}}">{{$item->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-4" for="amount_payment">Valor a pagar ($)</label>
-                        <div class="col-sm-2">
-                            <input type="number" value="{{ $paymentmethods[0]->amount }}" min="10" max="{{ $paymentmethods[0]->amount }}" class="form-control form-control-sm" id="amount_payment" name="amount" required>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- right column -->
-        <div class="col-md-6">
-            <!-- Start Test Finger capute -->
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Reconcimiento dactilar</h3>
@@ -176,7 +121,6 @@
 
                 </div>
             </div>
-            <!-- End Test Finger capute -->
 
             <div class="modal-footer">
                 <button class="btn btn-success" type="submit">
