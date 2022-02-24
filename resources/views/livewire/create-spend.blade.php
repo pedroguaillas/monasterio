@@ -13,6 +13,17 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label class="control-label col-sm-4" for="branch_id">Sede</label>
+                    <div class="col-sm-5">
+                        <select class="custom-select form-control form-control-sm" wire:model="branch_id" required>
+                            @foreach($branchs as $item)
+                            <option value="{{$item->id}}">{{$item->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group row mb-0">
                     <label class="control-label col-sm-4" for="amount">Costo ($)</label>
                     <div class="col-sm-3">

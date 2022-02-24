@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Closure;
 use App\Models\Customer;
 use App\Models\Spend;
 use Carbon\Carbon;
@@ -12,6 +11,8 @@ class DiaryBook extends Component
 {
     public $sum_entry;
     public $sum_egress;
+    public $types = ['1', '2'];
+    public $date;
 
     protected $listeners = ['render' => 'render'];
 
@@ -19,6 +20,7 @@ class DiaryBook extends Component
     {
         $this->sum_entry = 0;
         $this->sum_egress = 0;
+        $this->date = Carbon::today();
     }
 
     public function render()
@@ -27,15 +29,17 @@ class DiaryBook extends Component
 
         // Nota no se agrupa el monto de los items de pago,
         // por que los items de pago se hacen en diferentes fechas
-        // y en el libro diario solo se debe mostrar de la fecha actual
+        // y en el libro diario solo se debe mostrar de una fecha especifica
 
         $payments = Customer::select('amount', 'description', 'first_name', 'last_name')
             ->join('payments', 'customer_id', 'customers.id')
             ->join('payment_items AS pi', 'payment_id', 'payments.id')
-            ->whereDate('pi.created_at', Carbon::today())->get();
+            ->whereIn('pi.branch_id', $this->types)
+            ->whereDate('pi.created_at', $this->date)->get();
 
         // Egresos
-        $spends = Spend::whereDate('date', Carbon::today())
+        $spends = Spend::whereDate('date', $this->date)
+            ->whereIn('branch_id', $this->types)
             ->get();
 
         $this->sum_entry = 0;
@@ -50,25 +54,5 @@ class DiaryBook extends Component
         }
 
         return view('livewire.diary-book', compact('payments', 'spends'));
-    }
-
-    public function store()
-    {
-        // cada dia toca hacer el cierre de caja de la empresa
-        // entonces eso voy hacer aqui
-        // para entonces toca guardar los ingresos y egresos en una tabla
-        // primero le voy a reestructurar la tabla
-
-        $date = Carbon::now();
-
-        $closing = Closure::create([
-            'branch_id' => 1,
-            'type' => 'diario',
-            'date' => $date->format('Y-m-d'),
-            // 'description' => 'Cierre ' . $date->format('Y-m-d'),
-            'entry' => $this->sum_entry,
-            'egress' => $this->sum_egress,
-        ]);
-        $this->emit('showAlert');
     }
 }

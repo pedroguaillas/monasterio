@@ -4,6 +4,10 @@
 
 @section('title', 'Administración')
 
+@section('css')
+@livewireStyles
+@endsection
+
 @section('content_header')
 <!-- <h1 class="text-center">Tiempo Real</h1> -->
 @stop
@@ -78,9 +82,8 @@
     </a>
 </p> -->
 <!-- <div class="collapse" id="collapseExample"> -->
-<div class="row">
-    <div class="col-sm-6">
-        <!-- Bar chart -->
+<!-- <div class="row mb-2"> -->
+<!-- <div class="col-sm-6">
         <div class="card card-primary card-outline">
             <div class="card-header">
                 <h3 class="card-title">
@@ -100,12 +103,10 @@
             <div class="card-body">
                 <div id="bar-chart-gender" style="height: 300px;"></div>
             </div>
-            <!-- /.card-body-->
         </div>
-    </div>
-
-    <div class="col-sm-6">
-        <!-- Bar chart sedes -->
+    </div> -->
+<livewire:livewire-charts />
+<!-- <div class="col-sm-6">
         <div class="card card-primary card-outline">
             <div class="card-header">
                 <h3 class="card-title">
@@ -122,15 +123,14 @@
                     </button>
                 </div>
             </div>
-            <div class="card-body">
-                <div id="bar-chart-branches" style="height: 300px;"></div>
+            <div style="height: 20rem;" class="card-body">
             </div>
-            <!-- /.card-body-->
         </div>
-    </div>
-</div>
+    </div> -->
+<!-- </div> -->
+
 <!-- Bar chart -->
-<div class="card card-primary card-outline">
+<!-- <div class="card card-primary card-outline">
     <div class="card-header">
         <h3 class="card-title">
             <i class="fa fa-clock"></i>
@@ -149,11 +149,10 @@
     <div class="card-body">
         <div id="bar-chart-schedule" style="height: 300px;"></div>
     </div>
-    <!-- /.card-body-->
-</div>
+</div> -->
 
 <!-- Bar chart -->
-<div class="card card-primary card-outline">
+<!-- <div class="card card-primary card-outline">
     <div class="card-header">
         <h3 class="card-title">
             <i class="fa fa-size"></i>
@@ -172,8 +171,7 @@
     <div class="card-body">
         <div id="bar-chart-age" style="height: 300px;"></div>
     </div>
-    <!-- /.card-body-->
-</div>
+</div> -->
 
 <div class="card" id="collapseExample">
     <div class="card-header">
@@ -256,38 +254,42 @@
 @stop
 
 @section('js')
+@livewireScripts
+@livewireChartsScripts
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    $(function() {
-        let schedule = {
-            data: [
-                [1, 9],
-                [2, 5],
-                [3, 12],
-                [4, 4],
-                [5, 9],
-                [6, 15],
-            ],
-            ticks: [
-                [1, '6:00'],
-                [2, '7:00'],
-                [3, '10:00'],
-                [4, '11:00'],
-                [5, '15:00'],
-                [6, '19:00']
-            ]
-        }
-        $.ajax({
-            type: 'GET',
-            url: "{{url('admin/statistics/chars')}}",
-            success: (res) => {
-                loadcharts('gender', res.genders)
-                loadcharts('schedule', schedule)
-                loadcharts('age', res.ages)
-                loadcharts('branches', res.branches)
-            },
-            error: (err) => console.log(err)
-        })
-    })
+    // $(function() {
+    //     let schedule = {
+    //         data: [
+    //             [1, 9],
+    //             [2, 5],
+    //             [3, 12],
+    //             [4, 4],
+    //             [5, 9],
+    //             [6, 15],
+    //         ],
+    //         ticks: [
+    //             [1, '6:00'],
+    //             [2, '7:00'],
+    //             [3, '10:00'],
+    //             [4, '11:00'],
+    //             [5, '15:00'],
+    //             [6, '19:00']
+    //         ]
+    //     }
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: "{{url('admin/statistics/chars')}}",
+    //         success: (res) => {
+    //             loadcharts('gender', res.genders)
+    //             loadcharts('schedule', schedule)
+    //             loadcharts('age', res.ages)
+    //             loadcharts('branches', res.branches)
+    //         },
+    //         error: (err) => console.log(err)
+    //     })
+    // })
 
     function loadcharts(id, {
         data,

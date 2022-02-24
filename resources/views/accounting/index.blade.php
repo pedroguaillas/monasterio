@@ -8,9 +8,8 @@
 
 @section('content')
 <br />
-<div class="card">
-    @livewire('diary-book')
-</div>
+@livewire('diary-book')
+
 @endsection
 
 @section('js')
