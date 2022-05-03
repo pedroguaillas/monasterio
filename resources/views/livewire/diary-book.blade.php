@@ -1,5 +1,6 @@
 <div>
 
+    @hasrole('Jefe')
     <div class="row mb-2">
         <div class="col-1"></div>
         <div class="col-1">
@@ -27,6 +28,7 @@
             </div>
         </div>
     </div>
+    @endhasrole
 
     <div class="card">
         <div class="card-header">

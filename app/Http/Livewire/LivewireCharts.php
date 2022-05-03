@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\PaymentItem;
 use DateTime;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class LivewireCharts extends Component
 {

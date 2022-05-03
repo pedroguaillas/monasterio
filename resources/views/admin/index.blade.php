@@ -8,11 +8,9 @@
 @livewireStyles
 @endsection
 
-@section('content_header')
-<!-- <h1 class="text-center">Tiempo Real</h1> -->
-@stop
-
 @section('content')
+
+@hasrole('Jefe')
 <!-- Small boxes (Stat box) -->
 <div class="row">
     <div class="col-lg-3 col-6">
@@ -76,102 +74,8 @@
     </div>
     <!-- ./col -->
 </div>
-<!-- <p>
-    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-        Reporte por año
-    </a>
-</p> -->
-<!-- <div class="collapse" id="collapseExample"> -->
-<!-- <div class="row mb-2"> -->
-<!-- <div class="col-sm-6">
-        <div class="card card-primary card-outline">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fa fa-users"></i>
-                    Usuarios
-                </h3>
 
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div id="bar-chart-gender" style="height: 300px;"></div>
-            </div>
-        </div>
-    </div> -->
 <livewire:livewire-charts />
-<!-- <div class="col-sm-6">
-        <div class="card card-primary card-outline">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fa fa-home"></i>
-                    Sedes
-                </h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div style="height: 20rem;" class="card-body">
-            </div>
-        </div>
-    </div> -->
-<!-- </div> -->
-
-<!-- Bar chart -->
-<!-- <div class="card card-primary card-outline">
-    <div class="card-header">
-        <h3 class="card-title">
-            <i class="fa fa-clock"></i>
-            Horarios
-        </h3>
-
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-    <div class="card-body">
-        <div id="bar-chart-schedule" style="height: 300px;"></div>
-    </div>
-</div> -->
-
-<!-- Bar chart -->
-<!-- <div class="card card-primary card-outline">
-    <div class="card-header">
-        <h3 class="card-title">
-            <i class="fa fa-size"></i>
-            Edades
-        </h3>
-
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-    <div class="card-body">
-        <div id="bar-chart-age" style="height: 300px;"></div>
-    </div>
-</div> -->
 
 <div class="card" id="collapseExample">
     <div class="card-header">
@@ -247,6 +151,8 @@
         @endif
     </div>
 </div>
+@endhasrole
+
 @stop
 
 @section('css')
@@ -259,72 +165,6 @@
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    // $(function() {
-    //     let schedule = {
-    //         data: [
-    //             [1, 9],
-    //             [2, 5],
-    //             [3, 12],
-    //             [4, 4],
-    //             [5, 9],
-    //             [6, 15],
-    //         ],
-    //         ticks: [
-    //             [1, '6:00'],
-    //             [2, '7:00'],
-    //             [3, '10:00'],
-    //             [4, '11:00'],
-    //             [5, '15:00'],
-    //             [6, '19:00']
-    //         ]
-    //     }
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: "{{url('admin/statistics/chars')}}",
-    //         success: (res) => {
-    //             loadcharts('gender', res.genders)
-    //             loadcharts('schedule', schedule)
-    //             loadcharts('age', res.ages)
-    //             loadcharts('branches', res.branches)
-    //         },
-    //         error: (err) => console.log(err)
-    //     })
-    // })
-
-    function loadcharts(id, {
-        data,
-        ticks
-    }) {
-        /* BAR CHART */
-        var bar_data = {
-            data,
-            bars: {
-                show: true
-            }
-        }
-        $.plot('#bar-chart-' + id, [bar_data], {
-            grid: {
-                borderWidth: 1,
-                borderColor: '#f3f3f3',
-                hoverable: true,
-                tickColor: '#f3f3f3'
-            },
-            series: {
-                bars: {
-                    show: true,
-                    barWidth: 0.5,
-                    align: 'center',
-                },
-            },
-            colors: ['#3c8dbc'],
-            xaxis: {
-                ticks
-            },
-            tooltip: true,
-        })
-        /* END BAR CHART */
-    }
-
     let moths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
 
     function collapseAnio(anio) {

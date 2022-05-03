@@ -28,10 +28,15 @@
                     <td>{{$customer->last_name}}</td>
                     <td>
                         @if($customer->to_pay - $customer->amount)
-                        <!-- <button class="btn btn-secondary" wire:click="complete({{$customer->id}})"> -->
+                        @hasrole('Jefe')
                         <button class="btn btn-secondary" wire:click="showComplete({{$customer->id}})">
                             $ {{ $customer->to_pay - $customer->amount}} Pagar
                         </button>
+                        @else
+                        <button class="btn btn-secondary" wire:click="complete({{$customer->id}})">
+                            $ {{ $customer->to_pay - $customer->amount}} Pagar
+                        </button>
+                        @endhasrole
                         @endif
                     </td>
                     <td>
@@ -100,6 +105,7 @@
             </div>
         </div>
 
+        @hasrole('Jefe')
         <div class="form-group row">
             <label class="control-label col-sm-5" for="branch_id">Sede</label>
             <div class="col-sm-5">
@@ -110,6 +116,7 @@
                 </select>
             </div>
         </div>
+        @endhasrole
 
         <div class="form-group row mb-0">
             <label class="control-label col-sm-5">Valor a pagar ($)</label>

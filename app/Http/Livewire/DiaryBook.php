@@ -6,12 +6,14 @@ use App\Models\Customer;
 use App\Models\Spend;
 use Carbon\Carbon;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use \Spatie\Permission\Models\Role;
 
 class DiaryBook extends Component
 {
     public $sum_entry;
     public $sum_egress;
-    public $types = ['1', '2'];
+    public $types = [];
     public $date;
 
     protected $listeners = ['render' => 'render'];
@@ -20,6 +22,14 @@ class DiaryBook extends Component
     {
         $this->sum_entry = 0;
         $this->sum_egress = 0;
+
+        $auth = Auth::user();
+        if ($auth->hasRole('Jefe')) {
+            $this->types = ['1', '2'];
+        } else {
+            $this->types = [$auth->branch_id];
+        }
+
         $this->date = Carbon::today();
     }
 

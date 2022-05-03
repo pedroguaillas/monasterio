@@ -30,31 +30,31 @@ class CustomerController extends Controller
     {
         $auth = Auth::user();
 
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'identification' => 'unique:customers,identification',
-        //         'first_name' => 'required',
-        //         'last_name' => 'required',
-        //         'gender' => 'required',
-        //         'payment_method_id' => 'required',
-        //         'amount' => 'required',
-        //     ],
-        //     [
-        //         'identification.unique' => 'Ya se ha registrado un cliente con la "Cédula" ' . $request->identification,
-        //         'first_name.required' => 'El campo "Nombres" es requerido.',
-        //         'last_name.required' => 'El campo "Apellidos" es requerido.',
-        //         'gender.required' => 'Debe seleccionar el genero.',
-        //         'payment_method_id.required' => 'Debe seleccionar un "Servicio".',
-        //         'amount.required' => 'El campo "Valor a pagar" es requerido.',
-        //     ]
-        // );
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'identification' => 'nullable|unique:customers,identification',
+                // 'first_name' => 'required',
+                // 'last_name' => 'required',
+                // 'gender' => 'required',
+                // 'payment_method_id' => 'required',
+                // 'amount' => 'required',
+            ],
+            [
+                'identification.unique' => 'Ya se ha registrado un cliente con la "Cédula" ' . $request->identification,
+                // 'first_name.required' => 'El campo "Nombres" es requerido.',
+                // 'last_name.required' => 'El campo "Apellidos" es requerido.',
+                // 'gender.required' => 'Debe seleccionar el genero.',
+                // 'payment_method_id.required' => 'Debe seleccionar un "Servicio".',
+                // 'amount.required' => 'El campo "Valor a pagar" es requerido.',
+            ]
+        );
 
-        // if ($validator->fails()) {
-        //     return redirect()->back()
-        //         ->withErrors($validator)
-        //         ->withInput($request->all());
-        // }
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput($request->all());
+        }
 
         $file = NULL;
         if ($request->photo) {

@@ -139,16 +139,20 @@
                         <span class="control-label col-sm-4" id="date_next_month">{{date('d/m/Y', strtotime(date('Y-m-d'). ' +1 month'))}}</span>
                     </div>
 
+                    @hasrole('Jefe')
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="brach_id">Sede</label>
                         <div class="col-sm-5">
                             <select class="custom-select form-control form-control-sm" id="brach_id" name="brach_id" required>
                                 @foreach($branchs as $item)
-                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
+                    @else
+                    <input type="hidden" value="{{ auth()->user()->branch_id }}" name="brach_id" required>
+                    @endhasrole
 
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="amount_payment">Valor a pagar ($)</label>

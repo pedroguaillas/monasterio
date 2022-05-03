@@ -30,6 +30,13 @@ class SearchSmartCustomers extends Component
     {
         $this->payment = null;
         $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
+
+        $auth = Auth::user();
+        if ($auth->hasRole('Jefe')) {
+            $this->branch = Branch::first();
+        } else {
+            $this->branch = Branch::find($auth->branch_id);
+        }
     }
 
     public function updatingPaymentBranchId($value)
@@ -73,7 +80,7 @@ class SearchSmartCustomers extends Component
             //     ->orWhere('last_name', 'like', '%' . $this->search . '%')
             //     ->paginate(5);
 
-            $customers = DB::select("select (SELECT SUM(to_pay) FROM `payments` WHERE `customer_id` = c.id) as to_pay, (SELECT SUM(amount) FROM `payments` AS p INNER JOIN payment_items AS pi ON p.id=pi.payment_id WHERE `customer_id` = c.id) as amount, id, identification, first_name, last_name from `customers` AS c where `identification` like '%$this->search%' or `first_name` like '%$this->search%' or `last_name` like '%$this->search%'");
+            $customers = DB::select("select (SELECT SUM(to_pay) FROM `payments` WHERE `customer_id` = c.id) as to_pay, (SELECT SUM(amount) FROM `payments` AS p INNER JOIN payment_items AS pi ON p.id=pi.payment_id WHERE `customer_id` = c.id) as amount, id, identification, first_name, last_name from `customers` AS c where `identification` like '%$this->search%' or `first_name` like '%$this->search%' or `last_name` like '%$this->search%' LIMIT 10");
 
             $customers = json_decode(json_encode($customers), false);
         }
@@ -88,7 +95,14 @@ class SearchSmartCustomers extends Component
     {
         $this->customer = $customer;
         $this->service = PaymentMethod::first();
-        $this->branch = Branch::first();
+
+        $auth = Auth::user();
+
+        if ($auth->hasRole('Jefe')) {
+            $this->branch = Branch::first();
+        } else {
+            $this->branch = Branch::find($auth->branch_id);
+        }
 
         $this->payment = new Payment;
         $this->payment->date = date('Y-m-d');
@@ -143,7 +157,7 @@ class SearchSmartCustomers extends Component
         // 2. Ajustar el pago
         $paymentItem = $payment->paymentitems()->create([
             // EL branch_id SE CAPTURARA DE MANERA AUTOMÁTICA
-            'branch_id' => 1,
+            'branch_id' => $this->branch->id,
             'description' => 'Ajuste ' . $payment->paymentitems()->first()->description,
             'amount' => $paymentsByCustom->diff
         ]);
@@ -158,7 +172,14 @@ class SearchSmartCustomers extends Component
         $this->service = PaymentMethod::first();
 
         $this->payment = new Payment;
-        $this->payment->branch_id = Branch::first()->id;
+
+        $auth = Auth::user();
+
+        if ($auth->hasRole('Jefe')) {
+            $this->payment->branch_id = Branch::first()->id;
+        } else {
+            $this->payment->branch_id = Branch::find($auth->branch_id)->id;
+        }
 
         $this->emit('showModalComplete');
     }
@@ -179,7 +200,7 @@ class SearchSmartCustomers extends Component
         // 2. Ajustar el pago
         $paymentItem = $payment->paymentitems()->create([
             // POR EL branch_id SE CREA ESTE NUEVO METODO
-            'branch_id' => $this->payment->branch_id,
+            'branch_id' => $this->branch->id,
             'description' => 'Ajuste ' . $payment->paymentitems()->first()->description,
             'amount' => $paymentsByCustom->diff
         ]);

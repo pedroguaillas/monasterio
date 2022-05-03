@@ -1,4 +1,5 @@
 <div>
+
     <div class="row mb-2">
         <div class="col-1"></div>
         <div class="col-1">
@@ -18,6 +19,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-sm-6">
             <div class="card">
@@ -62,4 +64,5 @@
             </div>
         </div>
     </div>
+
 </div>
