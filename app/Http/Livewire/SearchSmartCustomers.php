@@ -138,6 +138,7 @@ class SearchSmartCustomers extends Component
         $this->payments = Payment::select(DB::raw("amount, description, DATE_FORMAT(start_period, '%d-%m-%Y') AS start_period, DATE_FORMAT(end_period, '%d-%m-%Y') AS end_period, to_pay"))
             ->join('payment_items', 'payment_id', 'payments.id')
             ->where('payments.customer_id', $customer->id)
+            ->orderBy('start_period', 'DESC')
             ->get();
 
         $this->emit('showModalpayments');

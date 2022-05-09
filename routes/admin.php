@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\UserController;
@@ -20,6 +21,7 @@ Route::get('statistics/bymonth/{year}', [StatisticsController::class, 'byMonth']
 Route::get('statistics/byweek/{month}/year/{year}', [StatisticsController::class, 'byWeek']);
 
 Route::resource('servicios', PaymentMethodController::class)->only(['index', 'show', 'destroy']);
+Route::resource('payments', PaymentController::class)->only(['index']);
 
 Route::resource('usuarios', UserController::class)->only(['index', 'create', 'store', 'destroy']);
 
