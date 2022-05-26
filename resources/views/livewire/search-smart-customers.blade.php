@@ -44,9 +44,15 @@
                             <a title="Pagar" wire:click="createPayment({{$customer->id}})" class="btn btn-success btn-sm">
                                 <i class="far fa-money-bill-alt"></i>
                             </a>
+                            @hasrole('Jefe')
+                            <a title="Historial de pagos" href="{{ route('admin.pagos', $customer->id) }}" class="btn btn-secondary btn-sm ml-1">
+                                <i class="far fa-list-alt"></i>
+                            </a>
+                            @else
                             <a title="Historial de pagos" wire:click="listPayments({{$customer->id}})" class="btn btn-secondary btn-sm ml-1">
                                 <i class="far fa-list-alt"></i>
                             </a>
+                            @endhasrole
                             <a title="Editar usuario" href="{{ route('customers.edit', $customer->id) }}" class="btn btn-primary btn-sm ml-1">
                                 <i class="far fa-edit"></i>
                             </a>

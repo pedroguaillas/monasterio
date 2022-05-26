@@ -9,7 +9,7 @@
 @section('content')
 <br />
 <div class="card">
-    @livewire('list-payments')
+    @livewire('list-payments', ['customer_id' => $customer_id])
 </div>
 @endsection
 

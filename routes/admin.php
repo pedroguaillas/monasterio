@@ -21,9 +21,9 @@ Route::get('statistics/bymonth/{year}', [StatisticsController::class, 'byMonth']
 Route::get('statistics/byweek/{month}/year/{year}', [StatisticsController::class, 'byWeek']);
 
 Route::resource('servicios', PaymentMethodController::class)->only(['index', 'show', 'destroy']);
-Route::resource('payments', PaymentController::class)->only(['index']);
 
 Route::resource('usuarios', UserController::class)->only(['index', 'create', 'store', 'destroy']);
+Route::get('usuarios/{customer_id}/pagos', [PaymentController::class, 'index'])->name('admin.pagos');
 
 Route::get('reporte-general', [StatisticsController::class, 'general'])->name('reportegeneral');
 Route::get('reporte-por-meses/{id}', [StatisticsController::class, 'months'])->name('reportepormeses');
