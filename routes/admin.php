@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountingController;
+use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
@@ -14,6 +15,7 @@ Route::get('', [HomeController::class, 'index'])->name('admin.home');
 Route::resource('customers', CustomerController::class);
 
 Route::get('contabilidad', [AccountingController::class, 'index'])->name('admin.contabilidad');
+Route::get('diarios', [DiaryController::class, 'index'])->name('admin.diarios');
 
 Route::get('estadistica', [StatisticsController::class, 'index'])->name('admin.estadistica');
 Route::get('statistics/chars', [StatisticsController::class, 'chars']);

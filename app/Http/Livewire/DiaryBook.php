@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Branch;
 use App\Models\Customer;
+use App\Models\Diary;
 use App\Models\Spend;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use \Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class DiaryBook extends Component
 {
@@ -47,6 +49,13 @@ class DiaryBook extends Component
             ->whereIn('pi.branch_id', $this->types)
             ->whereDate('pi.created_at', $this->date)->get();
 
+        // Diarios
+        $diaries = Diary::select(DB::raw('SUM(amount) AS amount'))
+            ->whereDate('date', $this->date)
+            ->whereIn('branch_id', $this->types)
+            ->having('amount', '>', 0)
+            ->get();
+
         // Egresos
         $spends = Spend::whereDate('date', $this->date)
             ->whereIn('branch_id', $this->types)
@@ -59,10 +68,14 @@ class DiaryBook extends Component
             $this->sum_entry += $item->amount;
         }
 
+        foreach ($diaries as $item) {
+            $this->sum_entry += $item->amount;
+        }
+
         foreach ($spends as $item) {
             $this->sum_egress += $item->amount;
         }
 
-        return view('livewire.diary-book', compact('payments', 'spends'));
+        return view('livewire.diary-book', compact('payments', 'spends', 'diaries'));
     }
 }

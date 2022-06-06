@@ -13,18 +13,18 @@
                          <div class="form-group row">
                               <label class="control-label col-sm-4" for="date">Descripcion</label>
                               <div class="col-sm-4">
-                                   <input type="text"  class="form-control form-control-sm" required>
+                                   <input type="text" class="form-control form-control-sm" required>
                               </div>
                          </div>
 
                          <div class="form-group row">
                               <label class="control-label col-sm-4" for="month">Monto</label>
                               <div class="col-sm-2">
-                                   <input type="text"  min="1" class="form-control form-control-sm"  required>
+                                   <input type="text" min="1" class="form-control form-control-sm" required>
                               </div>
                          </div>
 
-                      
+
 
                     </div>
                     <div class="modal-footer">

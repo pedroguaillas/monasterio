@@ -64,6 +64,15 @@
                         </td>
                     </tr>
                     @endforeach
+                    @foreach($diaries as $item)
+                    <tr>
+                        <td>Ingreso diario</td>
+                        <td>{{number_format($item->amount, 2, ',', '.')}}</td>
+                        <td></td>
+                        <td>
+                        </td>
+                    </tr>
+                    @endforeach
                     @foreach($spends as $item)
                     <tr>
                         <td>&nbsp&nbsp&nbsp&nbsp&nbsp{{ $item->description }}</td>

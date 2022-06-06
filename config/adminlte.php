@@ -262,11 +262,12 @@ return [
             'icon'        => 'fas fa-fw fa-book',
             'can'         => 'admin.contabilidad',
         ],
-        // [
-        //     'text'        => 'Estadísticas',
-        //     'url'         => 'admin/estadistica',
-        //     'icon'        => 'fas fa-fw fa-chart-pie',
-        // ],
+        [
+            'text'        => 'Diario',
+            'url'         => 'admin/diarios',
+            'icon'        => 'fas fa-fw fa-chart-pie',
+            // 'can'         => 'admin.diarios',
+        ],
         [
             'text'        => 'Servicios',
             'url'         => 'admin/servicios',
