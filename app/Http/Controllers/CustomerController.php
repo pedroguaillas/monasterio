@@ -78,7 +78,8 @@ class CustomerController extends Controller
             'gender' => $request->gender,
             'date_of_birth' => $request->date_of_birth,
             'phone' => $request->phone,
-            'finger' => $request->finger
+            'finger' => $request->finger,
+            'payment_method_id' => $request->payment_method_id
         ]);
 
         $service = PaymentMethod::find($request->payment_method_id);
@@ -102,7 +103,8 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
-        return view('customers.edit', compact('customer'));
+        $services = PaymentMethod::all();
+        return view('customers.edit', compact('customer', 'services'));
     }
 
     public function update(Request $request, Customer $customer)
@@ -114,6 +116,7 @@ class CustomerController extends Controller
         $customer->gender = $request->gender;
         $customer->date_of_birth = $request->date_of_birth;
         $customer->phone = $request->phone;
+        $customer->payment_method_id = $request->payment_method_id;
 
         $customer->save();
 

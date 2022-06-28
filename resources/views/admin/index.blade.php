@@ -114,21 +114,22 @@
             @endphp
             <tbody>
                 @foreach($closures as $item)
-                <tr>
+                <tr data-widget="expandable-table" aria-expanded="true">
                     <td style="width: 25%;">{{ $item->year }}</td>
                     <td style="width: 25%;">{{ number_format($item->entry, 2, ',', '.') }}</td>
                     <td style="width: 25%;">{{ number_format($item->egress, 2, ',', '.') }}</td>
                     <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
-                    <td class="text-center" width="70px">
-                        <button onClick="collapseAnio({{$item->year}})" class="btn btn-success btn-sm">+</button>
+                    <td style="text-align: right;">
+                        <div class="btn-group" role="group">
+                            <button onClick="collapseAnio({{$item->year}})" class="btn btn-success btn-sm mr-1">+</button>
 
-                        <a target="_blank" href="{{ route('reportepormeses', $item->year) }}" class="btn btn-outline-secondary btn-sm">
-                            <i class="far fa-file-pdf"></i>
-                        </a>
-
+                            <a target="_blank" href="{{ route('reportepormeses', $item->year) }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="far fa-file-pdf"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="expandable-body">
                     <td id="{{ 'anio' .$item->year }}" colspan="5">
                     </td>
                 </tr>
@@ -172,7 +173,8 @@
             type: 'GET',
             url: "{{url('admin/statistics/bymonth')}}/" + anio,
             success: (res) => {
-                let part = '<table style="width: 100%;">'
+                let part = '<div class="p-0">'
+                part += '<table style="width: 100%;" class="table table-hover">'
                 part += '<tbody>'
                 jQuery.each(res.closuresmoth, function(index, val) {
                     let month = Number(val.month) - 1
@@ -185,13 +187,14 @@
                     part += '<button onClick="collapseMonth(' + month + ', ' + anio + ')" class="btn btn-success btn-sm">+</button>'
                     part += '</td>'
                     part += '</tr>'
-                    part += '<tr>'
+                    part += '<tr class="expandable-body">'
                     part += '<td id="' + anio + 'mes' + month + '" colspan="5">'
                     part += '</td>'
                     part += '</tr>'
                 })
                 part += '</tbody>'
                 part += '</table>'
+                part += '</div>'
 
                 $('#anio' + anio).html(part)
             },

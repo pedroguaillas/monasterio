@@ -6,9 +6,11 @@ use App\Models\Branch;
 use App\Models\Customer;
 use Livewire\Component;
 use App\Models\Payment;
+use App\Models\PaymentItem;
 use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\This;
 
 class SearchSmartCustomers extends Component
 {
@@ -94,7 +96,11 @@ class SearchSmartCustomers extends Component
     public function createPayment(Customer $customer)
     {
         $this->customer = $customer;
-        $this->service = PaymentMethod::first();
+        $this->service = null;
+
+        if ($this->customer->payment_method_id !== null) {
+            $this->service = PaymentMethod::find($this->customer->payment_method_id);
+        }
 
         $auth = Auth::user();
 
@@ -106,8 +112,9 @@ class SearchSmartCustomers extends Component
 
         $this->payment = new Payment;
         $this->payment->date = date('Y-m-d');
-        $this->payment->amount = $this->service->amount;
-        $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +' . $this->service->months . ' month'));
+        $this->payment->amount = $this->service !== null ? $this->service->amount : 0;
+        $this->payment->service_id = $this->service !== null ? $this->service->id : null;
+        $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +' . ($this->service !== null ? $this->service->months : 0) . ' month'));
 
         $this->emit('showModal');
     }
@@ -115,6 +122,13 @@ class SearchSmartCustomers extends Component
     //Registro de nuevo pago
     public function storePayment()
     {
+        if ($this->service === null) {
+            return;
+        }
+
+        $this->customer->payment_method_id = $this->service->id;
+        $this->customer->save();
+
         $payment = $this->customer->payments()->create([
             'branch_id' => $this->branch->id,
             'to_pay' => $this->service->amount,
@@ -135,13 +149,19 @@ class SearchSmartCustomers extends Component
 
     public function listPayments(Customer $customer)
     {
-        $this->payments = Payment::select(DB::raw("amount, description, DATE_FORMAT(start_period, '%d-%m-%Y') AS start_period, DATE_FORMAT(end_period, '%d-%m-%Y') AS end_period, to_pay"))
+        $this->payments = Payment::select(DB::raw("payments.id, amount, description, DATE_FORMAT(start_period, '%d-%m-%Y') AS start_period, DATE_FORMAT(end_period, '%d-%m-%Y') AS end_period, to_pay"))
             ->join('payment_items', 'payment_id', 'payments.id')
             ->where('payments.customer_id', $customer->id)
             ->orderBy('start_period', 'DESC')
             ->get();
 
         $this->emit('showModalpayments');
+    }
+
+    public function delete(Payment $payment)
+    {
+        PaymentItem::where('payment_id', $payment->id)->delete();
+        $payment->delete();
     }
 
     //Registro de saldo de pago

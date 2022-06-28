@@ -72,6 +72,17 @@
                             <input value="{{ $customer->phone }}" type="text" class="form-control form-control-sm" id="phone" name="phone" maxlength="10">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="payment_method_id">Servicio</label>
+                        <div class="col-sm-8">
+                            <select class="form-control form-control-sm" id="payment_method_id" name="payment_method_id" required>
+                                <option value="">Seleccione</option>
+                                @foreach($services as $service)
+                                <option {{ $customer->payment_method_id === $service->id ? 'selected': '' }} value="{{ $service->id }}">{{ $service->description }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
