@@ -85,7 +85,6 @@ class StatisticsController extends Controller
     }
 
     // PDF reporte por mes y año
-
     public function chars()
     {
         $genders = DB::table('customers')

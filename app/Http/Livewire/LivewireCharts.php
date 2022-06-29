@@ -7,6 +7,10 @@ use Asantibanez\LivewireCharts\Models\PieChartModel;
 use Illuminate\Support\Facades\DB;
 use App\Models\Customer;
 use App\Models\PaymentItem;
+use App\Models\Spend;
+use Carbon\Carbon;
+use DateInterval;
+use DatePeriod;
 use DateTime;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -25,12 +29,21 @@ class LivewireCharts extends Component
         'Monasterio' => '#dc3545',
     ];
     public $firstRun = true;
+    public $date_start;
+    public $date_end;
 
     protected $listeners = [
         'onSliceClick' => 'handleOnSliceClick',
         'onColumnClick' => 'handleOnColumnClick',
         'onColumnClick2' => 'handleOnColumnClick2',
     ];
+
+    public function mount()
+    {
+        $date = substr(Carbon::today()->toISOString(), 0, 10);
+        $this->date_start = $date;
+        $this->date_end = $date;
+    }
 
     public function handleOnSliceClick($column)
     {
@@ -110,11 +123,58 @@ class LivewireCharts extends Component
                     ->withOnColumnClickEventName('onColumnClick2')
             );
 
+        // Reporte por rango de fecha
+        $entries = PaymentItem::select(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y') AS date, SUM(amount) AS amount"))
+            ->where([
+                ["created_at", ">=", $this->date_start],
+                ["created_at", "<", date('Y-m-d', strtotime($this->date_end . ' +1 day'))]
+            ])
+            ->whereIn('branch_id', $this->types)
+            ->groupBy("date")->get();
+
+        // $egress = Spend::select(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y') AS date, SUM(amount) AS amount"))
+        //     ->where([
+        //         ["created_at", ">=", $this->date_start],
+        //         ["created_at", "<", date('Y-m-d', strtotime($this->date_end . ' +1 day'))]
+        //     ])
+        //     ->groupBy("date")->get();
+
+        // $interval = DateInterval::createFromDateString('1 day');
+        // $period = new DatePeriod(date_create($this->date_start), $interval, date_create(date('Y-m-d', strtotime($this->date_end . ' +1 day'))));
+
+        // $closures = [];
+
+        // foreach ($period as $dt) {
+        //     $newdt = $dt->format("d-m-Y");
+        //     $entry = count($entries) > 0 ? $this->findObjectByDate($newdt, $entries) : false;
+        //     $egre = count($egress) > 0 ? $this->findObjectByDate($newdt, $egress) : false;
+        //     var_dump($newdt);
+        //     if ($entry !== false || $egre !== false) {
+        //         array_push($closures, [
+        //             'date' =>  $newdt,
+        //             'entry' => $entry !== false ? $entry['amount'] : 0,
+        //             'egress' =>  $egre !== false ? $egre['amount'] : 0
+        //         ]);
+        //     }
+        // }
+
         return view('livewire.livewire-charts')
             ->with([
                 'columnChartModelCustomers' => $columnChartModelCustomers,
                 'columnChartModelGenere' => $columnChartModelGenere,
                 'columnChartModelDates' => $columnChartModelDates,
+                'closures' => $entries,
             ]);
+    }
+
+    function findObjectByDate($date, $array)
+    {
+        foreach ($array as $element) {
+            if ($date == $element->date) {
+                return $element;
+            }
+        }
+
+        return false;
     }
 }

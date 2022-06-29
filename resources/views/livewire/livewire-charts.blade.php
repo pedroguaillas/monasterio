@@ -65,4 +65,63 @@
         </div>
     </div>
 
+    <!-- Reporte por rango de fechas -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fa fa-statistics"></i>
+                Reporte por rango de fechas
+            </h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group row">
+                        <label class="control-label col-sm-2">Inicio</label>
+                        <div class="col-sm-5">
+                            <input type="date" class="form-control form-control-sm" wire:model="date_start" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group row">
+                        <label class="control-label col-sm-2">Fin</label>
+                        <div class="col-sm-5">
+                            <input type="date" class="form-control form-control-sm" wire:model="date_end" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Ingresos</th>
+                        <th>Egresos</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($closures as $item)
+                    <tr data-widget="expandable-table" aria-expanded="true">
+                        <td style="width: 25%;">{{$item->date}}</td>
+                        <td style="width: 25%;">{{ number_format($item->entry, 2, ',', '.') }}</td>
+                        <td style="width: 25%;">{{ number_format($item->egress, 2, ',', '.') }}</td>
+                        <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>

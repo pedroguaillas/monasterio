@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\Diary;
 use App\Models\Spend;
@@ -32,7 +31,7 @@ class DiaryBook extends Component
             $this->types = [$auth->branch_id];
         }
 
-        $this->date = Carbon::today();
+        $this->date = substr(Carbon::today()->toISOString(), 0, 10);
     }
 
     public function render()

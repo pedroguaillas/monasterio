@@ -10,7 +10,6 @@ use App\Models\PaymentItem;
 use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\Types\This;
 
 class SearchSmartCustomers extends Component
 {
