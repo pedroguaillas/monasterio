@@ -30,6 +30,7 @@ class SearchSmartCustomers extends Component
     public function mount()
     {
         $this->payment = null;
+        $this->service = null;
         $this->date_next_month = date('d/m/Y', strtotime(date('Y-m-d') . ' +1 month'));
 
         $auth = Auth::user();
@@ -54,7 +55,7 @@ class SearchSmartCustomers extends Component
 
     public function updatingPaymentDate($value)
     {
-        $this->date_next_month = date('d/m/Y', strtotime($value . ' +' . $this->service->months . ' month'));
+        $this->date_next_month = date('d/m/Y', strtotime($value . ' +' . ($this->service !== null ? $this->service->months : 1) . ' month'));
     }
 
     public function updatingAmount($value)
