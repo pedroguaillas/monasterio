@@ -49,11 +49,10 @@ class DiaryBook extends Component
             ->whereDate('pi.created_at', $this->date)->get();
 
         // Diarios
-        $diaries = Diary::select(DB::raw('SUM(amount) AS amount'))
+        $diary = Diary::select(DB::raw('SUM(amount) AS amount'))
             ->whereDate('date', $this->date)
             ->whereIn('branch_id', $this->types)
-            ->having('amount', '>', 0)
-            ->get();
+            ->first();
 
         // Egresos
         $spends = Spend::whereDate('date', $this->date)
@@ -67,14 +66,12 @@ class DiaryBook extends Component
             $this->sum_entry += $item->amount;
         }
 
-        foreach ($diaries as $item) {
-            $this->sum_entry += $item->amount;
-        }
+        $this->sum_entry += $diary->amount ?: 0;
 
         foreach ($spends as $item) {
             $this->sum_egress += $item->amount;
         }
 
-        return view('livewire.diary-book', compact('payments', 'spends', 'diaries'));
+        return view('livewire.diary-book', compact('payments', 'spends', 'diary'));
     }
 }

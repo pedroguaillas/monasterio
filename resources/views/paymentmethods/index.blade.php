@@ -8,9 +8,7 @@
 
 @section('content')
 <br />
-<div class="card">
-    @livewire('list-payment-method')
-</div>
+@livewire('list-payment-method')
 @endsection
 
 @section('js')

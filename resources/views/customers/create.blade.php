@@ -63,7 +63,7 @@
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="date_of_birth">Fecha de nacimiento *</label>
                         <div class="col-sm-8">
-                            <input type="date" class="form-control form-control-sm" id="date_of_birth" name="date_of_birth" required>
+                            <input type="date" class="form-control form-control-sm" id="date_of_birth" name="date_of_birth" min="1950-01-01" max="2014-12-31" required>
                         </div>
                     </div>
                     <div class="form-group row">

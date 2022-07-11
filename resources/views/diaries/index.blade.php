@@ -8,26 +8,8 @@
 
 @section('content')
 <br />
-<div class="card text-center align-items-center">
-    <div class="card-body">
-        @livewire('diary-register')
-    </div>
-</div>
+@livewire('diary-register')
 
 @endsection
 
-@section('js')
 @livewireScripts
-
-<script>
-    // Modal completar pago
-    Livewire.on('showModalComplete', function() {
-        $('#modalcomplete').modal('show')
-    })
-
-    Livewire.on('hideModalComplete', function() {
-        $('#modalcomplete').modal('hide')
-    })
-</script>
-
-@endsection

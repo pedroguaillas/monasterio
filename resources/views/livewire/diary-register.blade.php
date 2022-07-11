@@ -1,21 +1,24 @@
 <div>
     {{-- Close your eyes. Count to one. That is how long forever feels. --}}
 
-    <p class="card-text">Monto de hoy ${{ $total }}</p>
-
-    <div action="#" class="form-inline">
-        <div class="form-group mx-sm-3 mb-2">
-            <input wire:model="amount" type="number" class="form-control" id="amountvalue" />
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card text-center align-items-center">
+                <div class="card-body">
+                    <p class="h1">${{ number_format($total, 2) }}</p>
+                    @hasrole('Jefe')
+                    <button class="btn btn-primary" wire:click="$emit('showModal')">+</button>
+                    @else
+                    <button wire:click="register" type="button" class="btn btn-primary mb-2">+</button>
+                    @endhasrole
+                </div>
+            </div>
         </div>
-        @hasrole('Jefe')
-        <button class="btn btn-primary" wire:click="showComplete()">Registrar</button>
-        @else
-        <button wire:click="register" type="button" class="btn btn-primary mb-2">Registrar</button>
-        @endhasrole
     </div>
 
     {{-- modal para completar el pago --}}
-    <x-adminlte-modal id="modalcomplete" wire:ignore title="Pagar" theme="lightblue" icon="fas fa-money-bill-wave" v-centered scrollable>
+    <x-adminlte-modal id="branchSelectModal" wire:ignore title="Pagar" theme="lightblue" icon="fas fa-money-bill-wave" v-centered scrollable>
 
         <div class="form-group row">
             <label class="control-label col-sm-5" for="branch_id">Sede</label>
@@ -29,7 +32,20 @@
         </div>
 
         <x-slot name="footerSlot">
-            <x-adminlte-button style="height: 3em;" wire:click="complete1" class="bg-lightblue" icon="fas fa-lg fa-save" />
+            <x-adminlte-button style="height: 3em;" wire:click="registerModal" class="bg-lightblue" icon="fas fa-lg fa-save" />
         </x-slot>
     </x-adminlte-modal>
+
+
+    @push("js")
+    <script>
+        Livewire.on('showModal', () => {
+            $('#branchSelectModal').modal('show')
+        })
+
+        Livewire.on('hideModal', () => {
+            $('#branchSelectModal').modal('hide')
+        })
+    </script>
+    @endpush
 </div>

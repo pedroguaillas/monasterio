@@ -8,6 +8,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\UserController;
+use App\Http\Livewire\Chart\Customers;
 use Illuminate\Support\Facades\Route;
 
 Route::get('', [HomeController::class, 'index'])->name('admin.home');
@@ -29,3 +30,6 @@ Route::get('usuarios/{customer_id}/pagos', [PaymentController::class, 'index'])-
 
 Route::get('reporte-general', [StatisticsController::class, 'general'])->name('reportegeneral');
 Route::get('reporte-por-meses/{id}', [StatisticsController::class, 'months'])->name('reportepormeses');
+
+// charts
+Route::get('grafico/clientes', Customers::class)->name('admin.graficocliente');

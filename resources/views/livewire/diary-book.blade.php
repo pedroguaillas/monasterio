@@ -44,7 +44,7 @@
         </div>
 
         <div class="card-body">
-            @if(($payments !== null && count($payments)) || ($spends !== null && $spends->count()))
+            @if(($payments !== null && count($payments)) || $diary->amount || ($spends !== null && $spends->count()))
             <table class="table table-sm">
                 <thead>
                     <tr>
@@ -64,15 +64,15 @@
                         </td>
                     </tr>
                     @endforeach
-                    @foreach($diaries as $item)
+                    @if($diary->amount)
                     <tr>
                         <td>Ingreso diario</td>
-                        <td>{{number_format($item->amount, 2, ',', '.')}}</td>
+                        <td>{{number_format($diary->amount, 2, ',', '.')}}</td>
                         <td></td>
                         <td>
                         </td>
                     </tr>
-                    @endforeach
+                    @endif
                     @foreach($spends as $item)
                     <tr>
                         <td>&nbsp&nbsp&nbsp&nbsp&nbsp{{ $item->description }}</td>

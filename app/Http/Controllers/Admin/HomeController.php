@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
-use App\Models\Payment;
+use App\Models\PaymentItem;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 
@@ -53,7 +53,9 @@ class HomeController extends Controller
 
         $closures = json_decode(json_encode($closures, true));
 
-        return view('admin.index', compact('closures', 'countcustomers', 'averange'));
+        $total = PaymentItem::select(DB::raw('SUM(amount) AS total'))->first()->total;
+
+        return view('admin.index', compact('closures', 'countcustomers', 'averange', 'total'));
     }
 
     // public function index()

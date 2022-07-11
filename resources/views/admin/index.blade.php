@@ -11,6 +11,7 @@
 @section('content')
 
 @hasrole('Jefe')
+<br />
 <!-- Small boxes (Stat box) -->
 <div class="row">
     <div class="col-lg-3 col-6">
@@ -24,7 +25,7 @@
             <div class="icon">
                 <i class="fa fa-users"></i>
             </div>
-            <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{ route('admin.graficocliente') }}" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -62,9 +63,9 @@
         <!-- small box -->
         <div class="small-box bg-danger">
             <div class="inner">
-                <h3>{{ 'Estadisticas' }}</h3>
+                <h3>{{ number_format($total, 2, ",", ".") }}</h3>
 
-                <p>{{ 'Estadisticas' }}</p>
+                <p>{{ 'Estadísticas' }}</p>
             </div>
             <div class="icon">
                 <i class="fas fa-chart-pie"></i>
