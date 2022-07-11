@@ -10,6 +10,7 @@
 @endsection
 
 @section('content')
+
 <br />
 {{ $slot }}
 
