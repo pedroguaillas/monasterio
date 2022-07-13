@@ -4,16 +4,11 @@
 
 @section('title', $title)
 
-@section('css')
-<link rel="stylesheet" href="/css/admin_custom.css">
 @livewireStyles
-@endsection
 
 @section('content')
-
 <br />
 {{ $slot }}
-
 @endsection
 
 @section('js')

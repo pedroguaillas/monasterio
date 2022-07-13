@@ -20,7 +20,7 @@
             <div class="inner">
                 <h3>{{ $countcustomers }}</h3>
 
-                <p>Usuario</p>
+                <p>Usuarios</p>
             </div>
             <div class="icon">
                 <i class="fa fa-users"></i>
@@ -157,10 +157,6 @@
 
 @stop
 
-@section('css')
-<link rel="stylesheet" href="/css/admin_custom.css">
-@stop
-
 @section('js')
 @livewireScripts
 @livewireChartsScripts
@@ -212,13 +208,11 @@
                 part += '<tbody>'
                 jQuery.each(res.closuresweek, function(index, val) {
                     part += '<tr style="font-style: italic;">'
-                    part += '<td style="width: 25%;">' + val.date + '</td>'
+                    part += '<td style="width: 25%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + val.date + '</td>'
                     part += '<td style="width: 25%;">' + val.entry + '</td>'
                     part += '<td style="width: 25%;">' + val.egress + '</td>'
                     part += '<td>' + formatter.format((Number(val.entry) - Number(val.egress))) + '</td>'
-                    part += '<td style="width: 1em;">'
-                    part += '<button class="btn btn-success btn-sm">+</button>'
-                    part += '</td>'
+                    part += '<td></td>'
                     part += '</tr>'
                 })
                 part += '</tbody>'
