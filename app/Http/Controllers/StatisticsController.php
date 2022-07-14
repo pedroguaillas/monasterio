@@ -7,21 +7,96 @@ use App\Models\PaymentItem;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade as PDF;
 use DateTime;
-use Facade\IgnitionContracts\Solution;
 
 class StatisticsController extends Controller
 {
+    public function index()
+    {
+        $payment_items = DB::table('payment_items')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%Y') AS year, SUM(amount) amount"))
+            ->groupBy('year')
+            ->get();
+
+
+        $diaries = DB::table('diaries')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%Y') AS year, SUM(amount) amount"))
+            ->groupBy('year')
+            ->get();
+
+        $spends = DB::table('spends')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%Y') AS year, SUM(amount) amount"))
+            ->groupBy('year')
+            ->get();
+
+        // hacer un for desde el dia uno hasta el dia ultimo del mes
+        $closures = [];
+        for ($year = 2021; $year <= (int)date('Y'); $year++) {
+            // Recorrer cada dia y buscar si existe un objeto en ese dia o sino poner 0
+            $payment_item = $this->searchByYear($year, $payment_items);
+            $diary = $this->searchByYear($year, $diaries);
+            $spend = $this->searchByYear($year, $spends);
+
+            if ($payment_item || $diary || $spend) {
+                $closures[] = [
+                    "year" => $year,
+                    "entry" => $payment_item + $diary,
+                    "egress" => $spend,
+                ];
+            }
+        }
+
+        $closures = json_decode(json_encode($closures, true));
+
+        return view('statistics.index', compact('closures'));
+    }
+
+    function searchByYear(string $year, $array)
+    {
+        foreach ($array as $element) {
+            if ($year === $element->year) {
+                return $element->amount;
+            }
+        }
+
+        return 0;
+    }
+
     // PDF General
     public function general()
     {
-        $closures = DB::table('payments')
-            ->select(
-                DB::raw("YEAR(start_period) AS year"),
-                DB::raw("(SELECT SUM(amount) FROM payment_items AS pi WHERE YEAR(pi.created_at) = year GROUP BY YEAR(pi.created_at)) AS entry"),
-                DB::raw("(SELECT SUM(amount) FROM spends AS s WHERE YEAR(s.created_at) = year GROUP BY YEAR(s.created_at)) AS egress"),
-            )
-            ->groupBy("year")->get();
-        // $closures = DB::select('SELECT SUM(entry) AS entry, SUM(egress) AS egress, YEAR(date) AS year FROM `closures` GROUP BY YEAR(date)');
+        $payment_items = DB::table('payment_items')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%Y') AS year, SUM(amount) amount"))
+            ->groupBy('year')
+            ->get();
+
+
+        $diaries = DB::table('diaries')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%Y') AS year, SUM(amount) amount"))
+            ->groupBy('year')
+            ->get();
+
+        $spends = DB::table('spends')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%Y') AS year, SUM(amount) amount"))
+            ->groupBy('year')
+            ->get();
+
+        // hacer un for desde el dia uno hasta el dia ultimo del mes
+        $closures = [];
+        for ($year = 2021; $year <= (int)date('Y'); $year++) {
+            // Recorrer cada dia y buscar si existe un objeto en ese dia o sino poner 0
+            $payment_item = $this->searchByYear($year, $payment_items);
+            $diary = $this->searchByYear($year, $diaries);
+            $spend = $this->searchByYear($year, $spends);
+
+            if ($payment_item || $diary || $spend) {
+                $closures[] = [
+                    "year" => $year,
+                    "entry" => $payment_item + $diary,
+                    "egress" => $spend,
+                ];
+            }
+        }
+
         $closures = json_decode(json_encode($closures, true));
 
         $pdf = PDF::loadView('statistics.years-report', compact('closures'));
@@ -30,33 +105,110 @@ class StatisticsController extends Controller
     }
 
     // Pantalla incial reporte por meses
-    public function byMonth(int $year)
+    public function byMonth(string $year)
     {
-        $closuresmoth = DB::table('payments')
-            ->select(
-                DB::raw("MONTH(start_period) AS month"),
-                DB::raw("IFNULL((SELECT SUM(amount) FROM payment_items AS pi WHERE MONTH(pi.created_at) = month AND YEAR(pi.created_at) = $year GROUP BY MONTH(pi.created_at)), 0) AS entry"),
-                DB::raw("IFNULL((SELECT SUM(amount) FROM spends AS s WHERE MONTH(s.created_at) = month AND YEAR(s.created_at) = $year GROUP BY MONTH(s.created_at)), 0) AS egress"),
-            )
-            ->havingRaw('egress > 0 OR entry > 0')
-            ->groupBy("month")->get();
-        // $closuresmoth = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, MONTH(date) AS month FROM closures WHERE YEAR(date) = $year GROUP BY MONTH(date)");
+        $payment_items = DB::table('payment_items')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%m') AS month, SUM(amount) amount"))
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->get();
+
+        $diaries = DB::table('diaries')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%m') AS month, SUM(amount) amount"))
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->get();
+
+
+        $spends = DB::table('spends')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%m') AS month, SUM(amount) amount"))
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->get();
+
+        // hacer un for desde el dia uno hasta el dia ultimo del mes
+
+        $last_month = 12;
+        if ($year === date('Y')) {
+            $last_month = (int)date('m');
+        }
+
+        $closuresmoth = [];
+        for ($month = 1; $month <= $last_month; $month++) {
+            // Recorrer cada dia y buscar si existe un objeto en ese dia o sino poner 0
+            $payment_item = $this->searchByMonth($month, $payment_items);
+            $diary = $this->searchByMonth($month, $diaries);
+            $spend = $this->searchByMonth($month, $spends);
+
+            if ($payment_item || $diary || $spend) {
+                $closuresmoth[] = [
+                    "month" => $month,
+                    "entry" => $payment_item + $diary,
+                    "egress" => $spend,
+                ];
+            }
+        }
+
         $closuresmoth = json_decode(json_encode($closuresmoth, true));
 
         return response()->json(['closuresmoth' => $closuresmoth]);
     }
 
-    // PDF reporte por meses
-    public function months($year)
+    function searchByMonth(string $month, $array)
     {
-        $closuresmoth = DB::table('payments')
-            ->select(
-                DB::raw("MONTH(start_period) AS month"),
-                DB::raw("IFNULL((SELECT SUM(amount) FROM payment_items AS pi WHERE MONTH(pi.created_at) = month AND YEAR(pi.created_at) = $year GROUP BY MONTH(pi.created_at)), 0) AS entry"),
-                DB::raw("IFNULL((SELECT SUM(amount) FROM spends AS s WHERE MONTH(s.created_at) = month AND YEAR(s.created_at) = $year GROUP BY MONTH(s.created_at)), 0) AS egress"),
-            )
-            ->havingRaw('egress > 0 OR entry > 0')
-            ->groupBy("month")->get();
+        foreach ($array as $element) {
+            if ($month == $element->month) {
+                return $element->amount;
+            }
+        }
+
+        return 0;
+    }
+
+    // PDF reporte por meses
+    public function months(string $year)
+    {
+        $payment_items = DB::table('payment_items')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%m') AS month, SUM(amount) amount"))
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->get();
+
+        $diaries = DB::table('diaries')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%m') AS month, SUM(amount) amount"))
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->get();
+
+
+        $spends = DB::table('spends')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%m') AS month, SUM(amount) amount"))
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->get();
+
+        // hacer un for desde el dia uno hasta el dia ultimo del mes
+
+        $last_month = 12;
+        if ($year === date('Y')) {
+            $last_month = (int)date('m');
+        }
+
+        $closuresmoth = [];
+        for ($month = 1; $month <= $last_month; $month++) {
+            // Recorrer cada dia y buscar si existe un objeto en ese dia o sino poner 0
+            $payment_item = $this->searchByMonth($month, $payment_items);
+            $diary = $this->searchByMonth($month, $diaries);
+            $spend = $this->searchByMonth($month, $spends);
+
+            if ($payment_item || $diary || $spend) {
+                $closuresmoth[] = [
+                    "month" => $month,
+                    "entry" => $payment_item + $diary,
+                    "egress" => $spend,
+                ];
+            }
+        }
 
         $closuresmoth = json_decode(json_encode($closuresmoth, true));
 
@@ -122,6 +274,67 @@ class StatisticsController extends Controller
         return response()->json(['closuresweek' => $closuresweek]);
     }
 
+    // Pantalla incial reporte por mes y año
+    public function byWeekPdf(int $month, int $year)
+    {
+        $month = str_pad((string)$month, 2, '0', STR_PAD_LEFT);
+
+        // SOLUCION
+
+        // Consultas por separadas
+
+        $payment_items = DB::table('payment_items')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y') AS date, SUM(amount) amount"))
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->groupBy('date')
+            ->get();
+
+        $diaries = DB::table('diaries')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y') AS date, SUM(amount) amount"))
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->groupBy('date')
+            ->get();
+
+        $spends = DB::table('spends')
+            ->select(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y') AS date, SUM(amount) amount"))
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->groupBy('date')
+            ->get();
+
+        // hacer un for desde el dia uno hasta el dia ultimo del mes
+
+        $year_month = "$year-$month";
+        $aux = date('Y-m-d', strtotime("{$year_month} + 1 month"));
+        $last_day = (int)date('d', strtotime("{$aux} - 1 day"));
+
+        $closuresweek = [];
+        for ($i = 1; $i < $last_day; $i++) {
+            $day = str_pad((string)$i, 2, '0', STR_PAD_LEFT);
+            $date = "$day-$month-$year";
+
+            // Recorrer cada dia y buscar si existe un objeto en ese dia o sino poner 0
+            $payment_item = $this->search($date, $payment_items);
+            $diary = $this->search($date, $diaries);
+            $spend = $this->search($date, $spends);
+
+            if ($payment_item || $diary || $spend) {
+                $closuresweek[] = [
+                    "date" => $date,
+                    "entry" => $payment_item + $diary,
+                    "egress" => $spend,
+                ];
+            }
+        }
+
+        $closuresweek = json_decode(json_encode($closuresweek, true));
+
+        $pdf = PDF::loadView('statistics.months-report', compact('closuresmoth', 'month', 'year'));
+        return $pdf->stream('statistics.months-report.pdf');
+    }
+
     function search($date, $array)
     {
         foreach ($array as $element) {
@@ -132,26 +345,6 @@ class StatisticsController extends Controller
 
         return 0;
     }
-
-    // Pantalla incial reporte por mes y año
-    // public function byWeek(int $month, int $year)
-    // {
-    //     $date = str_pad((string)$month, 2, '0', STR_PAD_LEFT) . '-' . $year;
-
-    //     $closuresweek = DB::table('payments')
-    //         ->select(
-    //             DB::raw("DATE_FORMAT(start_period, '%d-%m-%Y') AS date"),
-    //             DB::raw("(SELECT SUM(amount) FROM payment_items AS pi WHERE MONTH(pi.created_at) = date AND DATE_FORMAT(pi.created_at, '%m-%Y') = $date GROUP BY DATE_FORMAT(pi.created_at, '%m-%Y')) AS entry"),
-    //             DB::raw("(SELECT SUM(amount) FROM spends AS s WHERE MONTH(s.created_at) = date AND DATE_FORMAT(s.created_at, '%m-%Y') = $date GROUP BY DATE_FORMAT(s.created_at, '%m-%Y')) AS egress"),
-    //         )
-    //         ->where("DATE_FORMAT(start_period, '%m-%Y')", $date)
-    //         ->groupBy("date")->get();
-
-    //     // $closuresweek = DB::select("SELECT SUM(entry) AS entry, SUM(egress) AS egress, DATE_FORMAT(date, '%d-%m-%Y') AS date FROM closures WHERE '$date' = DATE_FORMAT(date, '%m-%Y') GROUP BY date");
-    //     $closuresweek = json_decode(json_encode($closuresweek, true));
-
-    //     return response()->json(['closuresweek' => $closuresweek]);
-    // }
 
     // PDF reporte por mes y año
     public function chars()

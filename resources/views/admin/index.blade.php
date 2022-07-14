@@ -70,88 +70,10 @@
             <div class="icon">
                 <i class="fas fa-chart-pie"></i>
             </div>
-            <a href="#" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{ route('admin.estadistica') }}" class="small-box-footer">Mas info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
-</div>
-
-<livewire:livewire-charts />
-
-<div class="card" id="collapseExample">
-    <div class="card-header">
-        <h3 class="card-title">
-            <i class="fa fa-statistics"></i>
-            Reporte Estadístico
-        </h3>
-
-        <div class="card-tools">
-            <a target="_blank" href="{{ route('reportegeneral') }}" class="btn btn-white btn-sm">
-                <i class="far fa-file-pdf"></i>
-            </a>
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-    <div class="card-body">
-        @if($closures !== null && count($closures))
-        <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th>Año</th>
-                    <th>Ingresos</th>
-                    <th>Egresos</th>
-                    <th>Total</th>
-                    <th style="width: 1em"></th>
-                </tr>
-            </thead>
-            @php
-            $sum_entry=0;
-            $sum_egress=0;
-            @endphp
-            <tbody>
-                @foreach($closures as $item)
-                <tr data-widget="expandable-table" aria-expanded="true">
-                    <td style="width: 25%;">{{ $item->year }}</td>
-                    <td style="width: 25%;">{{ number_format($item->entry, 2, ',', '.') }}</td>
-                    <td style="width: 25%;">{{ number_format($item->egress, 2, ',', '.') }}</td>
-                    <td>{{ number_format($item->entry - $item->egress, 2, ',', '.') }}</td>
-                    <td style="text-align: right;">
-                        <div class="btn-group" role="group">
-                            <button onClick="collapseAnio({{$item->year}})" class="btn btn-success btn-sm mr-1">+</button>
-
-                            <a target="_blank" href="{{ route('reportepormeses', $item->year) }}" class="btn btn-outline-secondary btn-sm">
-                                <i class="far fa-file-pdf"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="expandable-body">
-                    <td id="{{ 'anio' .$item->year }}" colspan="5">
-                    </td>
-                </tr>
-                @php
-                $sum_entry += $item->entry;
-                $sum_egress += $item->egress;
-                @endphp
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>TOTAL</th>
-                    <th>{{ number_format($sum_entry, 2, ',', '.') }}</th>
-                    <th>{{ number_format($sum_egress, 2, ',', '.') }}</th>
-                    <th>{{ number_format($sum_entry - $sum_egress, 2, ',', '.') }}</th>
-                    <th></th>
-                </tr>
-            </tfoot>
-        </table>
-        @endif
-    </div>
 </div>
 @endhasrole
 
@@ -166,6 +88,11 @@
     let moths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
 
     function collapseAnio(anio) {
+
+        if ($('#anio' + anio).children().length > 0) {
+            $('#expandable-year-' + year).ExpandableTable('toggleRow')
+        }
+
         $.ajax({
             type: 'GET',
             url: "{{url('admin/statistics/bymonth')}}/" + anio,
@@ -175,7 +102,7 @@
                 part += '<tbody>'
                 jQuery.each(res.closuresmoth, function(index, val) {
                     let month = Number(val.month) - 1
-                    part += '<tr style="font-style: italic;">'
+                    part += '<tr id="expandable-moth-' + month + '" data-widget="expandable-table" aria-expanded="false" style="font-style: italic;">'
                     part += '<td style="width: 25%;">' + moths[month] + '</td>'
                     part += '<td style="width: 25%;">' + val.entry + '</td>'
                     part += '<td style="width: 25%;">' + val.egress + '</td>'
@@ -194,12 +121,18 @@
                 part += '</div>'
 
                 $('#anio' + anio).html(part)
+                $('#expandable-year-' + year).ExpandableTable('toggleRow')
             },
             error: (err) => console.log(err)
         })
     }
 
     function collapseMonth(month, year) {
+
+        if ($('#' + year + 'mes' + month).children().length > 0) {
+            $('#expandable-moth-' + year).ExpandableTable('toggleRow')
+        }
+
         $.ajax({
             type: 'GET',
             url: "{{url('admin/statistics/byweek')}}/" + (month + 1) + '/year/' + year,
@@ -218,9 +151,8 @@
                 part += '</tbody>'
                 part += '</table>'
 
-                console.log(part)
-
                 $('#' + year + 'mes' + month).html(part)
+                $('#expandable-moth-' + year).ExpandableTable('toggleRow')
             },
             error: (err) => console.log(err)
         })

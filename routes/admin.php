@@ -30,6 +30,7 @@ Route::get('usuarios/{customer_id}/pagos', [PaymentController::class, 'index'])-
 
 Route::get('reporte-general', [StatisticsController::class, 'general'])->name('reportegeneral');
 Route::get('reporte-por-meses/{id}', [StatisticsController::class, 'months'])->name('reportepormeses');
+// Route::get('reporte-por-dias-del-mes/{mes}/año/{mes}', [StatisticsController::class, 'byWeekPdf'])->name('reportepordiasdelmeses');
 
 // charts
 Route::get('grafico/clientes', Customers::class)->name('admin.graficocliente');
